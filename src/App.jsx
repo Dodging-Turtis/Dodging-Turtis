@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Landing from './Pages/Landing';
-import Main from './Pages/Main';
-import Game from './Pages/Game';
-import Leaderboard from './Pages/Leaderboard';
-import Store from './Pages/Store';
-import Personal from './Pages/Personal';
-import NftDetails from './Pages/NftDetails';
+import Landing from './pages/Landing';
+import Main from './pages/Main';
+import Game from './pages/Game';
+import Leaderboard from './pages/Leaderboard';
+import Store from './pages/Store';
+import Personal from './pages/Personal';
+import NftDetails from './pages/NftDetails';
 import Layout from './components/Layout';
 
 const App = () => {
