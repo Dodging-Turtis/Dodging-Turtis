@@ -12,6 +12,9 @@ const Game = () => {
       height: '100%',
       type: Phaser.AUTO,
       scene: [GameScene],
+      physics: {
+        default: 'arcade',
+      },
     },
   };
 
