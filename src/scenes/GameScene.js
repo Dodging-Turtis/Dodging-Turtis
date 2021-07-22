@@ -1,39 +1,53 @@
 import Phaser from 'phaser';
 
-const gameOptions = {
-  platformStartSpeed: 350,
-  spawnRange: [100, 350],
-  platformSizeRange: [50, 250],
-  playerGravity: 900,
-  jumpForce: 400,
-  playerStartPosition: 200,
-  jumps: 2,
-};
-
 class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' });
   }
+
   preload() {
     this.load.image('image', '/assets/block.png');
+    this.load.image('player', '/assets/character.png');
   }
   create() {
-    this.player = this.physics.add.sprite(100, 600, 'image');
-    this.player.setGravityY(10);
-    this.player.setCollideWorldBounds(true);
-    this.player.setBounce(0.5);
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.player = this.createPlayer();
+    this.blockOne = this.createBlock(Math.random() * 500);
+    this.blockTwo = this.createBlock(Math.random() * 500 + 500);
 
-    this.platform1 = this.addPlatform(100);
-    this.platform2 = this.addPlatform(700);
     this.physics.world.on('worldbounds', (body, up, down, left, right) => {
       if (down) {
-        this.platform1.setY(0);
-        this.platform2.setY(0);
+        this.blockOne.setY(0);
+        this.blockTwo.setY(0);
       }
     });
-    console.log(this.physics.world.bounds);
   }
-  addPlatform(posX) {
+  update() {
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-160);
+    } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(160);
+    } else {
+      this.player.setVelocityX(0);
+    }
+
+    // if (this.cursors.up.isDown && this.player.body.touching.down) {
+    //   this.player.setVelocityY(-330);
+    // }
+  }
+  createPlayer() {
+    let player = this.physics.add.sprite(
+      this.physics.world.bounds.centerX,
+      this.physics.world.bounds.bottom,
+      'player'
+    );
+    player.setGravityY(1);
+    player.setCollideWorldBounds(true);
+    player.setBounce(0.5);
+    player.setScale(0.3);
+    return player;
+  }
+  createBlock(posX) {
     let platform = this.physics.add.sprite(posX, 0, 'image');
     platform.setGravityY(50);
     platform.setCollideWorldBounds(true);
