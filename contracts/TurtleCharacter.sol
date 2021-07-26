@@ -2,72 +2,150 @@
 pragma solidity ^0.6.6;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
+import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 
-// const RINKEBY_VRF_COORDINATOR = '0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B';
-// const RINKEBY_LINKTOKEN = '0x01BE23585060835E02B77ef475b0Cc51aA1e0709';
-// const RINKEBY_KEYHASH = '0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311';
+contract TurtleCharacter is ERC721, ChainlinkClient {
 
-contract TurtleCharacter is ERC721, VRFConsumerBase {
-
-    bytes32 public keyHash;
-    address public vrfCoordinator;
-    uint256 internal fee;
-
-    uint256 public randomResult;
-
-    struct Character {
-        uint256 strength;
-        uint256 speed;
-        uint256 stamina;
-        string name;
+    using Chainlink for Chainlink.Request;
+  
+    bytes32 public volume;
+    bytes32 public volume2;
+    string public ipfsLink = "https://ipfs.io/ipfs/";
+    
+    address private oracle;
+    bytes32 private jobId;
+    uint256 private fee;
+    uint uniqueTokenId = 0;
+    
+    /**
+     * Network: Kovan
+     * Oracle: 0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b
+     * Job ID: b7285d4859da4b289c7861db971baf0a
+     * Fee: 0.1 LINK
+     */
+    constructor() public ERC721("TurtleCharacter", "TRTL") {
+        setPublicChainlinkToken();
+        oracle = 0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b;
+        jobId = "b7285d4859da4b289c7861db971baf0a";
+        fee = 0.1 * 10 ** 18; // 0.1 LINK
     }
 
-    Character[] public characters;
+    function requestRandomCharacter() public {
+        ipfsLink = "https://ipfs.io/ipfs/";
+        requestVolumeData();
+    }
+    
+    /**
+     * Create a Chainlink request to retrieve API response, find the target
+     * data, then multiply by 1000000000000000000 (to remove decimal places from data).
+     */
+    function requestVolumeData() public returns (bytes32 requestId) 
+    {
+        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
+        
+        // Set the URL to perform the GET request on
+        request.add("get", "https://images-blend.herokuapp.com/");
+        
+        // Set the path to find the desired data in the API response, where the response format is:
+        // {"RAW":
+        //      {"ETH":
+        //          {"USD":
+        //              {
+        //                  ...,
+        //                  "VOLUME24HOUR": xxx.xxx,
+        //                  ...
+        //              }
+        //          }
+        //      }
+        //  }
+        
+        // {
+        //     "IPFS_HASH": "UcJmG9EmhAnHiAybVQyEdmLaC4TRT6jqBaNBSgsQyCM4"
+        // }
+        request.add("path", "IPFS_PATH");
+        
+        // Multiply the result by 1000000000000000000 to remove decimals
+        /*int timesAmount = 10**18;
+        request.addInt("times", timesAmount);*/
+        
+        // Sends the request
+        return sendChainlinkRequestTo(oracle, request, fee);
+    }
+    
+    /**
+     * Receive the response in the form of uint256
+     */ 
+    function fulfill(bytes32 _requestId, bytes32 _volume) public recordChainlinkFulfillment(_requestId) returns (bytes32 requestId)
+    {
+        volume = _volume;
 
-    // mappings will go here!
-    mapping(bytes32 => string) requestToCharacterName;
-    mapping(bytes32 => address) requestToSender;
-    mapping(bytes32 => uint256) requestToTokenId;
+        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfillSecondRequest.selector);
+        
+        // Set the URL to perform the GET request on
+        request.add("get", "https://images-blend.herokuapp.com/second");
+        
+        // Set the path to find the desired data in the API response, where the response format is:
+        // {"RAW":
+        //      {"ETH":
+        //          {"USD":
+        //              {
+        //                  ...,
+        //                  "VOLUME24HOUR": xxx.xxx,
+        //                  ...
+        //              }
+        //          }
+        //      }
+        //  }
+        
+        // {
+        //     "IPFS_HASH": "UcJmG9EmhAnHiAybVQyEdmLaC4TRT6jqBaNBSgsQyCM4"
+        // }
+        request.add("path", "IPFS_PATH");
+        
+        // Multiply the result by 1000000000000000000 to remove decimals
+        /*int timesAmount = 10**18;
+        request.addInt("times", timesAmount);*/
+        
+        // Sends the request
+        return sendChainlinkRequestTo(oracle, request, fee);
+    }
+ 
+    // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
 
-    constructor(address _VRFCoordinator, address _LinkToken, bytes32 _keyhash) public
-    VRFConsumerBase(_VRFCoordinator, _LinkToken)
-    ERC721("TurtleCharacter", "TRTL") {
-        vrfCoordinator = _VRFCoordinator;
-        keyHash = _keyhash;
-        fee = 0.1 * 10**18; // 01. LINK
+    function fulfillSecondRequest(bytes32 _requestId, bytes32 _volume) public recordChainlinkFulfillment(_requestId) {
+        volume2 = _volume;
+        generateIPFSLink();
+        setTokenURI(ipfsLink);
+    }
+    
+    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
+        uint8 i = 0;
+        while(i < 32 && _bytes32[i] != 0) {
+            i++;
+        }
+        bytes memory bytesArray = new bytes(i);
+        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
+            bytesArray[i] = _bytes32[i];
+        }
+        return string(bytesArray);
+    }
+    
+    function generateIPFSLink() public {
+        string memory part1 = bytes32ToString(volume);
+        string memory part2 = bytes32ToString(volume2);
+        ipfsLink = append(ipfsLink, part1, part2);
+    }
+    
+    function append(string memory a, string memory b, string memory c) internal pure returns (string memory) {
+    return string(abi.encodePacked(a, b, c));
     }
 
-    function requestNewRandomCharacter (uint256 userProvidedSeed, string memory name) public returns (bytes32) {
-        bytes32 requestId = requestRandomness(keyHash, fee);
-        requestToCharacterName[requestId] = name;
-        requestToSender[requestId] = msg.sender;
-        return requestId;
-    }
-
-    function fulfillRandomness(bytes32 requestId, uint256 randomNumber) internal override {
-        //define the creation of the NFT
-        uint256 newId = characters.length;
-        uint256 strength = (randomNumber % 100);
-        uint256 speed = ((randomNumber % 10000) / 100);
-        uint256 stamina = ((randomNumber % 1000000) / 10000);
-
-        characters.push(
-            Character(
-                strength,
-                speed,
-                stamina,
-                requestToCharacterName[requestId]
-            )
-        );
-        _safeMint(requestToSender[requestId], newId);
-    }
-
-    function setTokenURI(uint256 tokenId, string memory _tokenURI) public {
+    function setTokenURI(string memory _tokenURI) public {
         require(
-            _isApprovedOrOwner(_msgSender(), tokenId),
+            _isApprovedOrOwner(_msgSender(), uniqueTokenId),
             "ERC721: transfer caller is not owner nor approved"
         );
-        _setTokenURI(tokenId, _tokenURI);
+        _setTokenURI(uniqueTokenId, _tokenURI);
+        uniqueTokenId++;
     }
 }
