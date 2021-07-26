@@ -1,46 +1,81 @@
 import Phaser from 'phaser';
 
-const gameOptions = {
-  platformStartSpeed: 350,
-  spawnRange: [100, 350],
-  platformSizeRange: [50, 250],
-  playerGravity: 900,
-  jumpForce: 400,
-  playerStartPosition: 200,
-  jumps: 2,
-};
-
 class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' });
   }
   preload() {
     this.load.image('image', '/assets/block.png');
+    this.load.image('player', '/assets/character.png');
   }
   create() {
-    this.player = this.physics.add.sprite(100, 600, 'image');
-    this.player.setGravityY(10);
-    this.player.setCollideWorldBounds(true);
-    this.player.setBounce(0.5);
-
-    this.platform1 = this.addPlatform(100);
-    this.platform2 = this.addPlatform(700);
-    this.physics.world.on('worldbounds', (body, up, down, left, right) => {
-      if (down) {
-        this.platform1.setY(0);
-        this.platform2.setY(0);
-      }
-    });
-    console.log(this.physics.world.bounds);
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.player = this.createPlayer();
+    this.blockOne = this.createBlock(this.genRandOne());
+    this.blockTwo = this.createBlock(this.genRandTwo());
   }
-  addPlatform(posX) {
+  update() {
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-300);
+    } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(300);
+    } else {
+      this.player.setVelocityX(0);
+    }
+
+    if (
+      this.blockOne.y > this.physics.world.bounds.height ||
+      this.blockTwo.y > this.physics.world.bounds.height
+    )
+      this.resetPos();
+  }
+  createPlayer() {
+    let player = this.physics.add.sprite(
+      this.physics.world.bounds.centerX,
+      this.physics.world.bounds.bottom,
+      'player'
+    );
+
+    player.setGravityY(1);
+    player.setCollideWorldBounds(true);
+    player.setBounce(0.5);
+    player.setScale(0.3);
+
+    return player;
+  }
+  createBlock(posX) {
     let platform = this.physics.add.sprite(posX, 0, 'image');
-    platform.setGravityY(50);
-    platform.setCollideWorldBounds(true);
+
+    platform.setGravityY(10);
+    platform.setVelocityY(250);
     platform.setBounce(0.5);
-    platform.body.onWorldBounds = true;
-    this.physics.add.collider(this.player, platform);
+
+    this.physics.add.collider(this.player, platform, () => {
+      alert('game over');
+      this.blockOne.setVelocityY(250);
+      this.blockTwo.setVelocityY(250);
+      this.resetPos();
+    });
+
     return platform;
+  }
+  resetPos() {
+    this.blockOne.setY(0);
+    this.blockTwo.setY(0);
+    this.blockOne.setX(this.genRandOne());
+    this.blockTwo.setX(this.genRandTwo());
+  }
+  genRandOne() {
+    return (
+      Math.floor(Math.random() * this.physics.world.bounds.centerX) +
+      200 * Math.random()
+    );
+  }
+  genRandTwo() {
+    return (
+      (this.genRandOne() + this.physics.world.bounds.centerX) %
+      (this.physics.world.bounds.width - 100)
+    );
   }
 }
 
