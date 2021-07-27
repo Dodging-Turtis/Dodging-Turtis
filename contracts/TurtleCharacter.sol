@@ -16,16 +16,16 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
     uint256 uniqueTokenId = 0;
     
     /**
-     * Network: Kovan
-     * Chainlink - 0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e
-     * Chainlink - 29fa9aa13bf1468788b7cc4a500a45b8
-     * Fee: 0.1 LINK
+     * Network: Rinkeby
+     * Chainlink - 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40
+     * Chainlink - 187bb80e5ee74a139734cac7475f3c6e
+     * Fee: 0.01 LINK
      */
     constructor() public ERC721("TurtleCharacter", "TRTL") {
         setPublicChainlinkToken();
-        oracle = 0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b;
-        jobId = "b7285d4859da4b289c7861db971baf0a";
-        fee = 0.1 * 10 ** 18; // 0.1 LINK
+        oracle = 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40;
+        jobId = "187bb80e5ee74a139734cac7475f3c6e";
+        fee = 0.01 * 10 ** 18; // 0.01 LINK
     }
      
     function requestRandomCharacter() public {
