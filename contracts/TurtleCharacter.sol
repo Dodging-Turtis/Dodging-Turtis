@@ -31,9 +31,21 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         fee = 0.01 * 10**18; // 0.01 LINK
     }
 
-    modifier onlyOwner() {
+    modifier onlyContractOwner() {
         require(msg.sender == contractOwner);
         _;
+    }
+
+    function setOracleAddress(address _oracleAddress) public onlyContractOwner {
+        oracle = _oracleAddress;
+    }
+
+    function setJobID(bytes32 _jobID) public onlyContractOwner {
+        jobId = _jobID;
+    }
+
+    function setFeeInLink(uint256 _fee) public onlyContractOwner {
+        fee = _fee * 10**18;
     }
 
     function requestRandomCharacter() public {
