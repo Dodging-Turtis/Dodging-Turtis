@@ -1,25 +1,31 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.6;
 
-import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 
-contract TurtleCharacter is ChainlinkClient, ERC721 {
-    address public contractOwner;
+contract TurtleCharacter is ERC721, ChainlinkClient {
+    
+    address public contractOwner; // Owner of this contract
 
-
+    // Bytes32 data related to IPFS Hash returned from the API
     bytes32 private ipfsHashOneBytes32;
     bytes32 private ipfsHashTwoBytes32;
+
     string public ipfsLink = "https://ipfs.io/ipfs/"; // Stores the IPFS link after the API call
 
+    // Chainlink Oracle, Job ID and fee required for making the API call using Chainlink
     address private oracle;
     bytes32 private jobId;
     uint256 private fee;
-    uint256 private uniqueTokenId = 0;
 
-    // Token ID to Price
+    uint256 private uniqueTokenId = 0; // Unique TokenID
+
+    string private apiBaseUrl; // Stores the base url of the api
+    string private apiSecondUrl; // API url for the second call
+
+    // Mapping from Token ID to Price
     mapping(uint256 => uint256) public turtlesForSale;
-
 
     // Events
     
@@ -35,53 +41,73 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
     // Emitted when a turtle is put up for sale
     event TurtleUpForSale(uint256 tokenId);
 
-    /**
-     * Network: Rinkeby
-     * Oracle - 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40
-     * Job ID - 187bb80e5ee74a139734cac7475f3c6e
-     * Fee: 0.01 LINK
-     */
+    // Contructor is called when an instance of 'TurtleCharacter' contract is deployed
     constructor() public ERC721("TurtleCharacter", "TRTL") {
         setPublicChainlinkToken();
+
+        uniqueTokenId = 0;
         contractOwner = msg.sender;
-        oracle = 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40;
-        jobId = "187bb80e5ee74a139734cac7475f3c6e";
-        fee = 0.01 * 10**18; // 0.01 LINK
+        apiBaseUrl = "https://images-blend.herokuapp.com/";
+        apiSecondUrl = "https://images-blend.herokuapp.com/second/";
+        
+        oracle = 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40; // Address of the chainlink oracle
+        jobId = "187bb80e5ee74a139734cac7475f3c6e"; // This Job gets data from an API in the form of a bytes32 variable
+        fee = 0.01 * 10**18; // 0.01 LINK (Fee for Chainlink Oracle for returning the required data)
     }
 
+    // Modifer that checks to see if msg.sender == contractOwner
     modifier onlyContractOwner() {
         require(msg.sender == contractOwner);
         _;
     }
 
+    // Function 'setOracleAddress' sets a new oracle address
     function setOracleAddress(address _oracleAddress) public onlyContractOwner {
         oracle = _oracleAddress;
     }
 
+    // Function 'setJobID' sets a new job ID
     function setJobID(bytes32 _jobID) public onlyContractOwner {
         jobId = _jobID;
     }
 
+    // Function 'setFeeInLink' sets a new fee for the Chainlink Oracle
     function setFeeInLink(uint256 _fee) public onlyContractOwner {
         fee = _fee * 10**18;
     }
 
+    // Function 'setApiBaseUrl' sets a new base URL link for the API
+    function setApiBaseUrl(string memory _url) public onlyContractOwner {
+        apiBaseUrl = _url;
+    }
+
+    // Function 'setApiSecondUrl' sets a new second URL link for the API
+    function setApiSecondUrl(string memory _url) public onlyContractOwner {
+        apiSecondUrl = _url;
+    }
+
+    // Function 'buyTurtle' allows anyone to buy a turtle that is put up for sale
     function buyTurtle(uint256 _tokenId) public payable {
         require(turtlesForSale[_tokenId] > 0, "The Turtle should be up for sale");
+
         uint256 turtleCost = turtlesForSale[_tokenId];
         turtlesForSale[_tokenId] = 0;
+
         address ownerAddress = ownerOf(_tokenId);
         require(msg.value > turtleCost, "You need to have enough Ether");
-        _safeTransfer(ownerAddress, msg.sender, _tokenId, bytes("Buy a Turtle")); 
+        
+        _safeTransfer(ownerAddress, msg.sender, _tokenId, bytes("Buy a Turtle")); // ERC721 Token is safely transferred using this function call
+
         address payable ownerAddressPayable = payable(ownerAddress); 
         ownerAddressPayable.transfer(turtleCost);
         if(msg.value > turtleCost) {
-            payable(msg.sender).transfer(msg.value - turtleCost);
+            payable(msg.sender).transfer(msg.value - turtleCost); // Excess Ether is returned back to the buyer
         }
 
         emit TurtleBought(_tokenId);
     }
 
+    // Function 'putUpTurtleForSale' allows a turtle owner to put it up for sale
     function putUpTurtleForSale(uint256 _tokenId, uint256 _price) public {
         require(_isApprovedOrOwner(_msgSender(), _tokenId), "ERC721: Caller is not owner nor approved");
         turtlesForSale[_tokenId] = _price;
@@ -89,24 +115,27 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         emit TurtleUpForSale(_tokenId);
     }
 
-    function requestRandomCharacter() public {
+    // Function 'requestNewRandomTurtle' mints a new Turtle character
+    function requestNewRandomTurtle() public {
         ipfsLink = "https://ipfs.io/ipfs/";
         _safeMint(msg.sender, uniqueTokenId);
         requestIPFSHash();
     }
 
-    function requestIPFSHash() public returns (bytes32 requestId) {
+    // Function 'requestIPFSHash' requests a new IPFS hash from the API
+    function requestIPFSHash() private returns (bytes32 requestId) {
         Chainlink.Request memory request = buildChainlinkRequest(
             jobId,
             address(this),
             this.fulfill.selector
         );
-        request.add("get", "https://images-blend.herokuapp.com/");
+        request.add("get", apiBaseUrl);
         request.add("path", "IPFS_PATH");
 
         return sendChainlinkRequestTo(oracle, request, fee);
     }
 
+    // Function 'fulfill' is called after the response for the API call is received
     function fulfill(bytes32 _requestId, bytes32 dataFromAPI) public recordChainlinkFulfillment(_requestId) returns (bytes32 requestId) {
         ipfsHashOneBytes32 = dataFromAPI;
 
@@ -115,12 +144,13 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
             address(this),
             this.fulfillSecondRequest.selector
         );
-        request.add("get", "https://images-blend.herokuapp.com/second");
+        request.add("get", apiSecondUrl);
         request.add("path", "IPFS_PATH");
 
         return sendChainlinkRequestTo(oracle, request, fee);
     }
 
+    // Function 'fulfillSecondRequest' is called after the response for the API call is received
     function fulfillSecondRequest(bytes32 _requestId, bytes32 dataFromAPI) public recordChainlinkFulfillment(_requestId) {
         ipfsHashTwoBytes32 = dataFromAPI;
         generateIPFSLink();
@@ -132,6 +162,7 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         emit NewTurtleGenerated(uniqueTokenId - 1);
     }
 
+    // Function 'bytes32ToString' convers a bytes32 variable to a string variable 
     function bytes32ToString(bytes32 _bytes32) internal pure returns (string memory) {
         uint8 i = 0;
         while (i < 32 && _bytes32[i] != 0) {
@@ -144,12 +175,14 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         return string(bytesArray);
     }
 
+    // Function 'generateIPFSLink' generates the IPFS link from the 2 API calls
     function generateIPFSLink() private {
         string memory ipfsHashPartOne = bytes32ToString(ipfsHashOneBytes32);
         string memory ipfsHashPartTwo = bytes32ToString(ipfsHashTwoBytes32);
         ipfsLink = append(ipfsLink, ipfsHashPartOne, ipfsHashPartTwo);
     }
 
+    // Function 'append' appends 3 strings
     function append(
         string memory a,
         string memory b,
@@ -158,7 +191,8 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         return string(abi.encodePacked(a, b, c));
     }
 
-    function withdrawLink() external {
+    // Function 'withdrawLink' allows the contract owner to withdraw the LINK from the contract
+    function withdrawLink() external onlyContractOwner {
         LinkTokenInterface linkToken = LinkTokenInterface(
             chainlinkTokenAddress()
         );
@@ -168,6 +202,7 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         );
     }
 
+    // Function 'setTokenURI' sets the Token URI for the ERC721 standard token
     function setTokenURI(string memory _tokenURI) private {
         _setTokenURI(uniqueTokenId, _tokenURI);
         uniqueTokenId++;
