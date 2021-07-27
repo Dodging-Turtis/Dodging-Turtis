@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.6;
 
-import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 
-contract TurtleCharacter is ChainlinkClient, ERC721 {
+contract TurtleCharacter is ERC721, ChainlinkClient {
+    
     address public contractOwner;
-
 
     bytes32 private ipfsHashOneBytes32;
     bytes32 private ipfsHashTwoBytes32;
@@ -15,7 +15,11 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
     address private oracle;
     bytes32 private jobId;
     uint256 private fee;
+
     uint256 private uniqueTokenId = 0;
+
+    string private apiBaseUrl;
+    string private apiSecondUrl;
 
     // Token ID to Price
     mapping(uint256 => uint256) public turtlesForSale;
@@ -44,6 +48,8 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
     constructor() public ERC721("TurtleCharacter", "TRTL") {
         setPublicChainlinkToken();
         contractOwner = msg.sender;
+        apiBaseUrl = "https://images-blend.herokuapp.com/";
+        apiSecondUrl = "https://images-blend.herokuapp.com/second/";
         oracle = 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40;
         jobId = "187bb80e5ee74a139734cac7475f3c6e";
         fee = 0.01 * 10**18; // 0.01 LINK
@@ -64,6 +70,14 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
 
     function setFeeInLink(uint256 _fee) public onlyContractOwner {
         fee = _fee * 10**18;
+    }
+
+    function setApiBaseUrl(string memory _url) public onlyContractOwner {
+        apiBaseUrl = _url;
+    }
+
+    function setApiSecondUrl(string memory _url) public onlyContractOwner {
+        apiSecondUrl = _url;
     }
 
     function buyTurtle(uint256 _tokenId) public payable {
@@ -101,7 +115,7 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
             address(this),
             this.fulfill.selector
         );
-        request.add("get", "https://images-blend.herokuapp.com/");
+        request.add("get", apiBaseUrl);
         request.add("path", "IPFS_PATH");
 
         return sendChainlinkRequestTo(oracle, request, fee);
@@ -115,7 +129,7 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
             address(this),
             this.fulfillSecondRequest.selector
         );
-        request.add("get", "https://images-blend.herokuapp.com/second");
+        request.add("get", apiSecondUrl);
         request.add("path", "IPFS_PATH");
 
         return sendChainlinkRequestTo(oracle, request, fee);
