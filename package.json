@@ -23,7 +23,8 @@
     "solhint": "^3.3.6",
     "truffle": "^5.4.0",
     "truffle-plugin-verify": "^0.5.11",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "web3": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
