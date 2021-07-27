@@ -17,6 +17,9 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
     uint256 private fee;
     uint256 private uniqueTokenId = 0;
 
+    // Token ID to Price
+    mapping(uint256 => uint256) public turtlesForSale;
+
     /**
      * Network: Rinkeby
      * Oracle - 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40
@@ -46,6 +49,19 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
 
     function setFeeInLink(uint256 _fee) public onlyContractOwner {
         fee = _fee * 10**18;
+    }
+
+    function buyTurtle(uint256 _tokenId) public payable {
+        require(turtlesForSale[_tokenId] > 0, "The Turtle should be up for sale");
+        uint256 turtleCost = turtlesForSale[_tokenId];
+        address ownerAddress = ownerOf(_tokenId);
+        require(msg.value > turtleCost, "You need to have enough Ether");
+        _safeTransfer(ownerAddress, msg.sender, _tokenId, bytes("Buy a Turtle")); 
+        address payable ownerAddressPayable = payable(ownerAddress); 
+        ownerAddressPayable.transfer(turtleCost);
+        if(msg.value > turtleCost) {
+            payable(msg.sender).transfer(msg.value - turtleCost);
+        }
     }
 
     function requestRandomCharacter() public {
@@ -86,7 +102,7 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         setTokenURI(ipfsLink);
     }
 
-    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
+    function bytes32ToString(bytes32 _bytes32) internal pure returns (string memory) {
         uint8 i = 0;
         while (i < 32 && _bytes32[i] != 0) {
             i++;
@@ -108,7 +124,7 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         string memory a,
         string memory b,
         string memory c
-    ) public pure returns (string memory) {
+    ) internal pure returns (string memory) {
         return string(abi.encodePacked(a, b, c));
     }
 
