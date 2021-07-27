@@ -1,6 +1,6 @@
-const UserAuth = artifacts.require("UserAuth");
+const TurtleGameUserAuth = artifacts.require("TurtleGameUserAuth");
 
 module.exports = async (deployer, network, [defaultAccount]) => {
-  await deployer.deploy(UserAuth);
-  let auth = await UserAuth.deployed();
+  await deployer.deploy(TurtleGameUserAuth);
+  let auth = await TurtleGameUserAuth.deployed();
 };
