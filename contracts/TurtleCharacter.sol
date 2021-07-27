@@ -10,7 +10,7 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
 
     bytes32 private ipfsHashOneBytes32;
     bytes32 private ipfsHashTwoBytes32;
-    string public ipfsLink = "https://ipfs.io/ipfs/";
+    string public ipfsLink = "https://ipfs.io/ipfs/"; // Stores the IPFS link after the API call
 
     address private oracle;
     bytes32 private jobId;
@@ -19,6 +19,21 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
 
     // Token ID to Price
     mapping(uint256 => uint256) public turtlesForSale;
+
+
+    // Events
+    
+    // Emitted when a new Turtle is generated after reaching a new checkpoint in the game
+    event NewTurtleGenerated(uint256 tokenId);
+
+    // Emitted when the data received from the API is successful
+    event DataReceivedFromAPI(string ipfsLink);
+
+    // Emitted when a turtle is bought
+    event TurtleBought(uint256 tokenId);
+
+    // Emitted when a turtle is put up for sale
+    event TurtleUpForSale(uint256 tokenId);
 
     /**
      * Network: Rinkeby
@@ -63,11 +78,15 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         if(msg.value > turtleCost) {
             payable(msg.sender).transfer(msg.value - turtleCost);
         }
+
+        emit TurtleBought(_tokenId);
     }
 
     function putUpTurtleForSale(uint256 _tokenId, uint256 _price) public {
         require(_isApprovedOrOwner(_msgSender(), _tokenId), "ERC721: Caller is not owner nor approved");
         turtlesForSale[_tokenId] = _price;
+
+        emit TurtleUpForSale(_tokenId);
     }
 
     function requestRandomCharacter() public {
@@ -105,7 +124,12 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
     function fulfillSecondRequest(bytes32 _requestId, bytes32 dataFromAPI) public recordChainlinkFulfillment(_requestId) {
         ipfsHashTwoBytes32 = dataFromAPI;
         generateIPFSLink();
+
+        emit DataReceivedFromAPI(ipfsLink);
+
         setTokenURI(ipfsLink);
+
+        emit NewTurtleGenerated(uniqueTokenId - 1);
     }
 
     function bytes32ToString(bytes32 _bytes32) internal pure returns (string memory) {
