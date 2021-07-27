@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.6;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract TurtleCharacter is ERC721, ChainlinkClient {
-
-    using Chainlink for Chainlink.Request;
+contract TurtleCharacter is ChainlinkClient, ERC721 {
   
     bytes32 public volume;
     bytes32 public volume2;
@@ -15,12 +13,12 @@ contract TurtleCharacter is ERC721, ChainlinkClient {
     address private oracle;
     bytes32 private jobId;
     uint256 private fee;
-    uint uniqueTokenId = 0;
+    uint256 uniqueTokenId = 0;
     
     /**
      * Network: Kovan
-     * Oracle: 0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b
-     * Job ID: b7285d4859da4b289c7861db971baf0a
+     * Chainlink - 0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e
+     * Chainlink - 29fa9aa13bf1468788b7cc4a500a45b8
      * Fee: 0.1 LINK
      */
     constructor() public ERC721("TurtleCharacter", "TRTL") {
@@ -29,16 +27,13 @@ contract TurtleCharacter is ERC721, ChainlinkClient {
         jobId = "b7285d4859da4b289c7861db971baf0a";
         fee = 0.1 * 10 ** 18; // 0.1 LINK
     }
-
+     
     function requestRandomCharacter() public {
         ipfsLink = "https://ipfs.io/ipfs/";
+        _safeMint(msg.sender, uniqueTokenId);
         requestVolumeData();
     }
-    
-    /**
-     * Create a Chainlink request to retrieve API response, find the target
-     * data, then multiply by 1000000000000000000 (to remove decimal places from data).
-     */
+     
     function requestVolumeData() public returns (bytes32 requestId) 
     {
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
@@ -46,36 +41,16 @@ contract TurtleCharacter is ERC721, ChainlinkClient {
         // Set the URL to perform the GET request on
         request.add("get", "https://images-blend.herokuapp.com/");
         
-        // Set the path to find the desired data in the API response, where the response format is:
-        // {"RAW":
-        //      {"ETH":
-        //          {"USD":
-        //              {
-        //                  ...,
-        //                  "VOLUME24HOUR": xxx.xxx,
-        //                  ...
-        //              }
-        //          }
-        //      }
-        //  }
-        
-        // {
-        //     "IPFS_HASH": "UcJmG9EmhAnHiAybVQyEdmLaC4TRT6jqBaNBSgsQyCM4"
-        // }
         request.add("path", "IPFS_PATH");
-        
-        // Multiply the result by 1000000000000000000 to remove decimals
-        /*int timesAmount = 10**18;
-        request.addInt("times", timesAmount);*/
         
         // Sends the request
         return sendChainlinkRequestTo(oracle, request, fee);
     }
     
     /**
-     * Receive the response in the form of uint256
+     * Receive the response in the form of bytes32
      */ 
-    function fulfill(bytes32 _requestId, bytes32 _volume) public recordChainlinkFulfillment(_requestId) returns (bytes32 requestId)
+    function fulfill(bytes32 _requestId, bytes32 _volume) public recordChainlinkFulfillment(_requestId) returns (bytes32 requestId) 
     {
         volume = _volume;
 
@@ -84,34 +59,12 @@ contract TurtleCharacter is ERC721, ChainlinkClient {
         // Set the URL to perform the GET request on
         request.add("get", "https://images-blend.herokuapp.com/second");
         
-        // Set the path to find the desired data in the API response, where the response format is:
-        // {"RAW":
-        //      {"ETH":
-        //          {"USD":
-        //              {
-        //                  ...,
-        //                  "VOLUME24HOUR": xxx.xxx,
-        //                  ...
-        //              }
-        //          }
-        //      }
-        //  }
-        
-        // {
-        //     "IPFS_HASH": "UcJmG9EmhAnHiAybVQyEdmLaC4TRT6jqBaNBSgsQyCM4"
-        // }
         request.add("path", "IPFS_PATH");
-        
-        // Multiply the result by 1000000000000000000 to remove decimals
-        /*int timesAmount = 10**18;
-        request.addInt("times", timesAmount);*/
         
         // Sends the request
         return sendChainlinkRequestTo(oracle, request, fee);
     }
- 
-    // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
-
+    
     function fulfillSecondRequest(bytes32 _requestId, bytes32 _volume) public recordChainlinkFulfillment(_requestId) {
         volume2 = _volume;
         generateIPFSLink();
@@ -139,12 +92,19 @@ contract TurtleCharacter is ERC721, ChainlinkClient {
     function append(string memory a, string memory b, string memory c) internal pure returns (string memory) {
     return string(abi.encodePacked(a, b, c));
     }
+    
+    /**
+     * Withdraw LINK from this contract
+     * 
+     * NOTE: DO NOT USE THIS IN PRODUCTION AS IT CAN BE CALLED BY ANY ADDRESS.
+     * THIS IS PURELY FOR EXAMPLE PURPOSES ONLY.
+     */
+    function withdrawLink() external {
+        LinkTokenInterface linkToken = LinkTokenInterface(chainlinkTokenAddress());
+        require(linkToken.transfer(msg.sender, linkToken.balanceOf(address(this))), "Unable to transfer");
+    }
 
-    function setTokenURI(string memory _tokenURI) public {
-        require(
-            _isApprovedOrOwner(_msgSender(), uniqueTokenId),
-            "ERC721: transfer caller is not owner nor approved"
-        );
+    function setTokenURI(string memory _tokenURI) private {
         _setTokenURI(uniqueTokenId, _tokenURI);
         uniqueTokenId++;
     }
