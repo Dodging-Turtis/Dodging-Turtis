@@ -54,6 +54,7 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
     function buyTurtle(uint256 _tokenId) public payable {
         require(turtlesForSale[_tokenId] > 0, "The Turtle should be up for sale");
         uint256 turtleCost = turtlesForSale[_tokenId];
+        turtlesForSale[_tokenId] = 0;
         address ownerAddress = ownerOf(_tokenId);
         require(msg.value > turtleCost, "You need to have enough Ether");
         _safeTransfer(ownerAddress, msg.sender, _tokenId, bytes("Buy a Turtle")); 
@@ -62,6 +63,11 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         if(msg.value > turtleCost) {
             payable(msg.sender).transfer(msg.value - turtleCost);
         }
+    }
+
+    function putUpTurtleForSale(uint256 _tokenId, uint256 _price) public {
+        require(_isApprovedOrOwner(_msgSender(), _tokenId), "ERC721: Caller is not owner nor approved");
+        turtlesForSale[_tokenId] = _price;
     }
 
     function requestRandomCharacter() public {
