@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
 import styles from '../styles/Game.module.css';
@@ -33,12 +33,13 @@ function getInstance() {
 }
 
 const Game = () => {
-  const highScore = useRef(0);
+  if (localStorage.getItem('highScore') == null)
+    localStorage.setItem('highScore', 0);
   useEffect(() => {
     getInstance().then((instance) => {
       instance.scene.scenes[0].events.emit('start-game', {
         url: '/assets/character.png',
-        highScore,
+        speed: 1,
       });
     });
   }, []);
