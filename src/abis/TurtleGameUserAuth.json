@@ -55,7 +55,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -74,7 +75,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -87,7 +89,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.6.6+commit.6c089d02\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_nickName\",\"type\":\"string\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"string\",\"name\":\"nickName\",\"type\":\"string\"}],\"name\":\"AccountCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_nickName\",\"type\":\"string\"}],\"name\":\"addressByNickName\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_nickName\",\"type\":\"string\"}],\"name\":\"createAccount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRegisteredAccounts\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"nickNameByAddress\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/EthOdyssey/NFT-Game/contracts/TurtleGameUserAuth.sol\":\"TurtleGameUserAuth\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/EthOdyssey/NFT-Game/contracts/TurtleGameUserAuth.sol\":{\"keccak256\":\"0xedc9e735002dcaa7a1deaa17a58fb202953c17ef2ea5a36992f27abc223405b4\",\"urls\":[\"bzz-raw://7dfdb5d3ebdec6b4fb268b1c2dc9fca046a6916ed98792d0f88a6fab80551e98\",\"dweb:/ipfs/Qmbvf5sn8xhaccy8qHnaeXGHSzUPWwV4V9JTZfPHPPfUsg\"]}},\"version\":1}",
@@ -4286,9 +4289,17 @@
     "name": "solc",
     "version": "0.6.6+commit.6c089d02.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x2cC96063f207c3CB2aFc56414b6528BF5e5E2332",
+      "transactionHash": "0xc1de75dbc6fa09f8b2d4348fe4a79d065f04ec98a67d8104ecad63b040ca03b5"
+    }
+  },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-27T16:15:32.216Z",
+  "updatedAt": "2021-07-27T20:18:23.483Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },
