@@ -6,19 +6,19 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract TurtleCharacter is ChainlinkClient, ERC721 {
   
-    bytes32 public volume;
-    bytes32 public volume2;
+    bytes32 private ipfsHashOneBytes32;
+    bytes32 private ipfsHashTwoBytes32;
     string public ipfsLink = "https://ipfs.io/ipfs/";
     
     address private oracle;
     bytes32 private jobId;
     uint256 private fee;
-    uint256 uniqueTokenId = 0;
+    uint256 private uniqueTokenId = 0;
     
     /**
      * Network: Rinkeby
-     * Chainlink - 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40
-     * Chainlink - 187bb80e5ee74a139734cac7475f3c6e
+     * Oracle - 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40
+     * Job ID - 187bb80e5ee74a139734cac7475f3c6e
      * Fee: 0.01 LINK
      */
     constructor() public ERC721("TurtleCharacter", "TRTL") {
@@ -27,46 +27,35 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         jobId = "187bb80e5ee74a139734cac7475f3c6e";
         fee = 0.01 * 10 ** 18; // 0.01 LINK
     }
-     
+    
     function requestRandomCharacter() public {
         ipfsLink = "https://ipfs.io/ipfs/";
         _safeMint(msg.sender, uniqueTokenId);
-        requestVolumeData();
+        requestIPFSHash();
     }
      
-    function requestVolumeData() public returns (bytes32 requestId) 
+    function requestIPFSHash() public returns (bytes32 requestId) 
     {
-        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
-        
-        // Set the URL to perform the GET request on
-        request.add("get", "https://images-blend.herokuapp.com/");
-        
+        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);   
+        request.add("get", "https://images-blend.herokuapp.com/");        
         request.add("path", "IPFS_PATH");
         
-        // Sends the request
         return sendChainlinkRequestTo(oracle, request, fee);
     }
     
-    /**
-     * Receive the response in the form of bytes32
-     */ 
-    function fulfill(bytes32 _requestId, bytes32 _volume) public recordChainlinkFulfillment(_requestId) returns (bytes32 requestId) 
+    function fulfill(bytes32 _requestId, bytes32 dataFromAPI) public recordChainlinkFulfillment(_requestId) returns (bytes32 requestId) 
     {
-        volume = _volume;
+        ipfsHashOneBytes32 = dataFromAPI;
 
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfillSecondRequest.selector);
-        
-        // Set the URL to perform the GET request on
         request.add("get", "https://images-blend.herokuapp.com/second");
-        
         request.add("path", "IPFS_PATH");
         
-        // Sends the request
         return sendChainlinkRequestTo(oracle, request, fee);
     }
     
-    function fulfillSecondRequest(bytes32 _requestId, bytes32 _volume) public recordChainlinkFulfillment(_requestId) {
-        volume2 = _volume;
+    function fulfillSecondRequest(bytes32 _requestId, bytes32 dataFromAPI) public recordChainlinkFulfillment(_requestId) {
+        ipfsHashTwoBytes32 = dataFromAPI;
         generateIPFSLink();
         setTokenURI(ipfsLink);
     }
@@ -83,25 +72,19 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
         return string(bytesArray);
     }
     
-    function generateIPFSLink() public {
-        string memory part1 = bytes32ToString(volume);
-        string memory part2 = bytes32ToString(volume2);
+    function generateIPFSLink() private {
+        string memory part1 = bytes32ToString(ipfsHashOneBytes32);
+        string memory part2 = bytes32ToString(ipfsHashTwoBytes32);
         ipfsLink = append(ipfsLink, part1, part2);
     }
     
-    function append(string memory a, string memory b, string memory c) internal pure returns (string memory) {
+    function append(string memory a, string memory b, string memory c) public pure returns (string memory) {
     return string(abi.encodePacked(a, b, c));
     }
     
-    /**
-     * Withdraw LINK from this contract
-     * 
-     * NOTE: DO NOT USE THIS IN PRODUCTION AS IT CAN BE CALLED BY ANY ADDRESS.
-     * THIS IS PURELY FOR EXAMPLE PURPOSES ONLY.
-     */
     function withdrawLink() external {
         LinkTokenInterface linkToken = LinkTokenInterface(chainlinkTokenAddress());
-        require(linkToken.transfer(msg.sender, linkToken.balanceOf(address(this))), "Unable to transfer");
+        require(linkToken.transfer(msg.sender, linkToken.balanceOf(address(this))), "Unable to transfer LINK");
     }
 
     function setTokenURI(string memory _tokenURI) private {
