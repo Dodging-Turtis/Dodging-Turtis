@@ -5,6 +5,9 @@ import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract TurtleCharacter is ChainlinkClient, ERC721 {
+    address public contractOwner;
+
+
     bytes32 private ipfsHashOneBytes32;
     bytes32 private ipfsHashTwoBytes32;
     string public ipfsLink = "https://ipfs.io/ipfs/";
@@ -22,9 +25,15 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
      */
     constructor() public ERC721("TurtleCharacter", "TRTL") {
         setPublicChainlinkToken();
+        contractOwner = msg.sender;
         oracle = 0x3A56aE4a2831C3d3514b5D7Af5578E45eBDb7a40;
         jobId = "187bb80e5ee74a139734cac7475f3c6e";
         fee = 0.01 * 10**18; // 0.01 LINK
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == contractOwner);
+        _;
     }
 
     function requestRandomCharacter() public {
@@ -78,9 +87,9 @@ contract TurtleCharacter is ChainlinkClient, ERC721 {
     }
 
     function generateIPFSLink() private {
-        string memory part1 = bytes32ToString(ipfsHashOneBytes32);
-        string memory part2 = bytes32ToString(ipfsHashTwoBytes32);
-        ipfsLink = append(ipfsLink, part1, part2);
+        string memory ipfsHashPartOne = bytes32ToString(ipfsHashOneBytes32);
+        string memory ipfsHashPartTwo = bytes32ToString(ipfsHashTwoBytes32);
+        ipfsLink = append(ipfsLink, ipfsHashPartOne, ipfsHashPartTwo);
     }
 
     function append(
