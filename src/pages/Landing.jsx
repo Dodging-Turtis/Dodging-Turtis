@@ -22,7 +22,6 @@ const Landing = () => {
 
     const accounts = web3.eth.getAccounts();
     setAccount({ account: accounts[0] });
-    console.log(accounts);
   }
 
   return (
