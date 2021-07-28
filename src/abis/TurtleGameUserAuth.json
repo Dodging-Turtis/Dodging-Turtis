@@ -4295,10 +4295,30 @@
       "links": {},
       "address": "0x2cC96063f207c3CB2aFc56414b6528BF5e5E2332",
       "transactionHash": "0xc1de75dbc6fa09f8b2d4348fe4a79d065f04ec98a67d8104ecad63b040ca03b5"
+    },
+    "80001": {
+      "events": {
+        "0x4952d20ae14916eae94ccc55a2379b737f3bc5e4874f6709bfb08611d3623133": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "nickName",
+              "type": "string"
+            }
+          ],
+          "name": "AccountCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xa497e9B171f3c04655c7852e2aC8944D773dA86F",
+      "transactionHash": "0x0df1099c4c64f649695f26812cf98396373bd826a0dbe3e69929f8edadc81ab1"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-27T20:18:23.483Z",
+  "updatedAt": "2021-07-28T17:47:58.377Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
