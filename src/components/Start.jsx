@@ -1,5 +1,7 @@
 import '../styles/Start.module.css';
+import { useHistory } from 'react-router-dom';
 function Start() {
+  const history = useHistory();
   return (
     <div>
       <center>
@@ -8,7 +10,12 @@ function Start() {
             <i>Best Score:</i>
           </h4>
           <div className='button'>
-            <button type='button' class='btn btn-dark'>
+            <button
+              type='button'
+              class='btn btn-dark'
+              onClick={() => {
+                history.push('/game');
+              }}>
               Play Now
             </button>
           </div>

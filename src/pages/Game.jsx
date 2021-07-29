@@ -1,49 +1,67 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
 import styles from '../styles/Game.module.css';
 import GameScene from '../scenes/GameScene';
-
-const game = {
-  width: '100%',
-  height: '100%',
-  type: Phaser.AUTO,
-  scene: [GameScene],
-  physics: {
-    default: 'arcade',
-  },
-  instance: null,
-};
-
-function getInstance() {
-  if (game.instance) {
-    console.log('ready');
-    return Promise.resolve(game.instance);
-  } else {
-    console.log('waiting');
-    return new Promise((resolve) => {
-      const interval = setInterval(() => {
-        if (game.instance) {
-          clearInterval(interval);
-          resolve(game.instance);
-        }
-      });
-    }, 30);
-  }
-}
+import { GameContext } from '../utils/web3';
+import { useHistory } from 'react-router-dom';
 
 const Game = () => {
+  const { state } = useContext(GameContext);
+  const history = useHistory();
+  const gameRef = useRef(null);
+  const [initialized, setInitialized] = useState(true);
+
+  const game = {
+    width: '100%',
+    height: '100%',
+    type: Phaser.AUTO,
+    scene: [GameScene],
+    physics: {
+      default: 'arcade',
+    },
+    instance: null,
+  };
+
+  const getInstance = () => {
+    if (game.instance) {
+      return Promise.resolve(game.instance);
+    } else {
+      return new Promise((resolve) => {
+        const interval = setInterval(() => {
+          if (game.instance) {
+            clearInterval(interval);
+            resolve(game.instance);
+          }
+        });
+      }, 300);
+    }
+  };
+
+  const endGame = (number) => {
+    if (number > 100) {
+      // do web3 call
+    }
+    gameRef.current?.destroy();
+    history.push('/play');
+  };
+
   if (localStorage.getItem('highScore') == null)
     localStorage.setItem('highScore', 0);
+
   useEffect(() => {
-    getInstance().then((instance) => {
-      instance.scene.scenes[0].events.emit('start-game', {
-        url: '/assets/character.png',
-        speed: 1,
+    if (state.loaded) {
+      getInstance().then((instance) => {
+        instance.scene.scenes[0].events.emit('start-game', {
+          url: '/assets/character.png',
+          speed: 2.5,
+          endGame,
+        });
       });
-    });
-  }, []);
-  return <IonPhaser game={game} className={styles.fullScreen} />;
+    }
+  }, [state]);
+
+  return <IonPhaser ref={gameRef} game={game} className={styles.fullScreen} />;
 };
 
 export default Game;

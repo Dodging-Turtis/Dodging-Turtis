@@ -8,9 +8,10 @@ class GameScene extends Phaser.Scene {
     this.loaded = false;
     this.score = 0;
     this.highScore = localStorage.getItem('highScore');
-    this.events.on('start-game', ({ url, speed }) => {
+    this.events.once('start-game', ({ url, speed, endGame }) => {
       this.playerSpeed = speed;
       this.startGame(url);
+      this.endGame = endGame;
     });
   }
   preload() {
@@ -26,9 +27,9 @@ class GameScene extends Phaser.Scene {
   update() {
     if (this.loaded) {
       if (this.cursors.left.isDown) {
-        this.player.setVelocityX(-300 * this.playerSpeed);
+        this.player.setVelocityX(-200 * this.playerSpeed);
       } else if (this.cursors.right.isDown) {
-        this.player.setVelocityX(300 * this.playerSpeed);
+        this.player.setVelocityX(200 * this.playerSpeed);
       } else {
         this.player.setVelocityX(0);
       }
@@ -81,17 +82,13 @@ class GameScene extends Phaser.Scene {
   addCollider(platform) {
     this.physics.add.collider(this.player, platform, () => {
       alert('game over');
+      let val = 0;
       if (this.highScore > localStorage.getItem('highScore')) {
         alert('new highscore' + this.score);
+        val = localStorage.getItem('highScore') - this.highScore;
         localStorage.setItem('highScore', this.score);
       }
-      this.score = 0;
-      this.reflectScore();
-      this.blockOne.setVelocityY(250);
-      this.blockOne.setVelocityX(0);
-      this.blockTwo.setVelocityY(250);
-      this.blockTwo.setVelocityX(0);
-      this.resetPos();
+      this.endGame(val);
     });
   }
   resetPos() {

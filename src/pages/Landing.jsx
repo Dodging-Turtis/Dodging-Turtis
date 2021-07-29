@@ -21,7 +21,6 @@ const Landing = () => {
         const netId = await web3.eth.net.getId();
         const address = SmartContract.networks[netId].address;
         const contract = new web3.eth.Contract(SmartContract.abi, address);
-        const supply = await contract.methods.totalSupply().call();
         setState({ ...state, web3, contract, account, loaded: true });
       } catch (e) {
         alert(e);
