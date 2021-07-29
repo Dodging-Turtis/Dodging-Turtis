@@ -1,5 +1,6 @@
-const TurtleCharacter = artifacts.require("TurtleCharacter");
+const Turtis = artifacts.require("Turtis");
 
 module.exports = async (deployer) => {
-  await deployer.deploy(TurtleCharacter);
+  await deployer.deploy(Turtis);
+  let turtis = await Turtis.deployed();
 };
