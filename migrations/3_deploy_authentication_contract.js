@@ -1,7 +1,8 @@
-const TurtleGameUserAuth = artifacts.require("TurtleGameUserAuth");
+const TurtisGameUserAuth = artifacts.require("TurtisGameUserAuth");
 
-const nickName = "greg";
+const nickName = "firstPlayer";
 
 module.exports = async (deployer) => {
-  await deployer.deploy(TurtleGameUserAuth, nickName);
+  await deployer.deploy(TurtisGameUserAuth, nickName);
+  let auth = await TurtisGameUserAuth.deployed();
 };
