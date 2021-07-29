@@ -11,8 +11,8 @@ import Layout from './components/Layout';
 
 const App = () => {
   return (
-    <Layout>
-      <Router>
+    <Router>
+      <Layout>
         <Switch>
           <Route exact path='/' component={Landing} />
           <Route path='/play' component={Main} />
@@ -22,8 +22,8 @@ const App = () => {
           <Route path='/personal' component={Personal} />
           <Route path='/details/:id' component={NftDetails} />
         </Switch>
-      </Router>
-    </Layout>
+      </Layout>
+    </Router>
   );
 };
 

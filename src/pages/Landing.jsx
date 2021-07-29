@@ -1,28 +1,41 @@
-import React, { useEffect } from 'react';
-import '../styles/landing.css';
+import { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import Web3 from 'web3';
-import { useState } from 'react';
+
+import { GameContext } from '../utils/web3';
+import SmartContract from '../abis/TurtleCharacter.json';
+import '../styles/landing.css';
 
 const Landing = () => {
-  const [account, setAccount] = useState('');
+  const { state, setState } = useContext(GameContext);
+  const history = useHistory();
 
-  function loadWeb3() {
+  const initWeb3 = async () => {
     if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      window.ethereum.enable();
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
+      await window.ethereum.send('eth_requestAccounts');
+      try {
+        const web3 = new Web3(window.ethereum);
+        const account = (await web3.eth.getAccounts())[0];
+        console.log(account);
+        const netId = await web3.eth.net.getId();
+        const address = SmartContract.networks[netId].address;
+        const contract = new web3.eth.Contract(SmartContract.abi, address);
+        const supply = await contract.methods.totalSupply().call();
+        setState({ ...state, web3, contract, account, loaded: true });
+      } catch (e) {
+        alert(e);
+      }
     } else {
-      window.alert(
-        'Non-Ethereum browser detected. You should consider trying MetaMask!'
-      );
+      alert('web3 not detected');
     }
+  };
 
-    const web3 = window.web3;
-
-    const accounts = web3.eth.getAccounts();
-    setAccount({ account: accounts[0] });
-  }
+  const loadWeb3 = () => {
+    initWeb3().then(() => {
+      history.push('/play');
+    });
+  };
 
   return (
     <div>
