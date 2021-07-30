@@ -11,7 +11,7 @@ contract Turtis is ERC721, ChainlinkClient {
   bytes32 private ipfsHashOneBytes32;
   bytes32 private ipfsHashTwoBytes32;
 
-  string public ipfsLink = "https://ipfs.io/ipfs/"; // Stores the IPFS link after the API call
+  string public ipfsLink = "ipfs://"; // Stores the IPFS link after the API call
 
   // Chainlink Oracle, Job ID and fee required for making the API call using Chainlink
   address private oracle;
@@ -25,6 +25,9 @@ contract Turtis is ERC721, ChainlinkClient {
 
   // Mapping from Token ID to Price
   mapping(uint256 => uint256) public turtlesForSale;
+
+  // Mapping from User address to high score
+  mapping(address => uint256) userAddressToHighScore;
 
   // Events
 
@@ -96,6 +99,11 @@ contract Turtis is ERC721, ChainlinkClient {
     apiSecondUrl = _url;
   }
 
+  // Function 'setHighScore' sets a new highScore for the user
+  function setHighScore(uint256 _highScore) public {
+    userAddressToHighScore[msg.sender] = _highScore;
+  }
+
   // Function 'buyTurtle' allows anyone to buy a turtle that is put up for sale
   function buyTurtle(uint256 _tokenId) public payable {
     require(turtlesForSale[_tokenId] > 0, "The Turtle should be up for sale");
@@ -130,7 +138,7 @@ contract Turtis is ERC721, ChainlinkClient {
 
   // Function 'requestNewRandomTurtle' mints a new Turtle character
   function requestNewRandomTurtle(string memory score) public {
-    ipfsLink = "https://ipfs.io/ipfs/";
+    ipfsLink = "ipfs://";
     _safeMint(msg.sender, uniqueTokenId);
     string memory apiLink = append(apiBaseUrl, "?score=", score);
     string memory characterId = uint2str(totalSupply());
@@ -225,6 +233,7 @@ contract Turtis is ERC721, ChainlinkClient {
     string memory ipfsHashPartOne = bytes32ToString(ipfsHashOneBytes32);
     string memory ipfsHashPartTwo = bytes32ToString(ipfsHashTwoBytes32);
     ipfsLink = append(ipfsLink, ipfsHashPartOne, ipfsHashPartTwo);
+    ipfsLink = append(ipfsLink, "/metadata", ".json");
   }
 
   // Function 'append' appends 3 strings
