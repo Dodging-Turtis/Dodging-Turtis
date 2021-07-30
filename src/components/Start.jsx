@@ -13,13 +13,7 @@ function Start() {
     if (state.loaded) {
       loadNFT();
     }
-  }, [state.loaded, state.nfts.length, state.nfts]);
-
-  function nftClicked(number) {
-    alert('clicked' + number);
-    var url = idwithURL.get(number);
-    setState({ ...state, selectedNFT: url });
-  }
+  }, [state.loaded, state.nfts.length]);
 
   const loadNFT = async () => {
     const nfts = [];
@@ -34,15 +28,7 @@ function Start() {
     setState({ ...state, nfts });
   };
 
-  const items = state.nfts.map((url, i) => (
-    <NFT
-      id={i}
-      url={url}
-      onClick={(i) => {
-        nftClicked(i);
-      }}
-    />
-  ));
+  const items = state.nfts.map((url, i) => <NFT key={i} url={url} />);
 
   return (
     <div>
