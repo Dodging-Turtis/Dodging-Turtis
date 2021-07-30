@@ -17,6 +17,7 @@ function Start() {
 
   const loadNFT = async () => {
     const nfts = [];
+    // TODO: only show owned nfts
     const supply = await state.contract.methods.totalSupply().call();
     console.log(supply);
     for (let i = 0; i < supply; i++) {
@@ -40,7 +41,7 @@ function Start() {
           <div className='button'>
             <button
               type='button'
-              class='btn btn-dark'
+              className='btn btn-dark'
               onClick={() => {
                 history.push('/game');
               }}>

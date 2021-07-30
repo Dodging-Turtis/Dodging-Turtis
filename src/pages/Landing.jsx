@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import Web3 from 'web3';
 
 import { GameContext } from '../utils/web3';
-import SmartContract from '../abis/TurtleCharacter.json';
+import SmartContract from '../abis/Turtis.json';
 import '../styles/landing.css';
 
 const Landing = () => {
@@ -13,7 +13,7 @@ const Landing = () => {
 
   const initWeb3 = async () => {
     if (window.ethereum) {
-      await window.ethereum.send('eth_requestAccounts');
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
       try {
         const web3 = new Web3(window.ethereum);
         const account = (await web3.eth.getAccounts())[0];
@@ -49,7 +49,7 @@ const Landing = () => {
         <br></br>
         <br></br>
         <br></br>
-        <button type='button' onClick={loadWeb3} class='btn btn-dark'>
+        <button type='button' onClick={loadWeb3} className='btn btn-dark'>
           Connect to wallet
         </button>
       </div>
