@@ -41,7 +41,7 @@ function Start() {
           <div className='button'>
             <button
               type='button'
-              class='btn btn-dark'
+              className='btn btn-dark'
               onClick={() => {
                 history.push('/game');
               }}>
