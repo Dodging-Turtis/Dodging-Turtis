@@ -39,7 +39,9 @@ const Landing = () => {
   return (
     <div>
       <div className='container landing-page-div'>
-        <h1>Dodge the logs</h1>
+        <h1 className='poster-text'>
+          <b>Dodging</b> Turtis
+        </h1>
         <h5>
           A simple game where you receive new characters if you reach new
           checkpoints which can further be sold on the NFT marketplace. To start

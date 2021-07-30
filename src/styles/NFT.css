@@ -1,0 +1,11 @@
+img:hover {
+  filter: blur(2px);
+}
+
+.nft-text {
+  opacity: 0;
+}
+
+div :hover .nft-text {
+  opacity: 1;
+}

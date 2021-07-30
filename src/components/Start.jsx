@@ -33,6 +33,7 @@ function Start() {
 
   return (
     <div>
+      <br></br>
       <center>
         <div className='start'>
           <h4>
@@ -49,7 +50,13 @@ function Start() {
             </button>
           </div>
         </div>
-        <div>{items}</div>
+        <br></br>
+        <h4>NFT's connected to your wallet</h4>
+        <div
+          style={{ flexWrap: 'wrap' }}
+          className='d-flex justify-content-around nft-div'>
+          {items}
+        </div>
       </center>
     </div>
   );

@@ -5,3 +5,8 @@ button {
 button:hover {
   background-color: #3f4c63 !important;
 }
+
+.navbar,
+.navbar-bg {
+  background-color: #def4e5 !important;
+}
