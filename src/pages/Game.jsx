@@ -57,8 +57,8 @@ const Game = () => {
       if (init) {
         getInstance().then((instance) => {
           instance.scene.scenes[0].events.emit('start-game', {
-            url: '/assets/character.png',
-            speed: 2.5,
+            url: state.selectedNFT.image,
+            speed: state.selectedNFT.speed,
             endGame,
           });
         });

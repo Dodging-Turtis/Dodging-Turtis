@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
     account: '',
     nfts: [],
     userNfts: [],
-    selectedNFT: null,
+    selectedNFT: { image: '/assets/character.png', speed: 1 },
     loaded: false,
   });
 
