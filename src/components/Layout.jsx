@@ -12,14 +12,16 @@ const Layout = ({ children }) => {
     account: '',
     nfts: [],
     userNfts: [],
+    selectedNFT: { image: '/assets/character.png', speed: 1 },
     loaded: false,
   });
 
   useEffect(() => {
-    if (!state.loaded && location.pathname != '/') {
+    if (!state.loaded && location.pathname !== '/') {
+      alert('wallet not connected');
       history.push('/');
     }
-  }, [state.loaded]);
+  }, []);
 
   return (
     <GameContext.Provider value={{ state, setState }}>
