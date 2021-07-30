@@ -9,7 +9,6 @@ const NFT = ({ url }) => {
   const [speed, setSpeed] = useState(5);
 
   function nftClicked() {
-    // TODO: image url
     console.log(image);
     setState({ ...state, selectedNFT: { image, speed } });
   }

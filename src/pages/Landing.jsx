@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import Web3 from 'web3';
 
 import { GameContext } from '../utils/web3';
-import SmartContract from '../abis/TurtleCharacter.json';
+import SmartContract from '../abis/Turtis.json';
 import '../styles/landing.css';
 
 const Landing = () => {
