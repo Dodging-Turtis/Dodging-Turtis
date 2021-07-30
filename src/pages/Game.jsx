@@ -6,22 +6,23 @@ import GameScene from '../scenes/GameScene';
 import { GameContext } from '../utils/web3';
 import { useHistory } from 'react-router-dom';
 
+const gameConfig = {
+  width: '100%',
+  height: '100%',
+  type: Phaser.AUTO,
+  scene: [GameScene],
+  physics: {
+    default: 'arcade',
+  },
+  instance: null,
+};
+
 const Game = () => {
   const { state } = useContext(GameContext);
   const history = useHistory();
-  const gameRef = useRef(null);
-  const [initialized, setInitialized] = useState(true);
-
-  const game = {
-    width: '100%',
-    height: '100%',
-    type: Phaser.AUTO,
-    scene: [GameScene],
-    physics: {
-      default: 'arcade',
-    },
-    instance: null,
-  };
+  const [init, setInit] = useState(false);
+  const [ended, setEnded] = useState(false);
+  const [game, setGame] = useState(null);
 
   const getInstance = () => {
     if (game.instance) {
@@ -38,12 +39,14 @@ const Game = () => {
     }
   };
 
-  const endGame = (number) => {
+  const endGame = (number, instance) => {
     if (number > 100) {
       // do web3 call
     }
-    gameRef.current?.destroy();
-    history.push('/play');
+    setEnded(true);
+    setGame(null);
+    setInit(false);
+    instance.destroy(false, false);
   };
 
   if (localStorage.getItem('highScore') == null)
@@ -51,17 +54,28 @@ const Game = () => {
 
   useEffect(() => {
     if (state.loaded) {
-      getInstance().then((instance) => {
-        instance.scene.scenes[0].events.emit('start-game', {
-          url: '/assets/character.png',
-          speed: 2.5,
-          endGame,
+      if (init) {
+        getInstance().then((instance) => {
+          instance.scene.scenes[0].events.emit('start-game', {
+            url: '/assets/character.png',
+            speed: 2.5,
+            endGame,
+          });
         });
-      });
+      } else if (!ended) {
+        setGame(Object.assign({}, gameConfig));
+        setInit(true);
+      }
+      if (ended) {
+        history.push('/play');
+      }
     }
-  }, [state]);
+    return () => {};
+  }, [state.loaded, init]);
 
-  return <IonPhaser ref={gameRef} game={game} className={styles.fullScreen} />;
+  return (
+    <IonPhaser game={game} initialize={init} className={styles.fullScreen} />
+  );
 };
 
 export default Game;

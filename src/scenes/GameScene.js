@@ -88,7 +88,7 @@ class GameScene extends Phaser.Scene {
         val = localStorage.getItem('highScore') - this.highScore;
         localStorage.setItem('highScore', this.score);
       }
-      this.endGame(val);
+      this.endGame(val, this.game);
     });
   }
   resetPos() {
