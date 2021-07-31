@@ -17,7 +17,6 @@ const Landing = () => {
       try {
         const web3 = new Web3(window.ethereum);
         const account = (await web3.eth.getAccounts())[0];
-        console.log(account);
         const netId = await web3.eth.net.getId();
         const address = SmartContract.networks[netId].address;
         const contract = new web3.eth.Contract(SmartContract.abi, address);

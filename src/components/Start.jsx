@@ -12,32 +12,33 @@ function Start() {
     if (state.loaded) {
       loadNFT();
     }
-  }, [state.loaded, state.nfts.length]);
+  }, [state.loaded]);
 
   const loadNFT = async () => {
-    const nfts = [];
-    // TODO: only show owned nfts
+    const userNfts = [];
     try {
-      const supply = await state.contract.methods.totalSupply().call();
+      const supply = await state.contract.methods
+        .balanceOf(state.account)
+        .call();
       console.log(supply);
       for (let i = 0; i < supply; i++) {
-        const nft = await state.contract.methods.tokenByIndex(i).call();
+        const nft = await state.contract.methods
+          .tokenOfOwnerByIndex(state.account, i)
+          .call();
         const price = await state.contract.methods.turtlesForSale(nft).call();
-        console.log('price:' + price);
         const url = await state.contract.methods.tokenURI(nft).call();
-        nfts.push({ url, price });
+        userNfts.push({ url, price });
       }
     } catch (e) {
       console.log('nft fetch error');
-      console.log(e);
     }
-    nfts.push({ url: 'dummy', price: 0 });
-    setState({ ...state, nfts });
+    userNfts.push({ url: 'dummy', price: 0 });
+    setState({ ...state, userNfts });
   };
 
   const items =
-    state.nfts.length > 1 ? (
-      state.nfts.map((nft, i) => <NFT key={i} nft={nft} />)
+    state.userNfts.length > 0 ? (
+      state.userNfts.map((nft, i) => <NFT key={i} nft={nft} />)
     ) : (
       <div>loading</div>
     );
