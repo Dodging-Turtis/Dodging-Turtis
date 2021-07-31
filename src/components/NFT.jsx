@@ -2,20 +2,22 @@ import { useContext, useEffect, useState } from 'react';
 import { GameContext } from '../utils/web3';
 import '../styles/NFT.css';
 
-const NFT = ({ nft: { url, price } }) => {
+const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const { state, setState } = useContext(GameContext);
   const [name, setName] = useState('turtle');
   const [image, setImage] = useState('/assets/character.png');
   // TODO: speed x 100
   const [speed, setSpeed] = useState(5);
-  const [isShown, setIsShown] = useState(false);
-  const [publish, setNFTPublished] = useState(false);
-  const isPublished = price > 0;
+  const [nftPrice, setNftPrice] = useState(price);
 
-  function nftClicked() {
+  const nftClicked = () => {
     console.log(image);
     setState({ ...state, selectedNFT: { image, speed } });
-  }
+  };
+
+  const isPublished = () => {
+    return nftPrice > 0;
+  };
 
   useEffect(() => {
     if (url !== 'dummy') {
@@ -37,19 +39,31 @@ const NFT = ({ nft: { url, price } }) => {
     }
   }, []);
 
-  function Publish() {
-    price = prompt('Enter the Amount', 'Eg:$300');
-    setNFTPublished(true);
-  }
+  const publishNft = async () => {
+    price = prompt('Enter the Amount in MATIC');
+    if (price !== null) {
+      const priceInWie = state.web3.utils.toWei(price, 'ether');
+      try {
+        state.contract.methods.putUpTurtleForSale(tokenId, priceInWie).send({
+          from: state.account,
+          gasPrice: state.web3.utils.toWei('0.01', 'ether'),
+          gas: 2,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      setNftPrice(price);
+    }
+  };
 
-  const Published = (
-    <div class='nft-text col align-self-center'>
+  const publishedComp = (
+    <div className='nft-text col align-self-center'>
       <h4>Published</h4>
     </div>
   );
 
-  const notPublished = (
-    <div class='nft-text col align-self-center'>
+  const notPublishedComp = (
+    <div className='nft-text col align-self-center'>
       <button
         type='button'
         style={{
@@ -59,7 +73,7 @@ const NFT = ({ nft: { url, price } }) => {
           padding: '5px',
         }}
         className='btn btn-dark btn-sm'
-        onClick={Publish}>
+        onClick={publishNft}>
         Publish
       </button>
       <h6>Name: {name}</h6>
@@ -74,7 +88,7 @@ const NFT = ({ nft: { url, price } }) => {
       style={{ maxHeight: '500px', maxWidth: '350px' }}>
       <div className='card bg-light text-black '>
         <img src={image} className='card-img w-100' alt='abc' />
-        {publish === true ? Published : notPublished}
+        {isPublished() ? publishedComp : notPublishedComp}
       </div>
     </div>
   );
