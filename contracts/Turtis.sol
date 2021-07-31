@@ -277,4 +277,12 @@ contract Turtis is ERC721, ChainlinkClient {
     _setTokenURI(uniqueTokenId, _tokenURI);
     uniqueTokenId++;
   }
+
+  // Function 'updateTokenURI' updates the Token URI for a specific Token
+  function updateTokenURI(uint256 _tokenId, string memory _tokenURI)
+    public
+    onlyContractOwner
+  {
+    _setTokenURI(_tokenId, _tokenURI);
+  }
 }
