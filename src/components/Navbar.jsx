@@ -3,7 +3,7 @@ import '../styles/Navbar.module.css';
 function Navbar() {
   return (
     <div>
-      <nav className='navbar navbar-light bg-light'>
+      <nav className='navbar'>
         <div className='container-fluid'>
           <button type='button' className='btn btn-dark'>
             Connect to wallet
