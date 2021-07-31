@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { GameContext } from '../utils/web3';
 import { useContext, useEffect } from 'react';
 import NFT from '../components/NFT';
@@ -11,7 +10,7 @@ const Store = () => {
     if (state.loaded) {
       loadNFT();
     }
-  }, [state.loaded, state.nfts.length]);
+  }, [state.loaded]);
 
   const loadNFT = async () => {
     const nfts = [];
@@ -21,22 +20,24 @@ const Store = () => {
       console.log(supply);
       for (let i = 0; i < supply; i++) {
         const nft = await state.contract.methods.tokenByIndex(i).call();
-        const price = await state.contract.methods.turtlesForSale(nft).call();
+        const price = state.web3.utils.fromWei(
+          await state.contract.methods.turtlesForSale(nft).call(),
+          'ether'
+        );
         console.log('price:' + price);
         const url = await state.contract.methods.tokenURI(nft).call();
-        nfts.push({ url, price });
+        nfts.push({ url, price, page: 'store', tokenId: nft });
       }
     } catch (e) {
       console.log('nft fetch error');
-      console.log(e);
     }
-    nfts.push({ url: 'dummy', price: 0 });
+    nfts.push({ url: 'dummy', price: 0, page: 'store', tokenId: -1 });
     setState({ ...state, nfts });
   };
 
   const items =
     state.nfts.length > 1 ? (
-      state.nfts.map((nft, i) => <NFT key={i} nft={nft} />)
+      state.nfts.map((nft) => <NFT key={nft.tokenId} nft={nft} />)
     ) : (
       <div>loading</div>
     );
@@ -44,7 +45,9 @@ const Store = () => {
   return (
     <div>
       <center>
-        <div class='d-flex justify-content-start ' style={{ flexWrap: 'wrap' }}>
+        <div
+          className='d-flex justify-content-start '
+          style={{ flexWrap: 'wrap' }}>
           {items}
         </div>
       </center>
