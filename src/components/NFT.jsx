@@ -2,13 +2,14 @@ import { useContext, useEffect, useState } from 'react';
 import { GameContext } from '../utils/web3';
 import '../styles/NFT.css';
 
-const NFT = ({ url }) => {
+const NFT = ({ nft: { url, price } }) => {
   const { state, setState } = useContext(GameContext);
   const [name, setName] = useState('turtle');
   const [image, setImage] = useState('/assets/character.png');
   // TODO: speed x 100
   const [speed, setSpeed] = useState(5);
   const [isShown, setIsShown] = useState(false);
+  const isPublished = price > 0;
 
   function nftClicked() {
     console.log(image);
@@ -16,20 +17,23 @@ const NFT = ({ url }) => {
   }
 
   useEffect(() => {
-    fetch(url)
-      .then((data) =>
-        data === 'dummy'
-          ? { name, image, attributes: [{ value: speed * 100 }] }
-          : data.json()
-      )
-      .then((res) => {
-        setName(res.name);
-        setImage(res.image);
-        setSpeed(parseFloat(res.attributes[0].value) / 100);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    if (url !== 'dummy') {
+      const parsedUrl = url.replace('ipfs://', 'https://ipfs.io/ipfs/');
+      fetch(parsedUrl)
+        .then((data) => data.json())
+        .then((res) => {
+          const parsedImage = res.image.replace(
+            'ipfs://',
+            'https://ipfs.io/ipfs/'
+          );
+          setName(res.name);
+          setImage(parsedImage);
+          setSpeed(parseFloat(res.attributes[0].value) / 100);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   }, []);
 
   return (

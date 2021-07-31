@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
 
     if (state.loaded) {
       state.contract.events.NewTurtleGenerated((err, event) => {
-        alert('random turtle generated');
+        if (event) alert('random turtle generated');
       });
     }
   }, [state.loaded]);

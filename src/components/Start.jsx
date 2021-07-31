@@ -22,22 +22,28 @@ function Start() {
       console.log(supply);
       for (let i = 0; i < supply; i++) {
         const nft = await state.contract.methods.tokenByIndex(i).call();
-        const uri = await state.contract.methods.tokenURI(nft).call();
-        nfts.push(uri);
+        const price = await state.contract.methods.turtlesForSale(nft).call();
+        console.log('price:' + price);
+        const url = await state.contract.methods.tokenURI(nft).call();
+        nfts.push({ url, price });
       }
     } catch (e) {
       console.log('nft fetch error');
       console.log(e);
     }
-    nfts.push('dummy');
+    nfts.push({ url: 'dummy', price: 0 });
     setState({ ...state, nfts });
   };
 
-  const items = state.nfts.map((url, i) => <NFT key={i} url={url} />);
+  const items =
+    state.nfts.length > 1 ? (
+      state.nfts.map((nft, i) => <NFT key={i} nft={nft} />)
+    ) : (
+      <div>loading</div>
+    );
 
   return (
     <div>
-      <br></br>
       <center>
         <div className='start'>
           <h4>
@@ -54,13 +60,7 @@ function Start() {
             </button>
           </div>
         </div>
-        <br></br>
-        <h4>NFT's connected to your wallet</h4>
-        <div
-          style={{ flexWrap: 'wrap' }}
-          className='d-flex justify-content-around nft-div'>
-          {items}
-        </div>
+        <div>{items}</div>
       </center>
     </div>
   );
