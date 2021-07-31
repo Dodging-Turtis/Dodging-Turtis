@@ -1,13 +1,12 @@
 import '../styles/Start.module.css';
 import { useHistory } from 'react-router-dom';
 import { GameContext } from '../utils/web3';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import NFT from '../components/NFT';
 
 function Start() {
   const history = useHistory();
   const { state, setState } = useContext(GameContext);
-  const idwithURL = new Map();
 
   useEffect(() => {
     if (state.loaded) {
@@ -18,14 +17,19 @@ function Start() {
   const loadNFT = async () => {
     const nfts = [];
     // TODO: only show owned nfts
-    const supply = await state.contract.methods.totalSupply().call();
-    console.log(supply);
-    for (let i = 0; i < supply; i++) {
-      const nft = await state.contract.methods.tokenByIndex(i).call();
-      const uri = await state.contract.methods.tokenURI(nft).call();
-      nfts.push(uri);
-      idwithURL.set(i, nfts[i]);
+    try {
+      const supply = await state.contract.methods.totalSupply().call();
+      console.log(supply);
+      for (let i = 0; i < supply; i++) {
+        const nft = await state.contract.methods.tokenByIndex(i).call();
+        const uri = await state.contract.methods.tokenURI(nft).call();
+        nfts.push(uri);
+      }
+    } catch (e) {
+      console.log('nft fetch error');
+      console.log(e);
     }
+    nfts.push('dummy');
     setState({ ...state, nfts });
   };
 

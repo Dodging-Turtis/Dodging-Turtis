@@ -17,11 +17,20 @@ const Layout = ({ children }) => {
   });
 
   useEffect(() => {
+    if (localStorage.getItem('highScore') == null)
+      localStorage.setItem('highScore', 0);
+
     if (!state.loaded && location.pathname !== '/') {
       alert('wallet not connected');
       history.push('/');
     }
-  }, []);
+
+    if (state.loaded) {
+      state.contract.events.NewTurtleGenerated((err, event) => {
+        alert('random turtle generated');
+      });
+    }
+  }, [state.loaded]);
 
   return (
     <GameContext.Provider value={{ state, setState }}>
