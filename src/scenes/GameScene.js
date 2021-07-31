@@ -82,13 +82,7 @@ class GameScene extends Phaser.Scene {
   addCollider(platform) {
     this.physics.add.collider(this.player, platform, () => {
       alert('game over');
-      let val = 0;
-      if (this.highScore > localStorage.getItem('highScore')) {
-        alert('new highscore' + this.score);
-        val = localStorage.getItem('highScore') - this.highScore;
-        localStorage.setItem('highScore', this.score);
-      }
-      this.endGame(val, this.game);
+      this.endGame(this.score, this.game);
     });
   }
   resetPos() {

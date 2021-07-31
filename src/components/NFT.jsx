@@ -15,12 +15,15 @@ const NFT = ({ url }) => {
 
   useEffect(() => {
     fetch(url)
-      .then((data) => data.json())
+      .then((data) =>
+        data === 'dummy'
+          ? { name, image, attributes: [{ value: speed * 100 }] }
+          : data.json()
+      )
       .then((res) => {
         setName(res.name);
         setImage(res.image);
-        console.log(res.image);
-        setSpeed(res.attributes[0].value);
+        setSpeed(parseFloat(res.attributes[0].value) / 100);
       })
       .catch((e) => {
         console.log(e);

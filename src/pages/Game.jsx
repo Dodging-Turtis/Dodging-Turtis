@@ -39,22 +39,42 @@ const Game = () => {
     }
   };
 
-  const endGame = (number, instance) => {
-    if (number > 100) {
-      // do web3 call
+  const endGame = async (score, instance) => {
+    const oldHigh = localStorage.getItem('highScore');
+
+    if (score > localStorage.getItem('highScore')) {
+      localStorage.setItem('highScore', score);
     }
+
+    if (score - oldHigh > 100) {
+      alert(
+        `New high score of ${score}!!\nA mystery character is being created for you.\nCheck in after a few minutes`
+      );
+      try {
+        state.contract.methods
+          .requestNewRandomTurtle(score.toString())
+          .send({ from: state.account });
+      } catch (e) {
+        console.log('random turtle error');
+        console.log(e);
+      }
+    }
+
     setEnded(true);
     setGame(null);
     setInit(false);
-    instance.destroy(false, false);
-  };
 
-  if (localStorage.getItem('highScore') == null)
-    localStorage.setItem('highScore', 0);
+    try {
+      instance?.destroy(false, false);
+    } catch (e) {
+      console.log('destroy error');
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     if (state.loaded) {
-      if (init) {
+      if (init && !ended) {
         getInstance().then((instance) => {
           instance.scene.scenes[0].events.emit('start-game', {
             url: state.selectedNFT.image,
@@ -62,15 +82,16 @@ const Game = () => {
             endGame,
           });
         });
-      } else if (!ended) {
+      }
+      if (!ended && !init) {
         setGame(Object.assign({}, gameConfig));
         setInit(true);
       }
       if (ended) {
+        console.log('rerouting');
         history.push('/play');
       }
     }
-    return () => {};
   }, [state.loaded, init]);
 
   return (
