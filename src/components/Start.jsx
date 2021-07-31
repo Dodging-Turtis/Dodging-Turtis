@@ -47,20 +47,13 @@ function Start() {
       <center>
         <div className='start'>
           <h4>
-            <i>Best Score:</i>
+            <b>Best Score:</b>
           </h4>
-          <div className='button'>
-            <button
-              type='button'
-              className='btn btn-dark'
-              onClick={() => {
-                history.push('/game');
-              }}>
-              Play Now
-            </button>
-          </div>
+          <h4>NFT's Connected to your wallet</h4>
         </div>
-        <div>{items}</div>
+        <div class='d-flex justify-content-start' style={{ flexWrap: 'wrap' }}>
+          {items}
+        </div>
       </center>
     </div>
   );

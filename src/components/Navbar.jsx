@@ -1,16 +1,28 @@
 import '../styles/Navbar.module.css';
+import { useHistory } from 'react-router-dom';
 
 function Navbar() {
+  const history = useHistory();
   return (
     <div>
       <nav className='navbar'>
         <div className='container-fluid'>
-          <button type='button' className='btn btn-dark'>
-            Connect to wallet
+          <button
+            type='button'
+            className='btn btn-dark'
+            onClick={() => {
+              history.push('/Store');
+            }}>
+            Store
           </button>
 
-          <button type='button' className='btn btn-dark'>
-            Publish
+          <button
+            type='button'
+            className='btn btn-dark'
+            onClick={() => {
+              history.push('/game');
+            }}>
+            Play Now
           </button>
 
           <button

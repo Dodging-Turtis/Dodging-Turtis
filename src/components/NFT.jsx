@@ -9,6 +9,7 @@ const NFT = ({ nft: { url, price } }) => {
   // TODO: speed x 100
   const [speed, setSpeed] = useState(5);
   const [isShown, setIsShown] = useState(false);
+  const [publish, setNFTPublished] = useState(false);
   const isPublished = price > 0;
 
   function nftClicked() {
@@ -36,31 +37,44 @@ const NFT = ({ nft: { url, price } }) => {
     }
   }, []);
 
+  function Publish() {
+    price = prompt('Enter the Amount', 'Eg:$300');
+    setNFTPublished(true);
+  }
+
+  const Published = (
+    <div class='nft-text col align-self-center'>
+      <h4>Published</h4>
+    </div>
+  );
+
+  const notPublished = (
+    <div class='nft-text col align-self-center'>
+      <button
+        type='button'
+        style={{
+          width: '70px',
+          height: '40px',
+          margin: '5px',
+          padding: '5px',
+        }}
+        className='btn btn-dark btn-sm'
+        onClick={Publish}>
+        Publish
+      </button>
+      <h6>Name: {name}</h6>
+      <h6>Speed:{speed}</h6>
+    </div>
+  );
+
   return (
-    <div className='col-sm-6 col-lg-4 p-4' onClick={nftClicked}>
-      <div className='card bg-light text-black'>
+    <div
+      className='col-sm-6 col-lg-4 p-4'
+      onClick={nftClicked}
+      style={{ maxHeight: '500px', maxWidth: '350px' }}>
+      <div className='card bg-light text-black '>
         <img src={image} className='card-img w-100' alt='abc' />
-      </div>
-      <div class='nft-text'>
-        <button
-          type='button'
-          style={{
-            width: '70px',
-            height: '50px',
-            margin: '5px',
-            padding: '5px',
-          }}
-          className='btn btn-dark btn-sm'>
-          Sell
-        </button>
-        <button
-          type='button'
-          style={{ width: '70px', height: '50px' }}
-          className='btn btn-dark btn-sm'>
-          Buy
-        </button>
-        <h6>Name: {name}</h6>
-        <h6>Speed:{speed}</h6>
+        {publish === true ? Published : notPublished}
       </div>
     </div>
   );

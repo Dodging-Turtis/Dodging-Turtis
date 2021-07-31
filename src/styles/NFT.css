@@ -4,6 +4,9 @@ img:hover {
 
 .nft-text {
   opacity: 0;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
 }
 
 div :hover .nft-text {
