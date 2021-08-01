@@ -1,9 +1,41 @@
 .landing-page-div {
-  margin-top: 15%;
+  margin-top: 10%;
   text-align: center;
-  max-width: 50%;
+  max-width: 100%;
+  z-index: -1;
+  height: 100vh;
+  position: fixed;
+  overflow-y: hidden;
+}
+
+.dot {
+  height: 105px;
+  width: 105px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 60px;
+  z-index: 1;
+  display: inline-block;
+}
+
+.big-dot {
+  position: absolute;
+  transform: translate(-72%, 0%);
+  margin-top: 90%;
+  height: 700px;
+  z-index: -1;
+  width: 1000px;
+  background-color: #42ac40;
+  border-radius: 300px 700px 0px 0px;
+  margin: 10px;
+  overflow-y: hidden;
 }
 
 .poster-text {
-  font-size: 110px;
+  font-size: 150px;
+  z-index: ;
+}
+
+.front {
+  z-index: 1;
 }

@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import Loading from '../pages/Loader';
 import Web3 from 'web3';
 
 import { GameContext } from '../utils/web3';
 import SmartContract from '../abis/Turtis.json';
 import '../styles/landing.css';
+import { Loader } from 'phaser';
 
 const Landing = () => {
   const { state, setState } = useContext(GameContext);
@@ -37,22 +38,25 @@ const Landing = () => {
 
   return (
     <div>
-      <div className='container landing-page-div'>
-        <h1 className='poster-text'>
-          <b>Dodging</b> Turtis
-        </h1>
-        <h5>
-          A simple game where you receive new characters if you reach new
-          checkpoints which can further be sold on the NFT marketplace. To start
-          the game, you will be given a free NFT which can’t be sold. You can
-          also buy new characters from the marketplace
-        </h5>
-        <br></br>
-        <br></br>
-        <br></br>
-        <button type='button' onClick={loadWeb3} className='btn btn-dark'>
-          Connect to wallet
-        </button>
+      <div className='container-fluid landing-page-div'>
+        <span class='dot'></span>
+        <span class='dot'></span>
+        <span class='big-dot'></span>
+
+        <div className='front'>
+          <h1 className='poster-text'>
+            <b>Dodging</b> Turtis..
+          </h1>
+          <h5>May the fastest turtle wins...</h5>
+          <br></br>
+
+          <Loading />
+          <br></br>
+          <br></br>
+          <button type='button' onClick={loadWeb3} className='btn btn-dark'>
+            Connect to wallet
+          </button>
+        </div>
       </div>
     </div>
   );
