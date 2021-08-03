@@ -15,6 +15,8 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
     setState({ ...state, selectedNFT: { image, speed } });
   };
 
+  console.log(page);
+
   const isPublished = () => {
     return nftPrice > 0;
   };
@@ -56,6 +58,25 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
     }
   };
 
+  function buyNft() {}
+
+  const Store = (
+    <div className='nft-text col align-self-center'>
+      <button
+        type='button'
+        style={{
+          width: '70px',
+          height: '40px',
+          margin: '5px',
+          padding: '5px',
+        }}
+        className='btn btn-dark btn-sm'
+        onClick={buyNft}>
+        Buy
+      </button>
+    </div>
+  );
+
   const publishedComp = (
     <div className='nft-text col align-self-center'>
       <h4>Published</h4>
@@ -81,6 +102,8 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
     </div>
   );
 
+  const check = <div>{isPublished() ? publishedComp : notPublishedComp}</div>;
+
   return (
     <div
       className='col-sm-6 col-lg-4 p-4'
@@ -88,7 +111,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
       style={{ maxHeight: '500px', maxWidth: '350px' }}>
       <div className='card bg-light text-black '>
         <img src={image} className='card-img w-100' alt='abc' />
-        {isPublished() ? publishedComp : notPublishedComp}
+        {page === 'about' ? Store : check}
       </div>
     </div>
   );
