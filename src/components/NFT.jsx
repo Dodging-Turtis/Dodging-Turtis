@@ -58,51 +58,40 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
     }
   };
 
-  function buyNft() {}
-
-  const Store = (
-    <div className='nft-text col align-self-center'>
-      <button
-        type='button'
-        style={{
-          width: '70px',
-          height: '40px',
-          margin: '5px',
-          padding: '5px',
-        }}
-        className='btn btn-dark btn-sm'
-        onClick={buyNft}>
-        Buy
-      </button>
-    </div>
-  );
+  const buyNft = () => {
+    state.contract.methods.buyTurtle(tokenId).send({
+      from: state.account,
+      gasPrice: state.web3.utils.toWei('0.01', 'ether'),
+      gas: 2,
+    });
+  };
 
   const publishedComp = (
     <div className='nft-text col align-self-center'>
-      <h4>Published</h4>
+      {page === 'store' ? (
+        <button type='button' className='btn btn-dark btn-sm' onClick={buyNft}>
+          {price} MATIC
+        </button>
+      ) : (
+        <h4>Published</h4>
+      )}
     </div>
   );
 
   const notPublishedComp = (
     <div className='nft-text col align-self-center'>
-      <button
-        type='button'
-        style={{
-          width: '70px',
-          height: '40px',
-          margin: '5px',
-          padding: '5px',
-        }}
-        className='btn btn-dark btn-sm'
-        onClick={publishNft}>
-        Publish
-      </button>
-      <h6>Name: {name}</h6>
-      <h6>Speed:{speed}</h6>
+      {page === 'store' ? (
+        <h4>Not for sale</h4>
+      ) : (
+        <button
+          type='button'
+          className='btn btn-dark btn-sm'
+          onClick={publishNft}>
+          Publish
+        </button>
+      )}
     </div>
   );
-
-  const check = <div>{isPublished() ? publishedComp : notPublishedComp}</div>;
 
   return (
     <div
@@ -111,7 +100,9 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
       style={{ maxHeight: '500px', maxWidth: '350px' }}>
       <div className='card bg-light text-black '>
         <img src={image} className='card-img w-100' alt='abc' />
-        {page === 'about' ? Store : check}
+        {isPublished() ? publishedComp : notPublishedComp}
+        <h6>Name: {name}</h6>
+        <h6>Speed:{speed}</h6>
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ function Start() {
     } catch (e) {
       console.log('nft fetch error');
     }
-    userNfts.push({ url: 'dummy', price: 0 });
+    userNfts.push({ url: 'dummy', price: 0, page: 'main', tokenId: -1 });
     setState({ ...state, userNfts });
   };
 

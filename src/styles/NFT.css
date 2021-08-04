@@ -9,6 +9,6 @@ img:hover {
   text-align: center;
 }
 
-div :hover .nft-text {
+.nft-text:hover {
   opacity: 1;
 }

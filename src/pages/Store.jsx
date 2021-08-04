@@ -36,7 +36,7 @@ const Store = () => {
   };
 
   const items =
-    state.nfts.length > 1 ? (
+    state.nfts.length > 0 ? (
       state.nfts.map((nft) => <NFT key={nft.tokenId} nft={nft} />)
     ) : (
       <div>loading</div>
