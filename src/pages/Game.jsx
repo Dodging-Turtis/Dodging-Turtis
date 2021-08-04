@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
 import styles from '../styles/Game.module.css';
@@ -39,7 +39,7 @@ const Game = () => {
     }
   };
 
-  const endGame = async (score, instance) => {
+  const endGame = (score, instance) => {
     const oldHigh = localStorage.getItem('highScore');
 
     if (score > localStorage.getItem('highScore')) {
@@ -65,7 +65,7 @@ const Game = () => {
     setInit(false);
 
     try {
-      instance?.destroy(false, false);
+      instance?.destroy(true, false);
     } catch (e) {
       console.log('destroy error');
       console.log(e);
@@ -75,6 +75,7 @@ const Game = () => {
   useEffect(() => {
     if (state.loaded) {
       if (init && !ended) {
+        console.log('starting game');
         getInstance().then((instance) => {
           instance.scene.scenes[0].events.emit('start-game', {
             url: state.selectedNFT.image,
@@ -84,6 +85,7 @@ const Game = () => {
         });
       }
       if (!ended && !init) {
+        console.log('init game');
         setGame(Object.assign({}, gameConfig));
         setInit(true);
       }

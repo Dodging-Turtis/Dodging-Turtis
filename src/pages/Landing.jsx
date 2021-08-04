@@ -6,7 +6,6 @@ import Web3 from 'web3';
 import { GameContext } from '../utils/web3';
 import SmartContract from '../abis/Turtis.json';
 import '../styles/landing.css';
-import { Loader } from 'phaser';
 
 const Landing = () => {
   const { state, setState } = useContext(GameContext);
@@ -39,9 +38,9 @@ const Landing = () => {
   return (
     <div>
       <div className='container-fluid landing-page-div'>
-        <span class='dot'></span>
-        <span class='dot'></span>
-        <span class='big-dot'></span>
+        <span className='dot'></span>
+        <span className='dot'></span>
+        <span className='big-dot'></span>
 
         <div className='front'>
           <h1 className='poster-text'>
@@ -49,7 +48,6 @@ const Landing = () => {
           </h1>
           <h5>May the fastest turtle wins...</h5>
           <br></br>
-
           <Loading />
           <br></br>
           <br></br>

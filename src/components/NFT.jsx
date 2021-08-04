@@ -15,8 +15,6 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
     setState({ ...state, selectedNFT: { image, speed } });
   };
 
-  console.log(page);
-
   const isPublished = () => {
     return nftPrice > 0;
   };
@@ -46,11 +44,13 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
     if (price !== null) {
       const priceInWie = state.web3.utils.toWei(price, 'ether');
       try {
-        state.contract.methods.putUpTurtleForSale(tokenId, priceInWie).send({
-          from: state.account,
-          gasPrice: state.web3.utils.toWei('0.01', 'ether'),
-          gas: 2,
-        });
+        await state.contract.methods
+          .putUpTurtleForSale(tokenId, priceInWie)
+          .send({
+            from: state.account,
+            gasPrice: state.web3.utils.toWei('0.000005', 'ether'),
+            gas: 30000,
+          });
       } catch (error) {
         console.log(error);
       }
