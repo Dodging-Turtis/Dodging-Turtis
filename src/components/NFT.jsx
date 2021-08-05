@@ -66,8 +66,12 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const buyNft = () => {
     state.contract.methods.buyTurtle(tokenId).send({
       from: state.account,
+      value: state.web3.utils.toWei(
+        (parseFloat(price) + 0.0001).toString(),
+        'ether'
+      ),
       gasPrice: state.web3.utils.toWei('50', 'Gwei'),
-      gas: 60000,
+      gas: 150000,
     });
   };
 
