@@ -940,12 +940,12 @@
     "80001": {
       "events": {},
       "links": {},
-      "address": "0x34f5602A86E042456AAc760fB1DBcD78F099e4Ce",
-      "transactionHash": "0x267999c84111ce3a2ceba1b4e059493e301c82537cc1919913ef7cc925dd2751"
+      "address": "0x2A34B374938D2cee6f7F69066a057CBa25Ff67D9",
+      "transactionHash": "0x2f3024d898379739d7637cdf098b4384e3f9b168a202070b7040f9b9b55007c6"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-31T08:34:51.243Z",
+  "updatedAt": "2021-08-05T19:48:21.094Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
