@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
-import { GameContext } from '../utils/web3';
-import '../styles/NFT.css';
+import { useContext, useEffect, useState } from "react";
+import { GameContext } from "../utils/web3";
+import "../styles/NFT.css";
 
 const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const { state, setState } = useContext(GameContext);
-  const [name, setName] = useState('turtle');
-  const [image, setImage] = useState('/assets/character.png');
+  const [name, setName] = useState("turtle");
+  const [image, setImage] = useState("/assets/character.png");
   // TODO: speed x 100
   const [speed, setSpeed] = useState(5);
   const [nftPrice, setNftPrice] = useState(price);
@@ -20,19 +20,14 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   };
 
   useEffect(() => {
-    if (url !== 'dummy') {
-      let parsedUrl = url.replace('ipfs://', 'https://');
-      parsedUrl = parsedUrl.replace(
-        '/metadata.json',
-        '.ipfs.cf-ipfs.com/metadata.json'
-      );
+    if (url !== "dummy") {
+      let parsedUrl = url.replace("ipfs://", "https://ipfs.io/ipfs/");
       fetch(parsedUrl)
         .then((data) => data.json())
         .then((res) => {
-          let parsedImage = res.image.replace('ipfs://', 'https://');
-          parsedImage = parsedImage.replace(
-            '/character.png',
-            '.ipfs.cf-ipfs.com/character.png'
+          let parsedImage = res.image.replace(
+            "ipfs://",
+            "https://ipfs.io/ipfs/"
           );
           setName(res.name);
           setImage(parsedImage);
@@ -45,15 +40,15 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   }, []);
 
   const publishNft = async () => {
-    price = prompt('Enter the Amount in MATIC');
+    price = prompt("Enter the Amount in MATIC");
     if (price !== null) {
-      const priceInWie = state.web3.utils.toWei(price, 'ether');
+      const priceInWie = state.web3.utils.toWei(price, "ether");
       try {
         await state.contract.methods
           .putUpTurtleForSale(tokenId, priceInWie)
           .send({
             from: state.account,
-            gasPrice: state.web3.utils.toWei('50', 'Gwei'),
+            gasPrice: state.web3.utils.toWei("50", "Gwei"),
             gas: 60000,
           });
         setNftPrice(price);
@@ -68,17 +63,17 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
       from: state.account,
       value: state.web3.utils.toWei(
         (parseFloat(price) + 0.0001).toString(),
-        'ether'
+        "ether"
       ),
-      gasPrice: state.web3.utils.toWei('50', 'Gwei'),
+      gasPrice: state.web3.utils.toWei("50", "Gwei"),
       gas: 150000,
     });
   };
 
   const publishedComp = (
-    <div className='nft-text col align-self-center'>
-      {page === 'store' ? (
-        <button type='button' className='btn btn-dark btn-sm' onClick={buyNft}>
+    <div className="nft-text col align-self-center">
+      {page === "store" ? (
+        <button type="button" className="btn btn-dark btn-sm" onClick={buyNft}>
           {price} MATIC
         </button>
       ) : (
@@ -88,14 +83,15 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   );
 
   const notPublishedComp = (
-    <div className='nft-text col align-self-center'>
-      {page === 'store' ? (
+    <div className="nft-text col align-self-center">
+      {page === "store" ? (
         <h4>Not for sale</h4>
       ) : (
         <button
-          type='button'
-          className='btn btn-dark btn-sm'
-          onClick={publishNft}>
+          type="button"
+          className="btn btn-dark btn-sm"
+          onClick={publishNft}
+        >
           Publish
         </button>
       )}
@@ -104,11 +100,12 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
 
   return (
     <div
-      className='col-sm-6 col-lg-4 p-4'
+      className="col-sm-6 col-lg-4 p-4"
       onClick={nftClicked}
-      style={{ maxHeight: '500px', maxWidth: '350px' }}>
-      <div className='card bg-light text-black '>
-        <img src={image} className='card-img w-100' alt='abc' />
+      style={{ maxHeight: "500px", maxWidth: "350px" }}
+    >
+      <div className="card bg-light text-black ">
+        <img src={image} className="card-img w-100" alt="abc" />
         {isPublished() ? publishedComp : notPublishedComp}
         <h6>Name: {name}</h6>
         <h6>Speed:{speed}</h6>
