@@ -23,11 +23,13 @@ contract Turtis is ERC721, ChainlinkClient {
   string private apiBaseUrl; // Stores the base url of the api
   string private apiSecondUrl; // API url for the second call
 
+  address[] private users; // Address array to store all the users
+
   // Mapping from Token ID to Price
   mapping(uint256 => uint256) public turtlesForSale;
 
   // Mapping from User address to high score
-  mapping(address => uint256) userAddressToHighScore;
+  mapping(address => string) public userAddressToHighScore;
 
   // Events
 
@@ -74,6 +76,11 @@ contract Turtis is ERC721, ChainlinkClient {
     _;
   }
 
+  // Function 'getUsers' returns the address array of users
+  function getUsers() public view returns (address[] memory) {
+    return users;
+  }
+
   // Function 'setOracleAddress' sets a new oracle address
   function setOracleAddress(address _oracleAddress) public onlyContractOwner {
     oracle = _oracleAddress;
@@ -100,8 +107,12 @@ contract Turtis is ERC721, ChainlinkClient {
   }
 
   // Function 'setHighScore' sets a new highScore for the user
-  function setHighScore(uint256 _highScore) public {
-    userAddressToHighScore[msg.sender] = _highScore;
+  function setHighScore(string memory _highScore, address _sender) internal {
+    bytes memory score = bytes(userAddressToHighScore[_sender]);
+    if (score.length == 0) {
+      users.push(_sender);
+    }
+    userAddressToHighScore[_sender] = _highScore;
   }
 
   // Function 'buyTurtle' allows anyone to buy a turtle that is put up for sale
@@ -138,8 +149,9 @@ contract Turtis is ERC721, ChainlinkClient {
 
   // Function 'requestNewRandomTurtle' mints a new Turtle character
   function requestNewRandomTurtle(string memory score) public {
+    setHighScore(score, msg.sender);
     ipfsLink = "ipfs://";
-    _safeMint(msg.sender, uniqueTokenId);
+    _safeMint(msg.sender, uniqueTokenId++);
     string memory apiLink = append(apiBaseUrl, "?score=", score);
     string memory characterId = uint2str(totalSupply());
     apiLink = append(apiLink, "&characterId=", characterId);
@@ -274,8 +286,8 @@ contract Turtis is ERC721, ChainlinkClient {
 
   // Function 'setTokenURI' sets the Token URI for the ERC721 standard token
   function setTokenURI(string memory _tokenURI) private {
-    _setTokenURI(uniqueTokenId, _tokenURI);
-    uniqueTokenId++;
+    uint256 lastTokenId = totalSupply() - 1;
+    _setTokenURI(lastTokenId, _tokenURI);
   }
 
   // Function 'updateTokenURI' updates the Token URI for a specific Token

@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Phaser from 'phaser';
-import { IonPhaser } from '@ion-phaser/react';
-import styles from '../styles/Game.module.css';
-import GameScene from '../scenes/GameScene';
-import { GameContext } from '../utils/web3';
-import { useHistory } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from "react";
+import Phaser from "phaser";
+import { IonPhaser } from "@ion-phaser/react";
+import styles from "../styles/Game.module.css";
+import GameScene from "../scenes/GameScene";
+import { GameContext } from "../utils/web3";
+import { useHistory } from "react-router-dom";
 
 const gameConfig = {
-  width: '100%',
-  height: '100%',
+  width: "100%",
+  height: "100%",
   type: Phaser.AUTO,
   scene: [GameScene],
   physics: {
-    default: 'arcade',
+    default: "arcade",
   },
   instance: null,
 };
@@ -40,10 +40,10 @@ const Game = () => {
   };
 
   const endGame = (score, instance) => {
-    const oldHigh = localStorage.getItem('highScore');
+    const oldHigh = localStorage.getItem("highScore");
 
-    if (score > localStorage.getItem('highScore')) {
-      localStorage.setItem('highScore', score);
+    if (score > localStorage.getItem("highScore")) {
+      localStorage.setItem("highScore", score);
     }
 
     if (score - oldHigh > 100) {
@@ -53,11 +53,11 @@ const Game = () => {
       try {
         state.contract.methods.requestNewRandomTurtle(score.toString()).send({
           from: state.account,
-          gasPrice: state.web3.utils.toWei('50', 'Gwei'),
-          gas: 300000,
+          gasPrice: state.web3.utils.toWei("50", "Gwei"),
+          gas: 500000,
         });
       } catch (e) {
-        console.log('random turtle error');
+        console.log("random turtle error");
         console.log(e);
       }
     }
@@ -69,7 +69,7 @@ const Game = () => {
     try {
       instance?.destroy(true, false);
     } catch (e) {
-      console.log('destroy error');
+      console.log("destroy error");
       console.log(e);
     }
   };
@@ -77,9 +77,9 @@ const Game = () => {
   useEffect(() => {
     if (state.loaded) {
       if (init && !ended) {
-        console.log('starting game');
+        console.log("starting game");
         getInstance().then((instance) => {
-          instance.scene.scenes[0].events.emit('start-game', {
+          instance.scene.scenes[0].events.emit("start-game", {
             url: state.selectedNFT.image,
             speed: state.selectedNFT.speed,
             endGame,
@@ -87,13 +87,13 @@ const Game = () => {
         });
       }
       if (!ended && !init) {
-        console.log('init game');
+        console.log("init game");
         setGame(Object.assign({}, gameConfig));
         setInit(true);
       }
       if (ended) {
-        console.log('rerouting');
-        history.push('/play');
+        console.log("rerouting");
+        history.push("/play");
       }
     }
   }, [state.loaded, init]);
