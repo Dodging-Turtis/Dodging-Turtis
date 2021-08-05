@@ -6,31 +6,18 @@ function Navbar() {
   return (
     <div>
       <nav className='navbar'>
-        <div className='container-fluid'>
-          <button
-            type='button'
-            className='btn btn-dark'
+        <div className=' store  container-fluid' style={{ fontSize: '50px' }}>
+          <i
+            class='fas fa-store-alt '
             onClick={() => {
               history.push('/Store');
-            }}>
-            Store
-          </button>
+            }}></i>
 
-          <button
-            type='button'
-            className='btn btn-dark'
+          <i
+            class='fas fa-play'
             onClick={() => {
               history.push('/game');
-            }}>
-            Play Now
-          </button>
-
-          <button
-            style={{ color: '#35DF31' }}
-            type='button'
-            className='btn btn-dark'>
-            Connected to Wallet
-          </button>
+            }}></i>
         </div>
       </nav>
     </div>
