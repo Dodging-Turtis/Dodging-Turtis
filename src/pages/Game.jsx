@@ -51,9 +51,11 @@ const Game = () => {
         `New high score of ${score}!!\nA mystery character is being created for you.\nCheck in after a few minutes`
       );
       try {
-        state.contract.methods
-          .requestNewRandomTurtle(score.toString())
-          .send({ from: state.account });
+        state.contract.methods.requestNewRandomTurtle(score.toString()).send({
+          from: state.account,
+          gasPrice: state.web3.utils.toWei('50', 'Gwei'),
+          gas: 300000,
+        });
       } catch (e) {
         console.log('random turtle error');
         console.log(e);

@@ -21,13 +21,18 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
 
   useEffect(() => {
     if (url !== 'dummy') {
-      const parsedUrl = url.replace('ipfs://', 'https://ipfs.io/ipfs/');
+      let parsedUrl = url.replace('ipfs://', 'https://');
+      parsedUrl = parsedUrl.replace(
+        '/metadata.json',
+        '.ipfs.cf-ipfs.com/metadata.json'
+      );
       fetch(parsedUrl)
         .then((data) => data.json())
         .then((res) => {
-          const parsedImage = res.image.replace(
-            'ipfs://',
-            'https://ipfs.io/ipfs/'
+          let parsedImage = res.image.replace('ipfs://', 'https://');
+          parsedImage = parsedImage.replace(
+            '/character.png',
+            '.ipfs.cf-ipfs.com/character.png'
           );
           setName(res.name);
           setImage(parsedImage);
@@ -48,21 +53,21 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
           .putUpTurtleForSale(tokenId, priceInWie)
           .send({
             from: state.account,
-            gasPrice: state.web3.utils.toWei('0.000005', 'ether'),
-            gas: 30000,
+            gasPrice: state.web3.utils.toWei('50', 'Gwei'),
+            gas: 60000,
           });
+        setNftPrice(price);
       } catch (error) {
         console.log(error);
       }
-      setNftPrice(price);
     }
   };
 
   const buyNft = () => {
     state.contract.methods.buyTurtle(tokenId).send({
       from: state.account,
-      gasPrice: state.web3.utils.toWei('0.01', 'ether'),
-      gas: 2,
+      gasPrice: state.web3.utils.toWei('50', 'Gwei'),
+      gas: 60000,
     });
   };
 
