@@ -1,9 +1,9 @@
-import '../styles/Start.css';
-import { GameContext } from '../utils/web3';
-import { useContext, useEffect } from 'react';
-import NFT from '../components/NFT';
-import Load from '../components/Load';
-import Footer from '../components/Footer';
+import "../styles/Start.css";
+import { GameContext } from "../utils/web3";
+import { useContext, useEffect } from "react";
+import NFT from "../components/NFT";
+import Load from "../components/Load";
+import Footer from "../components/Footer";
 
 function Start() {
   const { state, setState } = useContext(GameContext);
@@ -29,12 +29,12 @@ function Start() {
         );
         const price = await state.contract.methods.turtlesForSale(nft).call();
         const url = await state.contract.methods.tokenURI(nft).call();
-        userNfts.push({ url, price, page: 'main', tokenId: nft });
+        userNfts.push({ url, price, page: "main", tokenId: nft });
       }
     } catch (e) {
-      console.log('nft fetch error');
+      console.log("nft fetch error");
     }
-    userNfts.push({ url: 'dummy', price: 0, page: 'main', tokenId: -1 });
+    userNfts.push({ url: "dummy", price: 0, page: "main", tokenId: -1 });
     setState({ ...state, userNfts });
   };
 
@@ -42,22 +42,23 @@ function Start() {
     state.userNfts.length > 0 ? (
       state.userNfts.map((nft) => <NFT key={nft.tokenId} nft={nft} />)
     ) : (
-      <div className='container-fluid position-absolute top-50 start-50 translate-middle'>
+      <div className="container-fluid position-absolute top-50 start-50 translate-middle">
         <Load />
       </div>
     );
 
   return (
-    <div className='container-fluid bg'>
+    <div className="container-fluid bg">
       <center>
-        <div className='start'>
+        <div className="start" style={{ marginBottom: "5%" }}>
           <b>
             <h1>NFT's Connected to your wallet</h1>
           </b>
         </div>
         <div
-          className='d-flex justify-content-center'
-          style={{ flexWrap: 'wrap', marginBottom: '10%' }}>
+          className="d-flex justify-content-center"
+          style={{ flexWrap: "wrap", marginBottom: "10%" }}
+        >
           {items}
         </div>
       </center>
