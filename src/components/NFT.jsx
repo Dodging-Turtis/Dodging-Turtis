@@ -137,7 +137,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   return (
     <div
       className='col-sm-6 col-lg-4 p-4 '
-      style={{ maxHeight: '400px', maxWidth: '350px' }}>
+      style={{ maxHeight: '400px', maxWidth: '350px', margin: '2%' }}>
       <div className='card bg-light text-black nft-card'>
         {tokenId == state.selectedNFT.tokenId ? selectedNftImage : nftImage}
         <center>
