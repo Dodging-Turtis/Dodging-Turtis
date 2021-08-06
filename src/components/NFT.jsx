@@ -11,8 +11,10 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const [nftPrice, setNftPrice] = useState(price);
 
   const nftClicked = () => {
-    console.log(image);
-    setState({ ...state, selectedNFT: { image, speed, tokenId } });
+    if (page === 'main') {
+      console.log(image);
+      setState({ ...state, selectedNFT: { image, speed, tokenId } });
+    }
   };
 
   const isPublished = () => {
@@ -103,7 +105,10 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   );
 
   const nftImage = (
-    <div>
+    <div
+      onClick={() => {
+        nftClicked();
+      }}>
       <img src={image} className='card-img w-100' alt='abc' />
     </div>
   );
@@ -127,9 +132,6 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   return (
     <div
       className='col-sm-6 col-lg-4 p-4 '
-      onClick={() => {
-        nftClicked();
-      }}
       style={{ maxHeight: '500px', maxWidth: '350px' }}>
       <div className='card bg-light text-black nft-card'>
         {tokenId == state.selectedNFT.tokenId ? selectedNftImage : nftImage}
