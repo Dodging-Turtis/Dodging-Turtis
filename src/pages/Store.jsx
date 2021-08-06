@@ -2,6 +2,7 @@ import React from 'react';
 import { GameContext } from '../utils/web3';
 import { useContext, useEffect } from 'react';
 import NFT from '../components/NFT';
+import Load from '../components/Load';
 
 const Store = () => {
   const { state, setState } = useContext(GameContext);
@@ -39,7 +40,11 @@ const Store = () => {
     state.nfts.length > 0 ? (
       state.nfts.map((nft) => <NFT key={nft.tokenId} nft={nft} />)
     ) : (
-      <div>loading</div>
+      <div className='container-fluid position-absolute top-50 start-50 translate-middle'>
+        <center>
+          <Load />
+        </center>
+      </div>
     );
 
   return (

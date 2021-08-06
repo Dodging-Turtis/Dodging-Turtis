@@ -1,7 +1,9 @@
-import '../styles/Start.module.css';
+import '../styles/Start.css';
 import { GameContext } from '../utils/web3';
 import { useContext, useEffect } from 'react';
 import NFT from '../components/NFT';
+import Load from '../components/Load';
+import Footer from '../components/Footer';
 
 function Start() {
   const { state, setState } = useContext(GameContext);
@@ -38,17 +40,18 @@ function Start() {
     state.userNfts.length > 0 ? (
       state.userNfts.map((nft) => <NFT key={nft.tokenId} nft={nft} />)
     ) : (
-      <div>loading</div>
+      <div className='container-fluid position-absolute top-50 start-50 translate-middle'>
+        <Load />
+      </div>
     );
 
   return (
-    <div>
+    <div className='container-fluid bg'>
       <center>
         <div className='start'>
-          <h4>
-            <b>Best Score:</b>
-          </h4>
-          <h4>NFT's Connected to your wallet</h4>
+          <b>
+            <h1>NFT's Connected to your wallet</h1>
+          </b>
         </div>
         <div
           className='d-flex justify-content-start'
@@ -56,6 +59,7 @@ function Start() {
           {items}
         </div>
       </center>
+      <Footer />
     </div>
   );
 }
