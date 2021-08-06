@@ -49,7 +49,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
     price = prompt('Enter the Amount in MATIC');
     if (tokenId == -1) {
       alert('cannot publish default nft!');
-    } else if (price != null) {
+    } else if (price != null && price > 0) {
       const priceInWie = state.web3.utils.toWei(price, 'ether');
       try {
         await state.contract.methods

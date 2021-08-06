@@ -12,19 +12,20 @@ function Navbar() {
         <div className=' store  container-fluid' style={{ fontSize: '50px' }}>
           <i
             className='fas fa-store-alt '
-            onClick={async () => {
-              let highScore = await state.contract.methods
-                .userAddressToHighScore(state.account)
-                .call();
-              if (highScore.length == 0) highScore = '0';
-              setState({ ...state, highScore });
+            onClick={() => {
               history.push('/Store');
             }}></i>
-
           <i
             className='fas fa-play'
             onClick={() => {
-              history.push('/game');
+              state.contract.methods
+                .userAddressToHighScore(state.account)
+                .call()
+                .then((highScore) => {
+                  if (highScore.length == 0) highScore = '0';
+                  setState({ ...state, highScore });
+                  history.push('/game');
+                });
             }}></i>
         </div>
       </nav>
