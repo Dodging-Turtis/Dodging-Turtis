@@ -95,7 +95,9 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const notPublishedComp = (
     <div className='nft-text col align-self-center'>
       {page === 'store' ? (
-        <h4>Not for sale</h4>
+        <button type='button' className='btn btn-dark btn-sm diasbled'>
+          Not for sale
+        </button>
       ) : (
         <button
           type='button'
@@ -122,7 +124,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
         src={image}
         className='card-img w-100'
         alt='abc'
-        style={{ opacity: '0.1' }}
+        style={{ opacity: '0.3' }}
       />
       <div className='position-absolute top-50 start-50 translate-middle'>
         <b>
@@ -135,19 +137,23 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   return (
     <div
       className='col-sm-6 col-lg-4 p-4 '
-      style={{ maxHeight: '500px', maxWidth: '350px' }}>
+      style={{ maxHeight: '400px', maxWidth: '350px', margin: '2%' }}>
       <div className='card bg-light text-black nft-card'>
         {tokenId == state.selectedNFT.tokenId ? selectedNftImage : nftImage}
-
-        <div className='row'>
-          <div className='col-6'>
-            <h6>Name: {name}</h6>
-            <h6>Speed:{speed}</h6>
+        <center>
+          <div
+            style={{
+              color: '#000',
+            }}>
+            <div
+              style={{ fontSize: '25px', margin: '1%' }}
+              class='d-flex justify-content-between'>
+              <div class='p-2'>{name}</div>
+              <div class='p-2'> {speed}</div>
+            </div>
+            <div>{isPublished() ? publishedComp : notPublishedComp}</div>
           </div>
-          <div className='col-6'>
-            {isPublished() ? publishedComp : notPublishedComp}
-          </div>
-        </div>
+        </center>
       </div>
     </div>
   );

@@ -52,8 +52,11 @@ const Store = () => {
   return (
     <div>
       <center>
+        <div style={{ fontSize: '50px' }}>
+          <i className='fas fa-store-alt '>Store</i>
+        </div>
         <div
-          className='d-flex justify-content-start '
+          className='d-flex justify-content-center '
           style={{ flexWrap: 'wrap' }}>
           {items}
         </div>

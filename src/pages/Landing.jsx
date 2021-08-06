@@ -52,9 +52,9 @@ const Landing = () => {
 
         <div className='front'>
           <h1 className='poster-text'>
-            <b>Dodging</b> Turtis..
+            <b>Dodging</b> Turtis
           </h1>
-          <h5>May the fastest turtle wins...</h5>
+          <h5>May the fastest turtle win</h5>
           <br></br>
           <Loading />
           <br></br>
