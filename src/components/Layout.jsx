@@ -17,9 +17,6 @@ const Layout = ({ children }) => {
   });
 
   useEffect(() => {
-    if (localStorage.getItem('highScore') == null)
-      localStorage.setItem('highScore', 0);
-
     if (!state.loaded && location.pathname !== '/') {
       alert('wallet not connected');
       history.push('/');
