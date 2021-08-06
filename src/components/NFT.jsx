@@ -1,19 +1,18 @@
-import { useContext, useEffect, useState } from "react";
-import { GameContext } from "../utils/web3";
-import "../styles/NFT.css";
+import { useContext, useEffect, useState } from 'react';
+import { GameContext } from '../utils/web3';
+import '../styles/NFT.css';
 
 const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const { state, setState } = useContext(GameContext);
-  const [name, setName] = useState("turtle");
-  const [image, setImage] = useState("/assets/character.png");
+  const [name, setName] = useState('turtle');
+  const [image, setImage] = useState('/assets/character.png');
   // TODO: speed x 100
   const [speed, setSpeed] = useState(5);
   const [nftPrice, setNftPrice] = useState(price);
-  const [nftselect, setnftselect] = useState(0);
 
   const nftClicked = () => {
     console.log(image);
-    setState({ ...state, selectedNFT: { image, speed } });
+    setState({ ...state, selectedNFT: { image, speed, tokenId } });
   };
 
   const isPublished = () => {
@@ -21,19 +20,19 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   };
 
   useEffect(() => {
-    if (url !== "dummy") {
-      let parsedUrl = url.replace("ipfs://", "https://");
+    if (url !== 'dummy') {
+      let parsedUrl = url.replace('ipfs://', 'https://');
       parsedUrl = parsedUrl.replace(
-        "/metadata.json",
-        ".ipfs.cf-ipfs.com/metadata.json"
+        '/metadata.json',
+        '.ipfs.cf-ipfs.com/metadata.json'
       );
       fetch(parsedUrl)
         .then((data) => data.json())
         .then((res) => {
-          let parsedImage = res.image.replace("ipfs://", "https://");
+          let parsedImage = res.image.replace('ipfs://', 'https://');
           parsedImage = parsedImage.replace(
-            "/character.png",
-            ".ipfs.cf-ipfs.com/character.png"
+            '/character.png',
+            '.ipfs.cf-ipfs.com/character.png'
           );
           setName(res.name);
           setImage(parsedImage);
@@ -46,15 +45,15 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   }, []);
 
   const publishNft = async () => {
-    price = prompt("Enter the Amount in MATIC");
+    price = prompt('Enter the Amount in MATIC');
     if (price !== null) {
-      const priceInWie = state.web3.utils.toWei(price, "ether");
+      const priceInWie = state.web3.utils.toWei(price, 'ether');
       try {
         await state.contract.methods
           .putUpTurtleForSale(tokenId, priceInWie)
           .send({
             from: state.account,
-            gasPrice: state.web3.utils.toWei("50", "Gwei"),
+            gasPrice: state.web3.utils.toWei('50', 'Gwei'),
             gas: 60000,
           });
         setNftPrice(price);
@@ -69,17 +68,17 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
       from: state.account,
       value: state.web3.utils.toWei(
         (parseFloat(price) + 0.0001).toString(),
-        "ether"
+        'ether'
       ),
-      gasPrice: state.web3.utils.toWei("50", "Gwei"),
+      gasPrice: state.web3.utils.toWei('50', 'Gwei'),
       gas: 150000,
     });
   };
 
   const publishedComp = (
-    <div className="nft-text col align-self-center">
-      {page === "store" ? (
-        <button type="button" className="btn btn-dark btn-sm" onClick={buyNft}>
+    <div className='nft-text col align-self-center'>
+      {page === 'store' ? (
+        <button type='button' className='btn btn-dark btn-sm' onClick={buyNft}>
           {price} MATIC
         </button>
       ) : (
@@ -89,32 +88,27 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   );
 
   const notPublishedComp = (
-    <div className="nft-text col align-self-center">
-      {page === "store" ? (
+    <div className='nft-text col align-self-center'>
+      {page === 'store' ? (
         <h4>Not for sale</h4>
       ) : (
         <button
-          type="button"
-          className="btn btn-dark btn-sm"
-          onClick={publishNft}
-        >
+          type='button'
+          className='btn btn-dark btn-sm'
+          onClick={publishNft}>
           Publish
         </button>
       )}
     </div>
   );
 
-  function nftSelected() {
-    setnftselect(!nftselect);
-  }
-
-  const shownft = (
+  const nftImage = (
     <div>
       <img src={image} className='card-img w-100' alt='abc' />
     </div>
   );
 
-  const shownftselected = (
+  const selectedNftImage = (
     <div>
       <img
         src={image}
@@ -122,7 +116,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
         alt='abc'
         style={{ opacity: '0.1' }}
       />
-      <div class='position-absolute top-50 start-50 translate-middle'>
+      <div className='position-absolute top-50 start-50 translate-middle'>
         <b>
           <h3>selected</h3>
         </b>
@@ -131,19 +125,21 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   );
 
   return (
-    <div  
+    <div
       className='col-sm-6 col-lg-4 p-4 '
-      onClick={(nftClicked, nftSelected)}
+      onClick={() => {
+        nftClicked();
+      }}
       style={{ maxHeight: '500px', maxWidth: '350px' }}>
       <div className='card bg-light text-black nft-card'>
-        {nftselect > 0 ? shownftselected : shownft}
+        {tokenId == state.selectedNFT.tokenId ? selectedNftImage : nftImage}
 
-        <div class='row'>
-          <div class='col-6'>
+        <div className='row'>
+          <div className='col-6'>
             <h6>Name: {name}</h6>
             <h6>Speed:{speed}</h6>
           </div>
-          <div class='col-6'>
+          <div className='col-6'>
             {isPublished() ? publishedComp : notPublishedComp}
           </div>
         </div>
