@@ -56,7 +56,7 @@ function Start() {
           </b>
         </div>
         <div
-          className='d-flex justify-content-start'
+          className='d-flex justify-content-center'
           style={{ flexWrap: 'wrap', marginBottom: '10%' }}>
           {items}
         </div>
