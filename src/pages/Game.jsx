@@ -39,8 +39,14 @@ const Game = () => {
     }
   };
 
-  const endGame = (score, instance) => {
-    const oldHigh = localStorage.getItem("highScore");
+  const endGame = async (score, instance) => {
+    let oldHigh = await state.contract.methods
+      .userAddressToHighScore(state.account)
+      .call();
+    if (oldHigh.length == 0) {
+      oldHigh = "0";
+    }
+    oldHigh = parseInt(oldHigh);
 
     if (score > localStorage.getItem("highScore")) {
       localStorage.setItem("highScore", score);

@@ -21,13 +21,18 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
 
   useEffect(() => {
     if (url !== "dummy") {
-      let parsedUrl = url.replace("ipfs://", "https://ipfs.io/ipfs/");
+      let parsedUrl = url.replace("ipfs://", "https://");
+      parsedUrl = parsedUrl.replace(
+        "/metadata.json",
+        ".ipfs.cf-ipfs.com/metadata.json"
+      );
       fetch(parsedUrl)
         .then((data) => data.json())
         .then((res) => {
-          let parsedImage = res.image.replace(
-            "ipfs://",
-            "https://ipfs.io/ipfs/"
+          let parsedImage = res.image.replace("ipfs://", "https://");
+          parsedImage = parsedImage.replace(
+            "/character.png",
+            ".ipfs.cf-ipfs.com/character.png"
           );
           setName(res.name);
           setImage(parsedImage);

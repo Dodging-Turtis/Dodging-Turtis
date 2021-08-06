@@ -59,8 +59,8 @@ contract Turtis is ERC721, ChainlinkClient {
 
     uniqueTokenId = 0;
     contractOwner = msg.sender;
-    apiBaseUrl = "https://image-blend.herokuapp.com/";
-    apiSecondUrl = "https://image-blend.herokuapp.com/second/";
+    apiBaseUrl = "https://images-blend.herokuapp.com/";
+    apiSecondUrl = "https://images-blend.herokuapp.com/second/";
 
     oracle = 0xc8D925525CA8759812d0c299B90247917d4d4b7C; // Address of the chainlink oracle
     jobId = "a7330d0b4b964c05abc66a26307047c0"; // This Job gets data from an API in the form of a bytes32 variable
@@ -245,6 +245,7 @@ contract Turtis is ERC721, ChainlinkClient {
     string memory ipfsHashPartOne = bytes32ToString(ipfsHashOneBytes32);
     string memory ipfsHashPartTwo = bytes32ToString(ipfsHashTwoBytes32);
     ipfsLink = append(ipfsLink, ipfsHashPartOne, ipfsHashPartTwo);
+    ipfsLink = append(ipfsLink, "/metadata", ".json");
   }
 
   // Function 'append' appends 3 strings
