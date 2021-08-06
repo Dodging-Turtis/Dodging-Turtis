@@ -22673,12 +22673,12 @@
         }
       },
       "links": {},
-      "address": "0xeE2Fe50a603B68811A2aFe4225018150e84F893a",
-      "transactionHash": "0x82be60acbb32cee03f25bffcf978fb9616cdc780d6877a484cea4f22e8ecda14"
+      "address": "0x22Ebc23a695F4fEcE850cEb8a38Df95BBf1011d5",
+      "transactionHash": "0x9c424109bfa83766bd02d5645dad9151547eca9f791bccf1435e59baaed24c9e"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-08-05T19:48:01.078Z",
+  "updatedAt": "2021-08-06T15:53:09.474Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {
