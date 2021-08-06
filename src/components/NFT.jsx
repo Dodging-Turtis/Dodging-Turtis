@@ -4,7 +4,7 @@ import '../styles/NFT.css';
 
 const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const { state, setState } = useContext(GameContext);
-  const [name, setName] = useState('turtle');
+  const [name, setName] = useState('Default Turtle');
   const [image, setImage] = useState('/assets/character.png');
   // TODO: speed x 100
   const [speed, setSpeed] = useState(5);
@@ -12,7 +12,6 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
 
   const nftClicked = () => {
     if (page === 'main') {
-      console.log(image);
       setState({ ...state, selectedNFT: { image, speed, tokenId } });
     }
   };
@@ -48,7 +47,9 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
 
   const publishNft = async () => {
     price = prompt('Enter the Amount in MATIC');
-    if (price !== null) {
+    if (tokenId == -1) {
+      alert('cannot publish default nft!');
+    } else if (price != null) {
       const priceInWie = state.web3.utils.toWei(price, 'ether');
       try {
         await state.contract.methods

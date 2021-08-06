@@ -20,7 +20,9 @@ const Store = () => {
       const supply = await state.contract.methods.totalSupply().call();
       console.log(supply);
       for (let i = 0; i < supply; i++) {
-        const nft = await state.contract.methods.tokenByIndex(i).call();
+        const nft = parseInt(
+          await state.contract.methods.tokenByIndex(i).call()
+        );
         const price = state.web3.utils.fromWei(
           await state.contract.methods.turtlesForSale(nft).call(),
           'ether'
