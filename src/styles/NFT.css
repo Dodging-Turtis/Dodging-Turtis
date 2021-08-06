@@ -2,13 +2,11 @@ img:hover {
   filter: blur(2px);
 }
 
-.nft-text {
-  opacity: 0;
-  position: absolute;
-  bottom: 0;
-  text-align: center;
+button {
+  width: 100px;
+  height: 50px;
 }
 
-.nft-text:hover {
-  opacity: 1;
+.nft-card {
+  border: #242d3c 3px solid;
 }

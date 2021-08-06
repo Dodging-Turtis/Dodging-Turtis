@@ -9,6 +9,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   // TODO: speed x 100
   const [speed, setSpeed] = useState(5);
   const [nftPrice, setNftPrice] = useState(price);
+  const [nftselect, setnftselect] = useState(0);
 
   const nftClicked = () => {
     console.log(image);
@@ -102,16 +103,49 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
     </div>
   );
 
+  function nftSelected() {
+    setnftselect(!nftselect);
+  }
+
+  const shownft = (
+    <div>
+      <img src={image} className='card-img w-100' alt='abc' />
+    </div>
+  );
+
+  const shownftselected = (
+    <div>
+      <img
+        src={image}
+        className='card-img w-100'
+        alt='abc'
+        style={{ opacity: '0.1' }}
+      />
+      <div class='position-absolute top-50 start-50 translate-middle'>
+        <b>
+          <h3>selected</h3>
+        </b>
+      </div>
+    </div>
+  );
+
   return (
     <div
-      className='col-sm-6 col-lg-4 p-4'
-      onClick={nftClicked}
+      className='col-sm-6 col-lg-4 p-4 '
+      onClick={(nftClicked, nftSelected)}
       style={{ maxHeight: '500px', maxWidth: '350px' }}>
-      <div className='card bg-light text-black '>
-        <img src={image} className='card-img w-100' alt='abc' />
-        {isPublished() ? publishedComp : notPublishedComp}
-        <h6>Name: {name}</h6>
-        <h6>Speed:{speed}</h6>
+      <div className='card bg-light text-black nft-card'>
+        {nftselect > 0 ? shownftselected : shownft}
+
+        <div class='row'>
+          <div class='col-6'>
+            <h6>Name: {name}</h6>
+            <h6>Speed:{speed}</h6>
+          </div>
+          <div class='col-6'>
+            {isPublished() ? publishedComp : notPublishedComp}
+          </div>
+        </div>
       </div>
     </div>
   );
