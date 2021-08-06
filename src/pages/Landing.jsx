@@ -51,7 +51,11 @@ const Landing = () => {
           <Loading />
           <br></br>
           <br></br>
-          <button type='button' onClick={loadWeb3} className='btn btn-dark'>
+          <button
+            type='button'
+            onClick={loadWeb3}
+            className='btn btn-dark'
+            style={{ width: '200px' }}>
             Connect to wallet
           </button>
         </div>
