@@ -44,7 +44,7 @@ const Game = () => {
       localStorage.setItem('highScore', score);
     }
 
-    const currHighScore = state.highScore;
+    const currHighScore = parseInt(state.highScore);
 
     if (score - currHighScore > 100) {
       alert(
@@ -81,7 +81,7 @@ const Game = () => {
         getInstance().then((instance) => {
           instance.scene.scenes[0].events.emit('start-game', {
             url: state.selectedNFT.image,
-            speed: state.selectedNFT.speed,
+            speed: state.selectedNFT.speed / 100,
             endGame,
           });
         });

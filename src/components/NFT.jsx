@@ -6,8 +6,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const { state, setState } = useContext(GameContext);
   const [name, setName] = useState('Default Turtle');
   const [image, setImage] = useState('/assets/character.png');
-  // TODO: speed x 100
-  const [speed, setSpeed] = useState(5);
+  const [speed, setSpeed] = useState(500);
   const [nftPrice, setNftPrice] = useState(price);
 
   const nftClicked = () => {
@@ -37,7 +36,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
           );
           setName(res.name);
           setImage(parsedImage);
-          setSpeed(parseFloat(res.attributes[0].value) / 100);
+          setSpeed(parseFloat(res.attributes[0].value));
         })
         .catch((e) => {
           console.log(e);
