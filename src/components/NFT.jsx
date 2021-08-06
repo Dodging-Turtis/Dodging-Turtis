@@ -84,7 +84,9 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
           {price} MATIC
         </button>
       ) : (
-        <h4>Published</h4>
+        <button type='button' className='btn btn-dark btn-sm disabled'>
+          Published
+        </button>
       )}
     </div>
   );
