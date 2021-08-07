@@ -34,7 +34,6 @@ const Store = () => {
     } catch (e) {
       console.log('nft fetch error');
     }
-    nfts.push({ url: 'dummy', price: 0, page: 'store', tokenId: -1 });
     setState({ ...state, nfts });
   };
 

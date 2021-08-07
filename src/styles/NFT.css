@@ -9,4 +9,5 @@ button {
 
 .nft-card {
   border: #242d3c 3px solid;
+  align-self: stretch;
 }

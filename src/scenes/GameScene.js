@@ -56,7 +56,7 @@ class GameScene extends Phaser.Scene {
       'player'
     );
     player.setGravityY(10);
-    player.setScale(0.3);
+    player.setScale(0.2);
     player.setBounce(0.5);
     player.setCollideWorldBounds(true);
     return player;

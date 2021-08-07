@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { GameContext } from '../utils/web3';
+import Load from './Load';
 import '../styles/NFT.css';
 
 const NFT = ({ nft: { url, price, page, tokenId } }) => {
@@ -8,6 +9,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const [image, setImage] = useState('/assets/character.png');
   const [speed, setSpeed] = useState(500);
   const [nftPrice, setNftPrice] = useState(price);
+  const [loading, setLoading] = useState(true);
 
   const nftClicked = () => {
     if (page === 'main') {
@@ -37,10 +39,13 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
           setName(res.name);
           setImage(parsedImage);
           setSpeed(parseFloat(res.attributes[0].value));
+          setLoading(false);
         })
         .catch((e) => {
           console.log(e);
         });
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -144,23 +149,31 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
         marginBottom: '11%',
         marginTop: '0%',
       }}>
-      <div className='card bg-light text-black nft-card'>
-        {tokenId === state.selectedNFT.tokenId ? selectedNftImage : nftImage}
-        <center>
-          <div
-            style={{
-              color: '#000',
-            }}>
+      {loading ? (
+        <div className='position-relative top-50 start-50 translate-middle'>
+          <Load />
+        </div>
+      ) : (
+        <div className='card bg-light text-black nft-card'>
+          <center>
+            {tokenId === state.selectedNFT.tokenId
+              ? selectedNftImage
+              : nftImage}
             <div
-              style={{ fontSize: '25px', margin: '1%' }}
-              className='d-flex justify-content-between'>
-              <div className='p-2'>{name}</div>
-              <div className='p-2'> {speed}</div>
+              style={{
+                color: '#000',
+              }}>
+              <div
+                style={{ fontSize: '25px', margin: '1%' }}
+                className='d-flex justify-content-between'>
+                <div className='p-2'>{name}</div>
+                <div className='p-2'> {speed}</div>
+              </div>
+              <div>{isPublished() ? publishedComp : notPublishedComp}</div>
             </div>
-            <div>{isPublished() ? publishedComp : notPublishedComp}</div>
-          </div>
-        </center>
-      </div>
+          </center>
+        </div>
+      )}
     </div>
   );
 };
