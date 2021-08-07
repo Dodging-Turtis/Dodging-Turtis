@@ -18,29 +18,27 @@ const Landing = () => {
         const web3 = new Web3(window.ethereum);
         const account = (await web3.eth.getAccounts())[0];
         const netId = await web3.eth.net.getId();
-        const address = SmartContract.networks[netId].address;
-        const contract = new web3.eth.Contract(SmartContract.abi, address);
-
-        setState({
-          ...state,
-          web3,
-          contract,
-          account,
-          highScore: '0',
-          loaded: true,
-        });
+        if (netId !== 80001)
+          alert('Wrong network, please switch to the Matic Mumbai testnet!');
+        else {
+          const address = SmartContract.networks[netId].address;
+          const contract = new web3.eth.Contract(SmartContract.abi, address);
+          setState({
+            ...state,
+            web3,
+            contract,
+            account,
+            highScore: '0',
+            loaded: true,
+          });
+          history.push('/play');
+        }
       } catch (e) {
         alert(e);
       }
     } else {
       alert('web3 not detected');
     }
-  };
-
-  const loadWeb3 = () => {
-    initWeb3().then(() => {
-      history.push('/play');
-    });
   };
 
   return (
@@ -61,7 +59,7 @@ const Landing = () => {
           <br></br>
           <button
             type='button'
-            onClick={loadWeb3}
+            onClick={initWeb3}
             className='btn btn-dark'
             style={{ width: '200px' }}>
             Connect to wallet
