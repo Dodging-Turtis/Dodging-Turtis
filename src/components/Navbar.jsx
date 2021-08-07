@@ -22,7 +22,7 @@ function Navbar() {
                 .userAddressToHighScore(state.account)
                 .call()
                 .then((highScore) => {
-                  if (highScore.length == 0) highScore = '0';
+                  if (highScore.length === 0) highScore = '0';
                   setState({ ...state, highScore });
                   if (localStorage.getItem('highScore') == null)
                     localStorage.setItem('highScore', parseInt(highScore));
