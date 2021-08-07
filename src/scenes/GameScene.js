@@ -7,6 +7,7 @@ class GameScene extends Phaser.Scene {
   init() {
     this.loaded = false;
     this.score = 0;
+    this.ended = 0;
     this.highScore = localStorage.getItem('highScore');
     this.events.once('start-game', ({ url, speed, endGame }) => {
       this.playerSpeed = speed;
@@ -81,8 +82,11 @@ class GameScene extends Phaser.Scene {
   }
   addCollider(platform) {
     this.physics.add.collider(this.player, platform, () => {
-      alert('game over');
-      this.endGame(this.score, this.game);
+      if (!this.ended) {
+        alert('game over');
+        this.ended = 1;
+        this.endGame(this.score, this.game);
+      }
     });
   }
   resetPos() {
