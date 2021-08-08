@@ -9,32 +9,37 @@ const Store = () => {
 
   useEffect(() => {
     if (state.loaded) {
-      loadNFT();
+      loadNfts();
     }
   }, [state.loaded]);
 
-  const loadNFT = async () => {
-    const nfts = [];
-    // TODO: only show owned nfts
-    try {
-      const supply = await state.contract.methods.totalSupply().call();
-      console.log(supply);
-      for (let i = 0; i < supply; i++) {
-        const nft = parseInt(
-          await state.contract.methods.tokenByIndex(i).call()
-        );
-        const price = state.web3.utils.fromWei(
-          await state.contract.methods.turtlesForSale(nft).call(),
-          'ether'
-        );
-        console.log('price:' + price);
-        const url = await state.contract.methods.tokenURI(nft).call();
-        nfts.push({ url, price, page: 'store', tokenId: nft });
-      }
-    } catch (e) {
-      console.log('nft fetch error');
-    }
-    setState({ ...state, nfts });
+  const loadNftById = async (i) => {
+    const nft = parseInt(await state.contract.methods.tokenByIndex(i).call());
+    const price = state.web3.utils.fromWei(
+      await state.contract.methods.turtlesForSale(nft).call(),
+      'ether'
+    );
+    console.log('nft:' + nft);
+    const url = await state.contract.methods.tokenURI(nft).call();
+    setState((state) => ({
+      ...state,
+      nfts: [...state.nfts, { url, price, page: 'store', tokenId: nft }],
+    }));
+  };
+
+  const loadNfts = () => {
+    state.contract.methods
+      .totalSupply()
+      .call()
+      .then((supply) => {
+        console.log(supply);
+        for (let i = 0; i < supply; i++) {
+          loadNftById(i);
+        }
+      })
+      .catch((e) => {
+        console.log('nft fetch error');
+      });
   };
 
   const items =

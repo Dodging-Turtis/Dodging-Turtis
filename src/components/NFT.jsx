@@ -39,13 +39,10 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
           setName(res.name);
           setImage(parsedImage);
           setSpeed(parseFloat(res.attributes[0].value));
-          setLoading(false);
         })
         .catch((e) => {
           console.log(e);
         });
-    } else {
-      setLoading(false);
     }
   }, []);
 
@@ -118,7 +115,14 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
       onClick={() => {
         nftClicked();
       }}>
-      <img src={image} className='card-img w-100' alt='abc' />
+      <img
+        src={image}
+        className='card-img w-100'
+        alt='turtle'
+        onLoad={() => {
+          setLoading(false);
+        }}
+      />
     </div>
   );
 
@@ -129,6 +133,9 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
         className='card-img w-100'
         alt='abc'
         style={{ opacity: '0.3' }}
+        onLoad={() => {
+          setLoading(false);
+        }}
       />
       <div className='position-absolute top-50 start-50 translate-middle'>
         <b>
@@ -149,31 +156,32 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
         marginBottom: '11%',
         marginTop: '0%',
       }}>
-      {loading ? (
-        <div className='position-relative top-50 start-50 translate-middle'>
-          <Load />
-        </div>
-      ) : (
-        <div className='card bg-light text-black nft-card'>
-          <center>
-            {tokenId === state.selectedNFT.tokenId
-              ? selectedNftImage
-              : nftImage}
+      <div
+        className='position-relative top-50 start-50 translate-middle'
+        style={{ display: loading ? 'block' : 'none', zIndex: 5 }}>
+        <Load />
+      </div>
+      <div
+        className='card bg-light text-black nft-card'
+        style={{ visibility: loading ? 'hidden' : 'visible' }}>
+        <center>
+          {tokenId !== state.selectedNFT.tokenId || page === 'store'
+            ? nftImage
+            : selectedNftImage}
+          <div
+            style={{
+              color: '#000',
+            }}>
             <div
-              style={{
-                color: '#000',
-              }}>
-              <div
-                style={{ fontSize: '25px', margin: '1%' }}
-                className='d-flex justify-content-between'>
-                <div className='p-2'>{name}</div>
-                <div className='p-2'> {speed}</div>
-              </div>
-              <div>{isPublished() ? publishedComp : notPublishedComp}</div>
+              style={{ fontSize: '25px', margin: '1%' }}
+              className='d-flex justify-content-between'>
+              <div className='p-2'>{name}</div>
+              <div className='p-2'> {speed}</div>
             </div>
-          </center>
-        </div>
-      )}
+            <div>{isPublished() ? publishedComp : notPublishedComp}</div>
+          </div>
+        </center>
+      </div>
     </div>
   );
 };
