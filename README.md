@@ -30,7 +30,7 @@ The contract <a href="https://mumbai.polygonscan.com/address/0x87D83BBE86A224d5B
 
 ## The DApp User Interface
 
-![Home Page](screenshots/home.jpg)
+![Home Page](screenshots/dapp_turtis.png)
 
 ## Built With
 
