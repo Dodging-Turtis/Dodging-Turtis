@@ -1,44 +1,55 @@
 # Dodging Turtis
 
-We created an NFT game which runs on the MATIC network in the Ethereum Blockchain and is powered by decentralized Chainlink Oracles.
+We created an NFT based game which runs on the `MATIC` network in the `Ethereum` Blockchain and is powered by decentralized `Chainlink` Oracles.
 
-![Tracks](screenshots/tracks_no_bg_2.png)
+![Tracks](screenshots/tracks.png)
 
 ## Information about the project
 
-The game involves a Turtle character who dodges through the platforms coming towards it with increasing speed. The NFT here is the Turtle character.
+The game involves a Turtle character who dodges through the platforms coming towards it with increasing speed. The NFT here is the Turtle character. Everytime a row of blocks are dodged by the turtle, <b>10 points</b> are added to the score. Inorder to dodge through the blocks, the Turtle can move left or right using the arrow keys. The speed of the left and right movement of the Turtle varies for each Turtle NFT. The game is really fun to play and it can get really challenging as the speed of the platforms increase with time.
 
-![Game](screenshots/turtis_game_no_bg_1.png)
+<img src="screenshots/turtis_game_no_bg_1.png" alt="center" width="1050" height="450">
 
-The player is rewarded with a new random Turtle NFT everytime a new checkpoint score is reached by the user. Higher the score achieved for a new checkpoint, higher the `speed` of the NFT character that the user receives as a reward. More speed allows the player to move faster through the platforms and reach high score easily. Users would like to own NFTs with higher speed and hence it acts a selling point.
+The player is rewarded with a new random Turtle NFT everytime a new checkpoint score is reached by the user. The checkpoint score is atleast 110 more than the previous high score of the player.
 
-The NFTs are dynamic. Every new Turtle NFT has a unique name, randomized image and a random speed which is ranged according to the score achieved by the user. ERC721 standard is used for implementing the NFT. The symbol the NFT token is `TRTL`.
+Higher the score achieved for a new checkpoint, higher the `speed` of the NFT character that the user receives as a reward. More speed allows the player to move faster through the platforms and reach high score easily. Users would want to own NFTs with higher speed and hence it acts a selling point.
+
+The NFTs are dynamic. Every new Turtle NFT has a unique name, randomized image and a random speed which is ranged according to the score achieved by the user. ERC721 standard is used for implementing the NFT. The symbol the Turtis NFT token is `TRTL`.
 
 ### Some of the randomly generated Turtles are as follows:
 
 ![Turtis](screenshots/turtis_2.png)
 
-ChainlinkClient contract is used to create a Request for calling the API to get metadata for the NFT such as name, image and speed. The Chainlink oracle used for making GET request from the API is [Linkriver](https://linkriver.io/)
+Visit the [Custom API](https://github.com/DineshBS44/Turtis-API) github repo https://github.com/DineshBS44/Turtis-API to know more about the Random Turtle Image generation and usage of `nft.storage`
+<br><br>
 
-The metadata for the NFT is stored in IPFS using the Custom API and it returns the IPFS Hash to the smart contract using Chainlink Oracles.
+<img src="screenshots/chainlink-logo.png" alt="center" width="40" height="40"><br>
 
-The DApp also acts as an NFT store. The users can buy and sell NFTs inside the DApp.
+`ChainlinkClient` contract is used to create a Request for calling the API to get metadata for the NFT such as name, image and speed. The Chainlink oracle used for making GET request from the API is [Linkriver](https://linkriver.io/)
+<br>
+
+![Tracks](screenshots/tracks_2.png)
+
+The metadata for the NFT is stored in `FlieCoin` and `IPFS` using `nft.storage` using the [Custom API](https://github.com/DineshBS44/Turtis-API) and it returns the IPFS Hash to the smart contract using Chainlink Oracles.
+<br>
+
+<img src="screenshots/polygon-matic-logo.png" alt="center" width="40" height="40"><br>
+
+The DApp(Decentralized Application) which includes the Game is deployed to the `MATIC Mumbai Testnet`
+
+Users can select any Turtle from the Turtles they own and play the game. The DApp also has an <b>NFT marketplace</b>. The users can buy and sell their NFTs inside the DApp.
 
 ## Turtis contract
 
-<a href="https://mumbai.polygonscan.com/address/0x39c328b3ff8296CBdBf1917204103f71D7436226">Click here</a> to view the Turtis contract on Polygonscan
+<a href="https://mumbai.polygonscan.com/address/0x22Ebc23a695F4fEcE850cEb8a38Df95BBf1011d5#contracts">Click here</a> to view the Turtis contract on Polygonscan
 
-The contract <a href="https://mumbai.polygonscan.com/address/0x39c328b3ff8296CBdBf1917204103f71D7436226#code">code</a> has been verified and it is visible on `mumbai.polygonscan.com`
+The contract <a href="https://mumbai.polygonscan.com/address/0x22Ebc23a695F4fEcE850cEb8a38Df95BBf1011d5#code">code</a> has been verified and it is visible on `mumbai.polygonscan.com`
 
 ## TurtisGameUserAuth contract
 
 <a href="https://mumbai.polygonscan.com/address/0x87D83BBE86A224d5B27e330a9d5D1D62EC710512">Click here</a> to view the TurtisGameUserAuth contract on Polygonscan
 
 The contract <a href="https://mumbai.polygonscan.com/address/0x87D83BBE86A224d5B27e330a9d5D1D62EC710512#code">code</a> has been verified and it is visible on `mumbai.polygonscan.com`
-
-## The DApp User Interface
-
-![DApp](screenshots/dapp_turtis.png)
 
 ## Built With
 
@@ -48,7 +59,9 @@ The contract <a href="https://mumbai.polygonscan.com/address/0x87D83BBE86A224d5B
 - [Solidity](https://docs.soliditylang.org/en/v0.8.6/) - The most popular language for writing smart contracts
 - [Phaser](https://phaser.io/) - An open source framework for building browser based games
 - [ReactJS](https://reactjs.org/) - A JavaScript library for building user interfaces
+- [nft.storage](https://nft.storage/) - Free decentralized storage and bandwidth for NFTs on IPFS and Filecoin.
 - [IPFS](https://ipfs.io/) - P2P network for storing and sharing files in a distributed file system
+- [Filecoin](https://filecoin.io/) - A decentralized storage network to store humanity's most important information
 - [Truffle Framework](http://truffleframework.com/) - Truffle is the most popular development framework for Ethereum with a mission to make your life a whole lot easier
 - [Alchemy](https://docs.alchemy.com/alchemy/documentation/apis/polygon-api) - To access a node which connects with Ethereum Blockchain on the Polygon Mumbai Testnet
 - [Remix - Solidity IDE](https://remix.ethereum.org/) - To compile, test and deploy faster using Javascript VM
@@ -57,6 +70,10 @@ The contract <a href="https://mumbai.polygonscan.com/address/0x87D83BBE86A224d5B
 - [Open Zeppelin ](https://openzeppelin.org/) - Open source Library of pre-built contracts
 - [Metamask](https://metamask.io/) - Wallet Provider
 - [Polygonscan](https://mumbai.polygonscan.com/) - View and keep track of transactions happening around a smart contract as well as view its code, read and write stuff to it
+
+## The DApp User Interface
+
+![DApp](screenshots/turtis_dapp_2.png)
 
 ## Getting Started
 
