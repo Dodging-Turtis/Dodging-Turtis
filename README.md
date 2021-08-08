@@ -2,11 +2,13 @@
 
 We created an NFT game which runs on the MATIC network in the Ethereum Blockchain and is powered by decentralized Chainlink Oracles.
 
+![Tracks](screenshots/tracks_no_bg_2.png)
+
 ## Information about the project
 
 The game involves a Turtle character who dodges through the platforms coming towards it with increasing speed. The NFT here is the Turtle character.
 
-![Game](screenshots/turtis_game.png)
+![Game](screenshots/turtis_game_no_bg_1.png)
 
 The player is rewarded with a new random Turtle NFT everytime a new checkpoint score is reached by the user. Higher the score achieved for a new checkpoint, higher the `speed` of the NFT character that the user receives as a reward. More speed allows the player to move faster through the platforms and reach high score easily. Users would like to own NFTs with higher speed and hence it acts a selling point.
 
@@ -37,10 +39,6 @@ The contract <a href="https://mumbai.polygonscan.com/address/0x87D83BBE86A224d5B
 ## The DApp User Interface
 
 ![DApp](screenshots/dapp_turtis.png)
-
-![Game](screenshots/turtis_game_bg_2.png)
-
-![Game](screenshots/turtis_game.png)
 
 ## Built With
 
