@@ -6,7 +6,9 @@ We created an NFT game which runs on MATIC network in the Ethereum Blockchain an
 
 The game involves a Turtle character who dodges through the platforms coming towards it with increasing speed. The NFT here is the Turtle character.
 
-A new NFT is given to the user as a reward everytime a new checkpoint score is reached by the user. Higher the score achieved for a new checkpoint, higher the speed of the NFT character that the user receives as a reward. More speed allows the player to move faster through the platforms and reach high score easily. Users would like to own NFTs with higher speed and hence it acts a selling point.
+![Game](screenshots/turtis_game.png)
+
+A new Turtle NFT is given to the user as a reward everytime a new checkpoint score is reached by the user. Higher the score achieved for a new checkpoint, higher the speed of the NFT character that the user receives as a reward. More speed allows the player to move faster through the platforms and reach high score easily. Users would like to own NFTs with higher speed and hence it acts a selling point.
 
 The NFTs are dynamic. Every new Turtle NFT has a unique name, randomized image and a random speed which is ranged according to the score achieved by the user. ERC721 standard is used for implementing the NFT.
 
