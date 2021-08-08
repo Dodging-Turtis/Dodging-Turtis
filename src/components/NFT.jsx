@@ -7,7 +7,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const { state, setState } = useContext(GameContext);
   const [name, setName] = useState('Default Turtle');
   const [image, setImage] = useState('/assets/character.png');
-  const [speed, setSpeed] = useState(500);
+  const [speed, setSpeed] = useState(100);
   const [nftPrice, setNftPrice] = useState(price);
   const [loading, setLoading] = useState(true);
 
