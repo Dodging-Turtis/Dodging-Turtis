@@ -47,6 +47,10 @@ Users can select any Turtle from the Turtles they own and play the game. The DAp
 
 ![Store](screenshots/turtis_dapp_store.png)
 
+## Working Demo of our DApp
+
+The Application frontend is deployed to https://dodgingturtis.netlify.app/. Make sure you have Metamask installed in your browser and connect it to MATIC Mumbai Testnet using the Custom RPC option. Also, get some MATIC from the Faucet.
+
 ## Turtis contract
 
 <a href="https://mumbai.polygonscan.com/address/0x22Ebc23a695F4fEcE850cEb8a38Df95BBf1011d5#contracts">Click here</a> to view the Turtis contract on Polygonscan
