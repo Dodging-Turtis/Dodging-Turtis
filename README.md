@@ -1,6 +1,6 @@
 # Dodging Turtis
 
-An NFT game which runs on MATIC network in the Ethereum Blockchain and is powered by Chainlink Oracles.
+We created an NFT game which runs on MATIC network in the Ethereum Blockchain and is powered by Chainlink Oracles.
 
 ## Information about the project
 
@@ -30,7 +30,11 @@ The contract <a href="https://mumbai.polygonscan.com/address/0x87D83BBE86A224d5B
 
 ## The DApp User Interface
 
-![Home Page](screenshots/dapp_turtis.png)
+![DApp](screenshots/dapp_turtis.png)
+
+![Game](screenshots/turtis_game_bg_2.png)
+
+![Game](screenshots/turtis_game.png)
 
 ## Built With
 
@@ -70,7 +74,7 @@ If you don't have Truffle installed, run the following command:
 npm install -g truffle
 ```
 
-Please make sure that the Metamask wallet is connected to the MATIC Mumbai TestNet and has some MATIC tokens.
+Please make sure that the Metamask wallet is connected to the `MATIC Mumbai Testnet` and has some MATIC tokens.
 
 ### Installing
 
