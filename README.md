@@ -1,14 +1,14 @@
 # Dodging Turtis
 
-We created an NFT based game which runs on the `MATIC` network in the `Ethereum` Blockchain and is powered by decentralized `Chainlink` Oracles.
+We created an NFT based game which runs on the `POLYGON` network in the `Ethereum` Blockchain and is powered by decentralized `Chainlink` Oracles.
 
 ![Tracks](screenshots/tracks.png)
 
-## Information about the project
+## About the project
 
 The game involves a Turtle character who dodges through the platforms coming towards it with increasing speed. The NFT here is the Turtle character. Everytime a row of blocks are dodged by the turtle, <b>10 points</b> are added to the score. Inorder to dodge through the blocks, the Turtle can move left or right using the arrow keys. The speed of the left and right movement of the Turtle varies for each Turtle NFT. The game is really fun to play and it can get really challenging as the speed of the platforms increase with time.
 
-<img src="screenshots/turtis_game_no_bg_1.png" alt="center" width="1050" height="450">
+![Turtis](screenshots/turtis_game_no_bg_1.png)
 
 The player is rewarded with a new random Turtle NFT everytime a new checkpoint score is reached by the user. The checkpoint score is atleast 110 more than the previous high score of the player.
 
@@ -19,6 +19,8 @@ The NFTs are dynamic. Every new Turtle NFT has a unique name, randomized image a
 ### Some of the randomly generated Turtles are as follows:
 
 ![Turtis](screenshots/turtis_2.png)
+
+![Turtis](screenshots/turtis_ex.png)
 
 Visit the [Custom API](https://github.com/DineshBS44/Turtis-API) github repo https://github.com/DineshBS44/Turtis-API to know more about the Random Turtle Image generation and usage of `nft.storage`
 <br><br>
@@ -37,7 +39,9 @@ The metadata for the NFT is stored in `FlieCoin` and `IPFS` using `nft.storage` 
 
 The DApp(Decentralized Application) which includes the Game is deployed to the `MATIC Mumbai Testnet`
 
-Users can select any Turtle from the Turtles they own and play the game. The DApp also has an <b>NFT marketplace</b>. The users can buy and sell their NFTs inside the DApp.
+Users can select any Turtle from the Turtles they own and play the game. The DApp also has an <b>NFT marketplace</b>. The users can buy and sell their NFTs inside the DApp. The users can also see the NFTs that are owned by other users even if they are not for sale.
+
+![Store](screenshots/turtis_dapp_store.png)
 
 ## Turtis contract
 
