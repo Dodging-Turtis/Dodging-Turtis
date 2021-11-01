@@ -1,5 +1,3 @@
-import '../styles/Loader.css';
-
 const Loading = () => {
   return (
     <div id='loadingProgressG'>

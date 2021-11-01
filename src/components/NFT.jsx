@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { GameContext } from '../utils/web3';
 import Load from './Load';
-import '../styles/NFT.css';
 
 const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const { state, setState } = useContext(GameContext);

@@ -1,5 +1,3 @@
-import '../styles/Footer.css';
-
 function Footer() {
   return (
     <div className='container-fluid position-fixed bottom-0 start-50 translate-middle-x footer'>

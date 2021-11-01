@@ -1,15 +1,14 @@
 import { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import Loading from '../pages/Loader';
+import { useRouter } from 'next/router';
+import Loading from '../src/components/Loader';
 import Web3 from 'web3';
 
-import { GameContext } from '../utils/web3';
-import SmartContract from '../abis/Turtis.json';
-import '../styles/landing.css';
+import { GameContext } from '../src/utils/web3';
+import SmartContract from '../src/abis/Turtis.json';
 
 const Landing = () => {
   const { state, setState } = useContext(GameContext);
-  const history = useHistory();
+  const router = useRouter();
 
   const initWeb3 = async () => {
     if (window.ethereum) {
@@ -31,7 +30,7 @@ const Landing = () => {
             highScore: '0',
             loaded: true,
           });
-          history.push('/play');
+          router.push('/home');
         }
       } catch (e) {
         alert(e);

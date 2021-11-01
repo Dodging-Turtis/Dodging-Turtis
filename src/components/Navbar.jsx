@@ -1,21 +1,22 @@
-import '../styles/Navbar.module.css';
-import { useHistory } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import { GameContext } from '../utils/web3';
 import { useContext } from 'react';
 
 function Navbar() {
-  const history = useHistory();
+  const router = useRouter();
   const { state, setState } = useContext(GameContext);
   return (
     <div>
       <nav className='navbar'>
         <div className=' store  container-fluid' style={{ fontSize: '50px' }}>
-          <i
+          <button
             className='fas fa-store-alt '
             onClick={() => {
-              history.push('/Store');
-            }}></i>
-          <i
+              router.push('/store');
+            }}>
+            store
+          </button>
+          <button
             className='fas fa-play'
             onClick={() => {
               state.contract.methods
@@ -26,9 +27,11 @@ function Navbar() {
                   setState({ ...state, highScore });
                   if (localStorage.getItem('highScore') == null)
                     localStorage.setItem('highScore', parseInt(highScore));
-                  history.push('/game');
+                  router.push('/game');
                 });
-            }}></i>
+            }}>
+            play
+          </button>
         </div>
       </nav>
     </div>

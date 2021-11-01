@@ -1,8 +1,8 @@
 import React from 'react';
-import { GameContext } from '../utils/web3';
+import { GameContext } from '../src/utils/web3';
 import { useContext, useEffect } from 'react';
-import NFT from '../components/NFT';
-import Load from '../components/Load';
+import NFT from '../src/components/NFT';
+import Load from '../src/components/Load';
 
 const Store = () => {
   const { state, setState } = useContext(GameContext);

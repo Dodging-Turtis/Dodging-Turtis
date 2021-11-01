@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Phaser from 'phaser';
+import { useRouter } from 'next/router';
 import { IonPhaser } from '@ion-phaser/react';
+import Phaser from 'phaser';
+
+import { GameContext } from '../src/utils/web3';
+import GameScene from '../src/scenes/GameScene';
 import styles from '../styles/Game.module.css';
-import GameScene from '../scenes/GameScene';
-import { GameContext } from '../utils/web3';
-import { useHistory } from 'react-router-dom';
 
 const gameConfig = {
   width: '100%',
@@ -19,7 +20,7 @@ const gameConfig = {
 
 const Game = () => {
   const { state } = useContext(GameContext);
-  const history = useHistory();
+  const router = useRouter();
   const [init, setInit] = useState(false);
   const [ended, setEnded] = useState(false);
   const [game, setGame] = useState(null);
@@ -93,7 +94,7 @@ const Game = () => {
       }
       if (ended) {
         console.log('rerouting');
-        history.push('/play');
+        router.push('/home');
       }
     }
   }, [state.loaded, init]);
