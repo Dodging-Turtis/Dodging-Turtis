@@ -2,7 +2,7 @@
 
 We created an NFT based game which runs on the `POLYGON` network in the `Ethereum` Blockchain and is powered by decentralized `Chainlink` Oracles.
 
-![Tracks](screenshots/tracks.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/140104440-6cf7ed0d-5b7f-47ba-8b8a-f234504515e1.png)
 
 ## About the project
 
@@ -10,11 +10,13 @@ The game involves a Turtle character who dodges through the platforms coming tow
 
 Inorder to dodge through the blocks, the Turtle can move left or right using the arrow keys. The speed of the left and right movement of the Turtle varies for each Turtle NFT. The game is really fun to play and it can get really challenging as the speed of the platforms increase with time.
 
-![Turtis](screenshots/turtis_game_no_bg_1.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/140104554-1bd03532-92e7-470a-90a8-badf23fe72e5.png)
+
 
 The player is rewarded with a new random Turtle NFT everytime a new checkpoint score is reached by the user. The checkpoint score is atleast 110 more than the previous high score of the player.
 
-![Turtis](screenshots/turtis_game_all.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/140104603-71aafdbd-ff8e-4519-85c6-e8dd9bc579aa.png)
+
 
 Higher the score achieved for a new checkpoint, higher the `speed` of the NFT character that the user receives as a reward. More speed allows the player to move faster through the platforms and reach high score easily. Users would want to own NFTs with higher speed and hence it acts a selling point.
 
@@ -22,30 +24,33 @@ The NFTs are dynamic. Every new Turtle NFT has a unique name, randomized image a
 
 ### Some of the randomly generated Turtles are as follows:
 
-![Turtis](screenshots/turtis_2.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/140104676-36a49b28-a034-495b-9f18-ff7ed22ae127.png)
 
-![Turtis](screenshots/turtis_ex.png)
+
+![Turtis](https://user-images.githubusercontent.com/55662714/140104732-ee8a9c93-1b65-4c77-9595-d14c9712e159.png)
+
 
 Visit the [Custom API](https://github.com/DineshBS44/Turtis-API) github repo https://github.com/DineshBS44/Turtis-API to know more about the Random Turtle Image generation and usage of `nft.storage`
 <br><br>
 
-<img src="screenshots/chainlink-logo.png" alt="center" width="40" height="40"><br>
+<img src="https://user-images.githubusercontent.com/55662714/140104850-8c5c93dd-78bc-4cb0-805f-c5b9a40b20b1.png" alt="center" width="40" height="40"><br>
 
 `ChainlinkClient` contract is used to create a Request for calling the API to get metadata for the NFT such as name, image and speed. The Chainlink oracle used for making GET request from the API is [Linkriver](https://linkriver.io/)
 <br>
 
-![Tracks](screenshots/tracks_2.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/140104978-b4662328-fa0c-4e5f-84f5-d8c43bcaeef8.png)
+
 
 The metadata for the NFT is stored in `FlieCoin` and `IPFS` using `nft.storage` using the [Custom API](https://github.com/DineshBS44/Turtis-API) and it returns the IPFS Hash to the smart contract using Chainlink Oracles.
 <br>
 
-<img src="screenshots/polygon-matic-logo.png" alt="center" width="40" height="40"><br>
+<img src="https://user-images.githubusercontent.com/55662714/140105023-1ef74225-422d-461a-8fed-4e08c4120b49.png" alt="center" width="40" height="40"><br>
 
 The DApp(Decentralized Application) which includes the Game is deployed to the `MATIC Mumbai Testnet`
 
 Users can select any Turtle from the Turtles they own and play the game. The DApp also has an <b>NFT marketplace</b>. The users can buy and sell their NFTs inside the DApp. The users can also see the NFTs that are owned by other users even if they are not for sale.
 
-![Store](screenshots/turtis_dapp_store.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/140105117-08ecfea2-a6d0-4c92-806e-ba7c8667df65.png)
 
 ## Working Demo of our DApp
 
@@ -85,7 +90,7 @@ The contract <a href="https://mumbai.polygonscan.com/address/0x87D83BBE86A224d5B
 
 ## The DApp User Interface
 
-![DApp](screenshots/turtis_dapp_2.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/140105241-1eb1c085-7e99-45b6-89f6-5a6f83086ef1.png)
 
 ## Getting Started
 
