@@ -1,55 +1,32 @@
 {
-  "name": "eth",
-  "version": "0.1.0",
+  "name": "turtis",
   "private": true,
-  "dependencies": {
-    "@chainlink/contracts": "^0.1.9",
-    "@chainlink/test-helpers": "^0.0.5",
-    "@ion-phaser/react": "^1.3.0",
-    "@openzeppelin/contracts": "^3.4.1",
-    "@openzeppelin/test-helpers": "^0.5.10",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@truffle/hdwallet-provider": "^1.4.1",
-    "chai": "^4.3.4",
-    "depcheck": "^1.4.2",
-    "dotenv": "^10.0.0",
-    "phaser": "^3.55.2",
-    "prettier": "^2.3.2",
-    "prettier-plugin-solidity": "^1.0.0-beta.17",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "solhint": "^3.3.6",
-    "truffle": "^5.4.0",
-    "truffle-plugin-verify": "^0.5.11",
-    "web-vitals": "^1.0.1",
-    "web3": "^1.4.0"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "@ion-phaser/react": "^1.3.0",
+    "@reduxjs/toolkit": "^1.6.2",
+    "axios": "^0.24.0",
+    "next": "12.0.2",
+    "phaser": "^3.55.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.6",
+    "web3": "^1.6.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@chainlink/contracts": "^0.2.2",
+    "@openzeppelin/contracts": "^4.3.2",
+    "@truffle/hdwallet-provider": "^1.5.1",
+    "@types/node": "16.11.6",
+    "@types/react": "17.0.33",
+    "dotenv": "^10.0.0",
+    "eslint": "7",
+    "eslint-config-next": "12.0.2",
+    "typescript": "4.4.4"
   }
 }

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import { GameContext } from '../utils/web3';
 
 const Layout = ({ children }) => {
-  const history = useHistory();
-  const location = useLocation();
+  const router = useRouter();
 
   const [state, setState] = useState({
     web3: null,
@@ -17,9 +16,9 @@ const Layout = ({ children }) => {
   });
 
   useEffect(() => {
-    if (!state.loaded && location.pathname !== '/') {
+    if (!state.loaded && router.asPath !== '/') {
       alert('wallet not connected');
-      history.push('/');
+      router.push('/');
     }
 
     if (state.loaded) {

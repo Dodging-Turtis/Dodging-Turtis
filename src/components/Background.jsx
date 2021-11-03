@@ -1,4 +1,3 @@
-import '../styles/Background.css';
 function Background() {
   return (
     <div className='front-page-bg'>

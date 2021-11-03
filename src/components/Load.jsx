@@ -1,5 +1,3 @@
-import '../styles/Load.css';
-
 function Load() {
   return (
     <div className='lds-roller'>
