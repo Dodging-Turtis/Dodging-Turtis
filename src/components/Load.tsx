@@ -1,4 +1,4 @@
-function Load() {
+const Load = () => {
   return (
     <div className='lds-roller'>
       <div></div>
@@ -11,6 +11,6 @@ function Load() {
       <div></div>
     </div>
   );
-}
+};
 
 export default Load;

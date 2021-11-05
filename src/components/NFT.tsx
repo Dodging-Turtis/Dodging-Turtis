@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { GameContext } from '../utils/web3';
 import Load from './Load';
 
-const NFT = ({ nft: { url, price, page, tokenId } }) => {
+const NFT = ({ nft: { url, price, page, tokenId } }: { nft: INft }) => {
   const { state, setState } = useContext(GameContext);
   const [name, setName] = useState('Default Turtle');
   const [image, setImage] = useState('/assets/character.png');
@@ -46,10 +46,11 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   }, []);
 
   const publishNft = async () => {
-    price = prompt('Enter the Amount in MATIC');
+    const input = prompt('Enter the Amount in MATIC');
+    const price = input ?? '0';
     if (tokenId === -1) {
       alert('cannot publish default nft!');
-    } else if (price != null && price > 0) {
+    } else if (parseFloat(price) > 0) {
       const priceInWie = state.web3.utils.toWei(price, 'ether');
       try {
         await state.contract.methods
@@ -59,7 +60,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
             gasPrice: state.web3.utils.toWei('50', 'Gwei'),
             gas: 60000,
           });
-        setNftPrice(price);
+        setNftPrice(parseFloat(price));
       } catch (error) {
         console.log(error);
       }
@@ -69,10 +70,7 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
   const buyNft = () => {
     state.contract.methods.buyTurtle(tokenId).send({
       from: state.account,
-      value: state.web3.utils.toWei(
-        (parseFloat(price) + 0.0001).toString(),
-        'ether'
-      ),
+      value: state.web3.utils.toWei((price + 0.0001).toString(), 'ether'),
       gasPrice: state.web3.utils.toWei('50', 'Gwei'),
       gas: 150000,
     });
@@ -163,23 +161,21 @@ const NFT = ({ nft: { url, price, page, tokenId } }) => {
       <div
         className='card bg-light text-black nft-card'
         style={{ visibility: loading ? 'hidden' : 'visible' }}>
-        <center>
-          {tokenId !== state.selectedNFT.tokenId || page === 'store'
-            ? nftImage
-            : selectedNftImage}
+        {tokenId !== state.selectedNFT.tokenId || page === 'store'
+          ? nftImage
+          : selectedNftImage}
+        <div
+          style={{
+            color: '#000',
+          }}>
           <div
-            style={{
-              color: '#000',
-            }}>
-            <div
-              style={{ fontSize: '25px', margin: '1%' }}
-              className='d-flex justify-content-between'>
-              <div className='p-2'>{name}</div>
-              <div className='p-2'> {speed}</div>
-            </div>
-            <div>{isPublished() ? publishedComp : notPublishedComp}</div>
+            style={{ fontSize: '25px', margin: '1%' }}
+            className='d-flex justify-content-between'>
+            <div className='p-2'>{name}</div>
+            <div className='p-2'> {speed}</div>
           </div>
-        </center>
+          <div>{isPublished() ? publishedComp : notPublishedComp}</div>
+        </div>
       </div>
     </div>
   );

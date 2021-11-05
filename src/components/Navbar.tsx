@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { GameContext } from '../utils/web3';
 import { useContext } from 'react';
 
-function Navbar() {
+const Navbar = () => {
   const router = useRouter();
   const { state, setState } = useContext(GameContext);
   return (
@@ -22,11 +22,11 @@ function Navbar() {
               state.contract.methods
                 .userAddressToHighScore(state.account)
                 .call()
-                .then((highScore) => {
+                .then((highScore: string) => {
                   if (highScore.length === 0) highScore = '0';
                   setState({ ...state, highScore });
                   if (localStorage.getItem('highScore') == null)
-                    localStorage.setItem('highScore', parseInt(highScore));
+                    localStorage.setItem('highScore', highScore);
                   router.push('/game');
                 });
             }}>
@@ -36,6 +36,6 @@ function Navbar() {
       </nav>
     </div>
   );
-}
+};
 
 export default Navbar;
