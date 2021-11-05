@@ -1,8 +1,15 @@
 import { GameContext } from '../utils/web3';
 import { useContext, useEffect } from 'react';
-import NFT from '../components/NFT';
-import Load from '../components/Load';
-import Footer from '../components/Footer';
+import NFT from './NFT';
+import Load from './Load';
+import Footer from './Footer';
+
+interface INft {
+  url: string;
+  price: number;
+  page: string;
+  tokenId: number;
+}
 
 function Start() {
   const { state, setState } = useContext(GameContext);
@@ -39,7 +46,7 @@ function Start() {
 
   const items =
     state.userNfts.length > 0 ? (
-      state.userNfts.map((nft) => <NFT key={nft.tokenId} nft={nft} />)
+      state.userNfts.map((nft: INft) => <NFT key={nft.tokenId} nft={nft} />)
     ) : (
       <div className='container-fluid position-absolute top-50 start-50 translate-middle'>
         <Load />
@@ -48,18 +55,16 @@ function Start() {
 
   return (
     <div className='container-fluid bg'>
-      <center>
-        <div className='start' style={{ marginBottom: '5%' }}>
-          <b>
-            <h1>NFT's Connected to your wallet</h1>
-          </b>
-        </div>
-        <div
-          className='d-flex justify-content-center'
-          style={{ flexWrap: 'wrap', marginBottom: '10%' }}>
-          {items}
-        </div>
-      </center>
+      <div className='start' style={{ marginBottom: '5%' }}>
+        <b>
+          <h1>NFT&apos;s Connected to your wallet</h1>
+        </b>
+      </div>
+      <div
+        className='d-flex justify-content-center'
+        style={{ flexWrap: 'wrap', marginBottom: '10%' }}>
+        {items}
+      </div>
       <Footer />
     </div>
   );

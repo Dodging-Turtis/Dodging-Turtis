@@ -1,4 +1,4 @@
-function Background() {
+const Background = () => {
   return (
     <div className='front-page-bg'>
       <div className='image ' style={{ maxHeight: '500px', maxWidth: '400px' }}>
@@ -30,6 +30,6 @@ function Background() {
       </div>
     </div>
   );
-}
+};
 
 export default Background;

@@ -1,4 +1,4 @@
-function Footer() {
+const Footer = () => {
   return (
     <div className='container-fluid position-fixed bottom-0 start-50 translate-middle-x footer'>
       <div className='row'>
@@ -12,12 +12,10 @@ function Footer() {
         <div className='col-2'>
           <h2 style={{ color: '#242d3c' }}>Dodging Turtis</h2>
         </div>
-        <center>
-          <div className='col-12'>Made with 🖤 by DTech</div>
-        </center>
+        <div className='col-12'>Made with 🖤 by DTech</div>
       </div>
     </div>
   );
-}
+};
 
 export default Footer;

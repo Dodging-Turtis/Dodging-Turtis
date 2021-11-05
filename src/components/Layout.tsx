@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { GameContext } from '../utils/web3';
 
-const Layout = ({ children }) => {
+const Layout: React.FC = ({ children }) => {
   const router = useRouter();
 
   const [state, setState] = useState({
@@ -20,13 +20,7 @@ const Layout = ({ children }) => {
       alert('wallet not connected');
       router.push('/');
     }
-
-    if (state.loaded) {
-      state.contract.events.NewTurtleGenerated((err, event) => {
-        if (event) alert('random turtle generated');
-      });
-    }
-  }, [state.loaded]);
+  }, [state.loaded, router]);
 
   return (
     <GameContext.Provider value={{ state, setState }}>

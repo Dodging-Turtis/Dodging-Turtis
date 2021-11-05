@@ -5,9 +5,9 @@ import Phaser from 'phaser';
 
 import { GameContext } from '../src/utils/web3';
 import GameScene from '../src/scenes/GameScene';
-import styles from '../styles/Game.module.css';
+import styles from '../src/styles/Game.module.css';
 
-const gameConfig = {
+const gameConfig: any = {
   width: '100%',
   height: '100%',
   type: Phaser.AUTO,
@@ -23,10 +23,10 @@ const Game = () => {
   const router = useRouter();
   const [init, setInit] = useState(false);
   const [ended, setEnded] = useState(false);
-  const [game, setGame] = useState(null);
+  const [game, setGame] = useState<any>(null);
 
   const getInstance = () => {
-    if (game.instance) {
+    if (game?.instance) {
       return Promise.resolve(game.instance);
     } else {
       return new Promise((resolve) => {
@@ -35,14 +35,14 @@ const Game = () => {
             clearInterval(interval);
             resolve(game.instance);
           }
-        });
-      }, 300);
+        }, 300);
+      });
     }
   };
 
-  const endGame = (score, instance) => {
-    if (score > localStorage.getItem('highScore')) {
-      localStorage.setItem('highScore', score);
+  const endGame = (score: number, instance: any) => {
+    if (score > parseFloat(localStorage.getItem('highScore') ?? '0')) {
+      localStorage.setItem('highScore', '' + score);
     }
 
     const currHighScore = parseInt(state.highScore);

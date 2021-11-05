@@ -2,8 +2,8 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Loading from '../src/components/Loader';
 import Web3 from 'web3';
-
 import { GameContext } from '../src/utils/web3';
+import { AbiItem } from 'web3-utils';
 import SmartContract from '../src/abis/Turtis.json';
 
 const Landing = () => {
@@ -21,7 +21,10 @@ const Landing = () => {
           alert('Wrong network, please switch to the Matic Mumbai testnet!');
         else {
           const address = SmartContract.networks[netId].address;
-          const contract = new web3.eth.Contract(SmartContract.abi, address);
+          const contract = new web3.eth.Contract(
+            SmartContract.abi as AbiItem[],
+            address
+          );
           setState({
             ...state,
             web3,

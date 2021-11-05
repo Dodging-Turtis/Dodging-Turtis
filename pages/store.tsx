@@ -13,7 +13,7 @@ const Store = () => {
     }
   }, [state.loaded]);
 
-  const loadNftById = async (i) => {
+  const loadNftById = async (i: number) => {
     const nft = parseInt(await state.contract.methods.tokenByIndex(i).call());
     const price = state.web3.utils.fromWei(
       await state.contract.methods.turtlesForSale(nft).call(),
@@ -21,7 +21,7 @@ const Store = () => {
     );
     console.log('nft:' + nft);
     const url = await state.contract.methods.tokenURI(nft).call();
-    setState((state) => ({
+    setState((state: any) => ({
       ...state,
       nfts: [...state.nfts, { url, price, page: 'store', tokenId: nft }],
     }));
@@ -31,40 +31,36 @@ const Store = () => {
     state.contract.methods
       .totalSupply()
       .call()
-      .then((supply) => {
+      .then((supply: number) => {
         console.log(supply);
         for (let i = 0; i < supply; i++) {
           loadNftById(i);
         }
       })
-      .catch((e) => {
+      .catch(() => {
         console.log('nft fetch error');
       });
   };
 
   const items =
     state.nfts.length > 0 ? (
-      state.nfts.map((nft) => <NFT key={nft.tokenId} nft={nft} />)
+      state.nfts.map((nft: INft) => <NFT key={nft.tokenId} nft={nft} />)
     ) : (
       <div className='container-fluid position-absolute top-50 start-50 translate-middle'>
-        <center>
-          <Load />
-        </center>
+        <Load />
       </div>
     );
 
   return (
     <div>
-      <center>
-        <div style={{ fontSize: '50px' }}>
-          <i className='fas fa-store-alt '>Store</i>
-        </div>
-        <div
-          className='d-flex justify-content-center '
-          style={{ flexWrap: 'wrap' }}>
-          {items}
-        </div>
-      </center>
+      <div style={{ fontSize: '50px' }}>
+        <i className='fas fa-store-alt '>Store</i>
+      </div>
+      <div
+        className='d-flex justify-content-center '
+        style={{ flexWrap: 'wrap' }}>
+        {items}
+      </div>
     </div>
   );
 };
