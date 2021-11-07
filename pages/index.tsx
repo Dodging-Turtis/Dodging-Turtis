@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import Loading from '../src/components/Loader';
+import Loading from '../src/components/loader';
 import Web3 from 'web3';
 import { GameContext } from '../src/utils/web3';
 import { AbiItem } from 'web3-utils';
-import SmartContract from '../src/abis/Turtis.json';
+import SmartContract from '../truffle/abis/Turtis.json';
 
 const Landing = () => {
   const { state, setState } = useContext(GameContext);

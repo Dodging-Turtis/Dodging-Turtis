@@ -1,8 +1,8 @@
 import { GameContext } from '../utils/web3';
 import { useContext, useEffect } from 'react';
-import NFT from './NFT';
-import Load from './Load';
-import Footer from './Footer';
+import NFT from './nft';
+import Load from './load';
+import Footer from './footer';
 
 interface INft {
   url: string;

@@ -1,5 +1,5 @@
-import Navbar from '../src/components/Navbar';
-import Start from '../src/components/Start';
+import Navbar from '../src/components/navbar';
+import Start from '../src/components/start';
 
 const Home = () => {
   return (
