@@ -4,13 +4,6 @@ import NFT from './nft';
 import Load from './load';
 import Footer from './footer';
 
-interface INft {
-  url: string;
-  price: number;
-  page: string;
-  tokenId: number;
-}
-
 function Start() {
   const { state, setState } = useContext(GameContext);
 
