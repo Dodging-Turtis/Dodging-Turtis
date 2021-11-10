@@ -2,11 +2,16 @@
 pragma solidity ^0.6.6;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/cryptography/ECDSA.sol";
 
 contract Turtis is ERC721 {
+  using ECDSA for bytes32;
+
   address public contractOwner; // Owner of this contract
 
   address[] private users; // Address array to store all the users
+
+  address public signedWalletAddress;
 
   // Mapping from Token ID to Price
   mapping(uint256 => uint256) public turtlesForSale;
@@ -56,6 +61,37 @@ contract Turtis is ERC721 {
     userAddressToHighScore[_sender] = _highScore;
   }
 
+  function generateTurtle(
+    string memory _highScore,
+    string memory _tokenURI,
+    bytes memory _signature
+  ) public {
+    string memory message = string(
+      abi.encodePacked(
+        _highScore,
+        string(abi.encodePacked(msg.sender)),
+        _tokenURI
+      )
+    );
+
+    bytes32 hash = keccak256(
+      abi.encodePacked(
+        "\x19Ethereum Signed Message:\n32",
+        keccak256(abi.encodePacked(message))
+      )
+    );
+    address walletAddress = hash.recover(_signature);
+    require(walletAddress == signedWalletAddress, "Invalid signature");
+    require(
+      keccak256(bytes(userAddressToHighScore[msg.sender])) !=
+        keccak256(bytes(_highScore)),
+      "Already minted at this score before"
+    );
+    uint256 lastTokenId = totalSupply() - 1;
+    _safeMint(msg.sender, lastTokenId);
+    _setTokenURI(lastTokenId, _tokenURI);
+  }
+
   // Function 'buyTurtle' allows anyone to buy a turtle that is put up for sale
   function buyTurtle(uint256 _tokenId) public payable {
     require(turtlesForSale[_tokenId] > 0, "The Turtle should be up for sale");
@@ -92,6 +128,13 @@ contract Turtis is ERC721 {
   function setTokenURI(string memory _tokenURI) private {
     uint256 lastTokenId = totalSupply() - 1;
     _setTokenURI(lastTokenId, _tokenURI);
+  }
+
+  function setSignedWalletAddress(address _walletAddress)
+    public
+    onlyContractOwner
+  {
+    signedWalletAddress = _walletAddress;
   }
 
   // Function 'updateTokenURI' updates the Token URI for a specific Token
