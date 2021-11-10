@@ -2,17 +2,22 @@
 pragma solidity ^0.6.6;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/cryptography/ECDSA.sol";
 
 contract Turtis is ERC721 {
+  using ECDSA for bytes32;
+
   address public contractOwner; // Owner of this contract
 
   address[] private users; // Address array to store all the users
+
+  address public signedWalletAddress;
 
   // Mapping from Token ID to Price
   mapping(uint256 => uint256) public turtlesForSale;
 
   // Mapping from User address to high score
-  mapping(address => string) public userAddressToHighScore;
+  mapping(address => uint256) public userAddressToHighScore;
 
   // Events
 
@@ -48,12 +53,45 @@ contract Turtis is ERC721 {
   }
 
   // Function 'setHighScore' sets a new highScore for the user
-  function setHighScore(string memory _highScore, address _sender) internal {
-    bytes memory score = bytes(userAddressToHighScore[_sender]);
-    if (score.length == 0) {
+  function setHighScore(uint256 _newHighScore, address _sender) internal {
+    if (userAddressToHighScore[_sender] == 0) {
       users.push(_sender);
     }
-    userAddressToHighScore[_sender] = _highScore;
+    userAddressToHighScore[_sender] = _newHighScore;
+  }
+
+  // Function 'generateTurtle' mints a new Turtle NFT for the user
+  function generateTurtle(
+    uint256 _score,
+    string memory _tokenURI,
+    bytes memory _signature
+  ) public {
+    string memory message = string(
+      abi.encodePacked(
+        uint2str(_score),
+        string(abi.encodePacked(msg.sender)),
+        _tokenURI
+      )
+    );
+
+    bytes32 hash = keccak256(
+      abi.encodePacked(
+        "\x19Ethereum Signed Message:\n32",
+        keccak256(abi.encodePacked(message))
+      )
+    );
+    address walletAddress = hash.recover(_signature);
+    require(walletAddress == signedWalletAddress, "Invalid signature");
+    require(
+      _score > userAddressToHighScore[msg.sender],
+      "Already minted at this score before"
+    );
+    setHighScore(_score, msg.sender);
+    uint256 lastTokenId = totalSupply() - 1;
+    _safeMint(msg.sender, lastTokenId);
+    _setTokenURI(lastTokenId, _tokenURI);
+
+    emit NewTurtleGenerated(lastTokenId);
   }
 
   // Function 'buyTurtle' allows anyone to buy a turtle that is put up for sale
@@ -92,6 +130,41 @@ contract Turtis is ERC721 {
   function setTokenURI(string memory _tokenURI) private {
     uint256 lastTokenId = totalSupply() - 1;
     _setTokenURI(lastTokenId, _tokenURI);
+  }
+
+  // Function 'setSignedWalletAddress' sets the address of the wallet that signs the minting of the Turtle NFT
+  function setSignedWalletAddress(address _walletAddress)
+    public
+    onlyContractOwner
+  {
+    signedWalletAddress = _walletAddress;
+  }
+
+  // Function 'uint2str' converts a uint256 variable to a string variable
+  function uint2str(uint256 _i)
+    internal
+    pure
+    returns (string memory _uintAsString)
+  {
+    if (_i == 0) {
+      return "0";
+    }
+    uint256 j = _i;
+    uint256 len;
+    while (j != 0) {
+      len++;
+      j /= 10;
+    }
+    bytes memory bstr = new bytes(len);
+    uint256 k = len;
+    while (_i != 0) {
+      k = k - 1;
+      uint8 temp = (48 + uint8(_i - (_i / 10) * 10));
+      bytes1 b1 = bytes1(temp);
+      bstr[k] = b1;
+      _i /= 10;
+    }
+    return string(bstr);
   }
 
   // Function 'updateTokenURI' updates the Token URI for a specific Token
