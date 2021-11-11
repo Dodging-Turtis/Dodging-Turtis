@@ -105,7 +105,8 @@ contract Turtis is ERC721 {
       abi.encodePacked(
         uint2str(_score),
         string(abi.encodePacked(msg.sender)),
-        _tokenURI
+        _tokenURI,
+        uint2str(_tokenId)
       )
     );
 
