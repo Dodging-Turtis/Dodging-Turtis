@@ -15,7 +15,7 @@ export interface IRootState {
   walletConnected: boolean;
   accountName: string | null;
   accountAddress: string | null;
-  nftCount: 0;
+  nftCount: number;
   nftList: INft[];
   highScore: number;
   status: string;
