@@ -1,14 +1,23 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Loading from '../src/components/loader';
 import Web3 from 'web3';
 import { GameContext } from '../src/utils/web3';
 import { AbiItem } from 'web3-utils';
 import SmartContract from '../truffle/abis/Turtis.json';
+import { useAppDispatch, useAppSelector } from '../src/redux/store';
+import { initInfo } from '../src/redux/rootReducer';
 
 const Landing = () => {
   const { state, setState } = useContext(GameContext);
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { nftCount } = useAppSelector((state) => state);
+  console.log(nftCount);
+
+  useEffect(() => {
+    dispatch(initInfo());
+  }, [dispatch]);
 
   const initWeb3 = async () => {
     if (window.ethereum) {
