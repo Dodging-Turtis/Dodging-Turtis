@@ -35,12 +35,11 @@ export const connectToWallet = createAsyncThunk(
         if (netId !== NET_ID) alert('wrong network');
         else walletConnected = true;
       } catch (e) {
-        console.log(e);
+        console.error(e);
         alert('connection error');
       }
-    } else {
-      alert('wallet not detected');
-    }
+    } else alert('wallet not detected');
+
     return { walletAddress, walletConnected };
   }
 );
@@ -52,6 +51,7 @@ export const initInfo = createAsyncThunk(
     const address = SmartContract.networks[NET_ID].address;
     let nftCount = 0;
     let contract = null;
+
     try {
       contract = new state.web3.eth.Contract(
         SmartContract.abi as AbiItem[],
@@ -59,9 +59,39 @@ export const initInfo = createAsyncThunk(
       );
       nftCount = await contract.methods.totalSupply().call();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
+
     return { contract, nftCount };
+  }
+);
+
+export const fetchNftByPage = createAsyncThunk(
+  'state/fetchNftByPage',
+  async (page: number, { getState }) => {
+    const state = getState() as IRootState;
+    const promises: Promise<INft>[] = [];
+    const count = Math.min(state.nftCount, page * 6);
+
+    const loadNft = async (i: number): Promise<INft> => {
+      const price = parseFloat(
+        state.web3.utils.fromWei(
+          await state.contract?.methods.turtlesForSale(i).call(),
+          'ether'
+        )
+      );
+      const url = await state.contract?.methods.tokenURI(i).call();
+      return {
+        url,
+        price,
+        page: 'store',
+        tokenId: i,
+      };
+    };
+
+    for (let i = state.nftList.length; i < count; i++)
+      promises.push(loadNft(i));
+    return await Promise.all(promises);
   }
 );
 
@@ -79,6 +109,10 @@ export const rootSlice = createSlice({
       const { contract, nftCount } = action.payload;
       state.contract = contract;
       state.nftCount = nftCount;
+    });
+    builder.addCase(fetchNftByPage.fulfilled, (state, action) => {
+      const nfts = action.payload;
+      state.nftList.push(...nfts);
     });
   },
 });
