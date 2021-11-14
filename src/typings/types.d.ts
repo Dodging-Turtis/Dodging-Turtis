@@ -7,4 +7,6 @@ interface INft {
   price: number;
   page: string;
   tokenId: number;
+  attributes: object;
+  name: string;
 }

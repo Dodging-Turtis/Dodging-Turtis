@@ -14,7 +14,9 @@ const initialState: IRootState = {
   accountName: null,
   accountAddress: null,
   nftCount: 0,
+  userNftCount: 0,
   nftList: [],
+  userNftList: [],
   highScore: 0,
   status: 'loading',
 };
@@ -25,12 +27,16 @@ export const connectToWallet = createAsyncThunk(
     const state = getState() as IRootState;
     let walletAddress = null;
     let walletConnected = false;
+    let userNftCount = 0;
 
     if (window.ethereum) {
       try {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
         state.web3.setProvider(window.ethereum);
         walletAddress = (await state.web3.eth.getAccounts())[0];
+        userNftCount = await state.contract?.methods
+          .balanceOf(walletAddress)
+          .call();
         const netId = await state.web3.eth.net.getId();
         if (netId !== NET_ID) alert('wrong network');
         else walletConnected = true;
@@ -40,7 +46,7 @@ export const connectToWallet = createAsyncThunk(
       }
     } else alert('wallet not detected');
 
-    return { walletAddress, walletConnected };
+    return { walletAddress, walletConnected, userNftCount };
   }
 );
 
@@ -66,32 +72,74 @@ export const initInfo = createAsyncThunk(
   }
 );
 
+const fetchNft = async (
+  i: number,
+  state: IRootState,
+  page: string
+): Promise<INft | null> => {
+  try {
+    const url = await state.contract?.methods.tokenURI(i).call();
+    const price = parseFloat(
+      state.web3.utils.fromWei(
+        await state.contract?.methods.turtlesForSale(i).call(),
+        'ether'
+      )
+    );
+    const data = await (
+      await fetch(url.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/'))
+    ).json();
+
+    return {
+      price,
+      page,
+      tokenId: i,
+      attributes: data.attributes,
+      url: data.image,
+      name: data.name,
+    };
+  } catch (e) {
+    console.error('metadata fetch failed for nft ' + i + 'with error ' + e);
+    return null;
+  }
+};
+
 export const fetchNftByPage = createAsyncThunk(
   'state/fetchNftByPage',
   async (page: number, { getState }) => {
     const state = getState() as IRootState;
-    const promises: Promise<INft>[] = [];
+    const promises: Promise<INft | null>[] = [];
     const count = Math.min(state.nftCount, page * 6);
 
-    const loadNft = async (i: number): Promise<INft> => {
-      const price = parseFloat(
-        state.web3.utils.fromWei(
-          await state.contract?.methods.turtlesForSale(i).call(),
-          'ether'
-        )
-      );
-      const url = await state.contract?.methods.tokenURI(i).call();
-      return {
-        url,
-        price,
-        page: 'store',
-        tokenId: i,
-      };
-    };
-
     for (let i = state.nftList.length; i < count; i++)
-      promises.push(loadNft(i));
-    return await Promise.all(promises);
+      promises.push(fetchNft(i, state, 'store'));
+
+    return [...(await Promise.all(promises))].flatMap((nft) =>
+      nft ? [nft] : []
+    );
+  }
+);
+
+export const fetchUserNftByPage = createAsyncThunk(
+  'state/fetchUserNftByPage',
+  async (page: number, { getState }) => {
+    const state = getState() as IRootState;
+    const promises: Promise<INft | null>[] = [];
+    const count = Math.min(state.userNftCount, page * 6);
+
+    for (let i = state.userNftList.length; i < count; i++) {
+      promises.push(
+        (async (): Promise<INft | null> => {
+          const id = await state.contract?.methods
+            .tokenOfOwnerByIndex(state.accountAddress, i)
+            .call();
+          return await fetchNft(id, state, 'user');
+        })()
+      );
+    }
+
+    return [...(await Promise.all(promises))].flatMap((nft) =>
+      nft ? [nft] : []
+    );
   }
 );
 
@@ -101,9 +149,10 @@ export const rootSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(connectToWallet.fulfilled, (state, action) => {
-      const { walletAddress, walletConnected } = action.payload;
+      const { walletAddress, walletConnected, userNftCount } = action.payload;
       state.accountAddress = walletAddress ?? localStorage.getItem('address');
       state.walletConnected = walletConnected;
+      state.userNftCount = userNftCount;
     });
     builder.addCase(initInfo.fulfilled, (state, action) => {
       const { contract, nftCount } = action.payload;
@@ -113,6 +162,10 @@ export const rootSlice = createSlice({
     builder.addCase(fetchNftByPage.fulfilled, (state, action) => {
       const nfts = action.payload;
       state.nftList.push(...nfts);
+    });
+    builder.addCase(fetchUserNftByPage.fulfilled, (state, action) => {
+      const nfts = action.payload;
+      state.userNftList.push(...nfts);
     });
   },
 });

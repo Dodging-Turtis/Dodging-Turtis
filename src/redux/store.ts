@@ -16,7 +16,9 @@ export interface IRootState {
   accountName: string | null;
   accountAddress: string | null;
   nftCount: number;
+  userNftCount: number;
   nftList: INft[];
+  userNftList: INft[];
   highScore: number;
   status: string;
 }
