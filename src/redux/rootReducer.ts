@@ -4,7 +4,9 @@ import type { IRootState } from './store';
 import type { AbiItem } from 'web3-utils';
 import SmartContract from '../../truffle/abis/Turtis.json';
 
-const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL ?? 'http://localhost:8085';
+const RPC_URL =
+  process.env.NEXT_PUBLIC_RPC_URL ??
+  'https://rpc-endpoints.superfluid.dev/mumbai';
 const NET_ID = 80001;
 
 const initialState: IRootState = {
