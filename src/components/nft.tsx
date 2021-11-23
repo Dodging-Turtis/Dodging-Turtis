@@ -1,14 +1,16 @@
-import { useContext, useEffect, useState } from 'react';
+import { memo, useContext, useEffect, useState } from 'react';
 import { GameContext } from '../utils/web3';
 import Load from './load';
 
-const NFT = ({ nft: { url, price, page, tokenId } }: { nft: INft }) => {
+const NFT = ({ nft: { url, price, page, tokenId, name } }: { nft: INft }) => {
   const { state, setState } = useContext(GameContext);
-  const [name, setName] = useState('Default Turtle');
-  const [image, setImage] = useState('/assets/character.png');
+  const [image, setImage] = useState(
+    url.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/')
+  );
   const [speed, setSpeed] = useState(100);
   const [nftPrice, setNftPrice] = useState(price);
   const [loading, setLoading] = useState(true);
+  console.log(tokenId);
 
   const nftClicked = () => {
     if (page === 'main') {
@@ -21,29 +23,8 @@ const NFT = ({ nft: { url, price, page, tokenId } }: { nft: INft }) => {
   };
 
   useEffect(() => {
-    if (url !== 'dummy') {
-      let parsedUrl = url.replace('ipfs://', 'https://');
-      parsedUrl = parsedUrl.replace(
-        '/metadata.json',
-        '.ipfs.cf-ipfs.com/metadata.json'
-      );
-      fetch(parsedUrl)
-        .then((data) => data.json())
-        .then((res) => {
-          let parsedImage = res.image.replace('ipfs://', 'https://');
-          parsedImage = parsedImage.replace(
-            '/character.png',
-            '.ipfs.cf-ipfs.com/character.png'
-          );
-          setName(res.name);
-          setImage(parsedImage);
-          setSpeed(parseFloat(res.attributes[0].value));
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, []);
+    if (image === 'dummy') setImage('/assets/character.png');
+  }, [image]);
 
   const publishNft = async () => {
     const input = prompt('Enter the Amount in MATIC');
@@ -181,4 +162,4 @@ const NFT = ({ nft: { url, price, page, tokenId } }: { nft: INft }) => {
   );
 };
 
-export default NFT;
+export default memo(NFT);
