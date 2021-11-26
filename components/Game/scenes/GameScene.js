@@ -1,6 +1,6 @@
-import Phaser from 'phaser';
+import { Scene } from 'phaser';
 
-class GameScene extends Phaser.Scene {
+class GameScene extends Scene {
   constructor() {
     super({ key: 'GameScene' });
   }
@@ -85,7 +85,7 @@ class GameScene extends Phaser.Scene {
       if (!this.ended) {
         alert('game over');
         this.ended = 1;
-        this.endGame(this.score, this.game);
+        this.endGame(this.score);
       }
     });
   }
