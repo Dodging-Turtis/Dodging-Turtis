@@ -1,6 +1,6 @@
 import { GameContext } from '../../src/utils/web3';
 import { useContext, useEffect } from 'react';
-import NFT from '../Nft';
+import NFT from '../NftCard';
 import Footer from '../Footer';
 
 const User = () => {

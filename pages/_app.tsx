@@ -1,14 +1,14 @@
-import { Provider } from 'react-redux';
 import type { AppProps } from 'next/app';
-import Layout from '../components/Layout';
-import { store } from '../src/redux/store';
+import { Provider } from 'react-redux';
+import { store } from '../src/redux';
+import Wrapper from '../components/Wrapper';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <Layout>
+      <Wrapper>
         <Component {...pageProps} />
-      </Layout>
+      </Wrapper>
     </Provider>
   );
 }

@@ -1,9 +1,3 @@
-import dynamic, { noSSR } from 'next/dynamic';
+import dynamic from 'next/dynamic';
 
-const GameScreen = dynamic(() => import('../components/Game'), { ssr: false });
-
-const Game = () => {
-  return GameScreen;
-};
-
-export default Game;
+export default dynamic(() => import('../components/Game'), { ssr: false });
