@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Loading from '../src/components/loader';
 import Web3 from 'web3';
 import { GameContext } from '../src/utils/web3';
 import { AbiItem } from 'web3-utils';
@@ -65,7 +64,6 @@ const Landing = () => {
           </h1>
           <h5>May the fastest turtle win</h5>
           <br></br>
-          <Loading />
           <br></br>
           <br></br>
           <button

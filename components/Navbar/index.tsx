@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { GameContext } from '../utils/web3';
+import { GameContext } from '../../src/utils/web3';
 import { useContext } from 'react';
 
 const Navbar = () => {

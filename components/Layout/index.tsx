@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { GameContext } from '../utils/web3';
+import { GameContext } from '../../src/utils/web3';
 
 const Layout: React.FC = ({ children }) => {
   const router = useRouter();

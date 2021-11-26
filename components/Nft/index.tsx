@@ -1,6 +1,5 @@
 import { memo, useContext, useEffect, useState } from 'react';
-import { GameContext } from '../utils/web3';
-import Load from './load';
+import { GameContext } from '../../src/utils/web3';
 
 const NFT = ({ nft: { url, price, page, tokenId, name } }: { nft: INft }) => {
   const { state, setState } = useContext(GameContext);
@@ -136,9 +135,7 @@ const NFT = ({ nft: { url, price, page, tokenId, name } }: { nft: INft }) => {
       }}>
       <div
         className='position-relative top-50 start-50 translate-middle'
-        style={{ display: loading ? 'block' : 'none', zIndex: 5 }}>
-        <Load />
-      </div>
+        style={{ display: loading ? 'block' : 'none', zIndex: 5 }}></div>
       <div
         className='card bg-light text-black nft-card'
         style={{ visibility: loading ? 'hidden' : 'visible' }}>

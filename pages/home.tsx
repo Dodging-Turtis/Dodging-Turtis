@@ -1,11 +1,11 @@
-import Navbar from '../src/components/navbar';
-import Start from '../src/components/start';
+import Navbar from '../components/Navbar';
+import User from '../components/User';
 
 const Home = () => {
   return (
     <div>
       <Navbar />
-      <Start />
+      <User />
     </div>
   );
 };

@@ -1,10 +1,9 @@
-import { GameContext } from '../utils/web3';
+import { GameContext } from '../../src/utils/web3';
 import { useContext, useEffect } from 'react';
-import NFT from './nft';
-import Load from './load';
-import Footer from './footer';
+import NFT from '../Nft';
+import Footer from '../Footer';
 
-function Start() {
+const User = () => {
   const { state, setState } = useContext(GameContext);
 
   useEffect(() => {
@@ -41,9 +40,7 @@ function Start() {
     state.userNfts.length > 0 ? (
       state.userNfts.map((nft: INft) => <NFT key={nft.tokenId} nft={nft} />)
     ) : (
-      <div className='container-fluid position-absolute top-50 start-50 translate-middle'>
-        <Load />
-      </div>
+      <div className='container-fluid position-absolute top-50 start-50 translate-middle'></div>
     );
 
   return (
@@ -61,6 +58,6 @@ function Start() {
       <Footer />
     </div>
   );
-}
+};
 
-export default Start;
+export default User;

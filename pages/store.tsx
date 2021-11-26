@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import NFT from '../src/components/nft';
-import Load from '../src/components/load';
+import NFT from '../components/Nft';
 import { useAppDispatch, useAppSelector } from '../src/redux/store';
 import { fetchNftByPage } from '../src/redux/rootReducer';
 
@@ -20,9 +19,7 @@ const Store = () => {
     nfts.length > 0 ? (
       nfts.map((nft: INft) => <NFT key={nft.tokenId} nft={nft} />)
     ) : (
-      <div className='container-fluid position-absolute top-50 start-50 translate-middle'>
-        <Load />
-      </div>
+      <div className='container-fluid position-absolute top-50 start-50 translate-middle'></div>
     );
 
   return (

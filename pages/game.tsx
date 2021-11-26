@@ -5,7 +5,6 @@ import Phaser from 'phaser';
 
 import { GameContext } from '../src/utils/web3';
 import GameScene from '../src/scenes/GameScene';
-import styles from '../src/styles/Game.module.css';
 
 const gameConfig: any = {
   width: '100%',
@@ -100,7 +99,11 @@ const Game = () => {
   }, [state.loaded, init]);
 
   return (
-    <IonPhaser game={game} initialize={init} className={styles.fullScreen} />
+    <IonPhaser
+      game={game}
+      initialize={init}
+      style={{ innerHeight: '100vh', overflow: 'hidden' }}
+    />
   );
 };
 
