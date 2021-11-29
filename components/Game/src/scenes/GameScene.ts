@@ -1,5 +1,5 @@
 import { CUSTOM_EVENTS } from '../cfg/constants/game-constants';
-import { IDataConfig } from '../cfg/interfaces/IDataConfig';
+import { IInitGameData } from '../cfg/interfaces/IInitGameData';
 import { AudioManager } from '../core/AudioManager';
 import { GameManager } from '../core/GameManager';
 import { UIManager } from '../core/UIManager';
@@ -17,13 +17,6 @@ export class GameScene extends AbstractScene {
 
   constructor() {
     super('game');
-  }
-
-  init(initData: { grs: GameResizer, dataConfig?: IDataConfig }) {
-    super.init(initData);
-    if (initData.dataConfig) {
-      console.warn('init game data config', initData.dataConfig);
-    }
   }
 
   preload(): void {
@@ -52,11 +45,11 @@ export class GameScene extends AbstractScene {
 
   resizeAndRepositionElements(): void {
     if (this.grs.isPortrait && this.preloadDone) {
+      this.landscapeOrientation.resizeAndRepositionElements();
       this.landscapeOrientation.showScreen();
       return;
     }
     if (this.preloadDone) {
-      this.landscapeOrientation.resizeAndRepositionElements();
       this.landscapeOrientation.hideScreen();
       if (!this.elementsCreated) {
         this.createGameElements();

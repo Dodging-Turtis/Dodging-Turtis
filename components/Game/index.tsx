@@ -14,7 +14,7 @@ const GameScreen = () => {
   const [ended, setEnded] = useState(false);
   const router = useRouter();
   const parentEl = useRef<HTMLDivElement>(null);
-  const game = useGame(parentEl);
+  const { game, grs } = useGame(parentEl);
 
   const endGameCB = useCallback(
     (score: number) => {
@@ -47,10 +47,13 @@ const GameScreen = () => {
     if (state.loaded) {
       if (game && !ended) {
         console.log('starting game');
-        game.scene.scenes[0].events.emit('start-game', {
-          turtleUrl: state.selectedNFT.image,
-          playerSpeed: state.selectedNFT.speed / 100,
-          endGameCB,
+        game.scene.start('boot', {
+          grs,
+          initGameData: {
+            turtleUrl: state.selectedNFT.image,
+            playerSpeed: state.selectedNFT.speed / 100,
+            endGameCB,
+          }
         });
       }
       if (ended) {
@@ -58,7 +61,7 @@ const GameScreen = () => {
         router.push('/home');
       }
     }
-  }, [game, state, ended, endGameCB, router]);
+  }, [game, state, ended, router]);
 
   return <div ref={parentEl} style={{ height: '100vh', overflow: 'hidden' }} />;
 };

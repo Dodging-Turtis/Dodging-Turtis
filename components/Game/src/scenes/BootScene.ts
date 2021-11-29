@@ -1,12 +1,13 @@
 import { AbstractScene } from './AbstractScene';
 import { AssetsPreloader } from '../utils/AssetPreloader';
 import { AudioManager } from '../core/AudioManager';
-import { IDataConfig } from '../cfg/interfaces/IDataConfig';
+import { IInitGameData } from '../cfg/interfaces/IInitGameData';
+import { GameResizer } from '../utils/GameResizer';
+import { CAM_CENTER } from '../cfg/constants/design-constants';
 
 export class BootScene extends AbstractScene {
   assetsPreloader: AssetsPreloader;
 
-  dataConfig!: IDataConfig;
 
   constructor() {
     super('boot');
@@ -17,14 +18,6 @@ export class BootScene extends AbstractScene {
   preload(): void {
     // Load all loading bar related assets here assets here
     this.assetsPreloader.loadBootSceneAssets();
-    this.events.once('start-game', ({ turtleUrl, playerSpeed, endGameCB }: { [key: string]: any }) => {
-      console.warn('config received', turtleUrl);
-      this.loadTurtle(turtleUrl);
-      this.dataConfig = {
-        playerSpeed,
-        endGameCB
-      }
-    });
   }
 
   loadTurtle(turtleUrl: string) {
@@ -38,15 +31,26 @@ export class BootScene extends AbstractScene {
   }
 
   create(): void {
+
+    this.showLogo();
+
     this.audioManager = new AudioManager(this);
     this.audioManager.initBootAudio();
 
     this.handleLoadingProgress();
     this.handleSceneExit();
     // To load main game assets
-    this.assetsPreloader.loadGameSceneAssets();
+    this.assetsPreloader.loadGameSceneAssets(this.initGameData.turtleUrl);
 
     // create the loading bar
+  }
+
+  showLogo(): void {
+    const glow = this.add.image(CAM_CENTER.x, CAM_CENTER.y, 'logo');
+    glow.setTintFill(0xffffff);
+    glow.setScale(1.05);
+    glow.setAlpha(1);
+    const logo = this.add.image(CAM_CENTER.x, CAM_CENTER.y, 'logo');
   }
 
   private handleLoadingProgress(): void {
@@ -62,11 +66,9 @@ export class BootScene extends AbstractScene {
 
   private handleSceneExit(): void {
     this.load.on('complete', () => {
-      if (!!this.dataConfig) {
-        this.turnOffResizeHandler();
-        this.assetsPreloader.createAnimations();
-        this.scene.start('game', { grs: this.grs, dataConfig: this.dataConfig });
-      }
+      this.turnOffResizeHandler();
+      this.assetsPreloader.createAnimations();
+      this.scene.start('game', { grs: this.grs, initGameData: this.initGameData });
     });
   }
 }

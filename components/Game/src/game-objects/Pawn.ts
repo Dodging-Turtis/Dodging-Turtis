@@ -20,7 +20,7 @@ export class Pawn extends Phaser.GameObjects.Container {
   previousInputDirection: EInputDirection = EInputDirection.NONE;
   isDesktop = false;
 
-  pawnOrigScale = 0.25;
+  pawnOrigScale = 1;
 
   pawnMovementTween: Phaser.Tweens.Tween | null = null;
 
@@ -54,7 +54,7 @@ export class Pawn extends Phaser.GameObjects.Container {
     this.pawn.setOrigin(0.5);
     this.add(this.pawn);
   }
-  
+
 
   private addTouchListener(): void {
     this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {

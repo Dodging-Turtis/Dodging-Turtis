@@ -1,14 +1,14 @@
 import { CAM_CENTER } from '../cfg/constants/design-constants';
 import { TWEEN_EASING } from '../cfg/constants/static-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
-import { Background } from './Background';
+import { Water } from './Water';
 import { CollectiblesManager } from './Collectibles/CollectiblesManager';
 import { ObstacleManager } from './Obstacles/ObstacleManager';
 import { Overlay } from './Overlay';
 import { EInputDirection, Pawn } from './Pawn';
 import { PawnParticleTrail } from './PawnParticleTrail';
 import { RiverLines } from './RiverLines';
-import { Shore } from './Shore';
+import { BankManager } from './Banks/BankManager';
 
 const SPEED_INCREASE_THRESHOLD = 5000;
 const SPEED_INCREASE = 0.05;
@@ -20,11 +20,9 @@ export class GameComponents {
 
   grd: CanvasRenderingContext2D | null;
   scrollSpeedTween: Phaser.Tweens.Tween | null = null;
-
-
-  background: Background;
-  shore: Shore;
-  riverLines: RiverLines;
+  water: Water;
+  bankManager: BankManager;
+  // riverLines: RiverLines;
   pawnParticleTrail: PawnParticleTrail;
   obstacleManager: ObstacleManager;
   collectibleManager: CollectiblesManager;
@@ -46,9 +44,9 @@ export class GameComponents {
       this.grd = this.scene.sys.canvas.getContext('2d');
     }
 
-    this.background = new Background(this.scene);
-    this.shore = new Shore(this.scene);
-    this.riverLines = new RiverLines(this.scene);
+    this.water = new Water(this.scene);
+    this.bankManager = new BankManager(this.scene);
+    // this.riverLines = new RiverLines(this.scene);
     this.pawnParticleTrail = new PawnParticleTrail(this.scene);
     this.obstacleManager = new ObstacleManager(this.scene);
     this.collectibleManager = new CollectiblesManager(this.scene);
@@ -122,8 +120,7 @@ export class GameComponents {
   }
 
   resizeAndRepositionElements() {
-    this.background.resizeAndRepositionElements();
-    this.shore.resizeAndRepositionElements();
+    this.water.resizeAndRepositionElements();
     this.pawn.resizeAndRepositionElements();
     this.overlay.resizeAndRepositionElements();
   }
@@ -131,8 +128,9 @@ export class GameComponents {
   update(delta: number) {
     const scrollSpeed = delta * this.scrollSpeed
     this.pawn.update(delta);
-    this.shore.scroll(scrollSpeed);
-    this.riverLines.scroll(scrollSpeed);
+    this.water.scroll(scrollSpeed);
+    this.bankManager.scroll(scrollSpeed);
+    // this.riverLines.scroll(scrollSpeed);
     this.obstacleManager.update(scrollSpeed);
     this.collectibleManager.update(scrollSpeed);
     this.speedIncreaseThreshold -= delta;

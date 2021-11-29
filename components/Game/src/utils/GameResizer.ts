@@ -21,7 +21,7 @@ export class GameResizer {
   private _camResizer: CameraResizer;
 
   isPortrait: boolean;
-  resizerType: ResizerType = ResizerType.ZOOM_FIT_DPR;
+  resizerType: ResizerType = ResizerType.ZOOM_FIT;
 
   dpr = 0;
 

@@ -16,34 +16,47 @@ export class AssetsPreloader {
     this.scene.load.path = ASSETS_PREFIX_URL;
 
     this.scene.load.image('landscape-mode-white', 'landscape_mode_white.png');
+    this.scene.load.image('logo', 'logo.png');
   }
 
   // Requires use of this.scene.load.start in the case of calling anywhere outside a scene preload function.
-  loadGameSceneAssets(): void {
+  loadGameSceneAssets(turtleUrl: string): void {
     this.scene.load.path = ASSETS_PREFIX_URL;
-
-    this.scene.load.image('beach', 'beach.png');
-
-    // Trees
-    this.scene.load.path = `${ASSETS_PREFIX_URL}/shore/`;
-
-    for (let i = 1; i < 6; ++i) {
-      this.scene.load.image(`tree_${i}`, `tree_${i}.png`);
-    }
-    this.scene.load.image('two_trees', 'two_trees.png');
-
-    this.scene.load.path = ASSETS_PREFIX_URL;
-    // River Obstacles
-    this.scene.load.image('rock', 'rock.png');
-    this.scene.load.image('big_rock', 'big_rock.png');
-    this.scene.load.image('dock', 'dock.png');
-
-    // Decor
-    this.scene.load.image('orange_star_fish', 'orange_star_fish.png');
-    this.scene.load.image('blue_star_fish', 'blue_star_fish.png');
 
     // Turtle
+    // this.scene.load.image('turtle', turtleUrl);
     this.scene.load.image('turtle', 'turtle.png');
+
+    // BackDrop
+    this.scene.load.path = `${ASSETS_PREFIX_URL}back/`;
+
+    this.scene.load.image('water_1', 'water_1.png');
+
+    this.scene.load.image('left_bank_1', 'left_bank_1.png');
+    this.scene.load.image('left_grass_1', 'left_grass_1.png');
+
+    this.scene.load.image('right_bank_1', 'right_bank_1.png');
+    this.scene.load.image('right_grass_1', 'right_grass_1.png');
+
+    this.scene.load.image('fill_grass', 'fill_grass.png');
+
+    // Decor
+    this.scene.load.path = `${ASSETS_PREFIX_URL}decorations/`;
+    for (let i = 1; i <= 3; ++i) {
+      this.scene.load.image(`leaf_${i}`, `leaf_${i}.png`);
+    }
+
+    this.scene.load.path = `${ASSETS_PREFIX_URL}obstacles/`;
+    // River Obstacles
+    for (let i = 1; i <= 3; ++i) {
+      this.scene.load.image(`rock_${i}`, `rock_${i}.png`);
+      this.scene.load.image(`log_${i}`, `log_${i}.png`);
+    }
+
+    this.scene.load.path = ASSETS_PREFIX_URL;
+
+    this.scene.load.image('orange_star_fish', 'orange_star_fish.png');
+    this.scene.load.image('blue_star_fish', 'blue_star_fish.png');
 
     // Particles
     this.scene.load.image('bubble', 'bubble.png');
