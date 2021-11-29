@@ -1,3 +1,4 @@
+import { IInitGameData } from '../cfg/interfaces/IInitGameData';
 import type { AudioManager } from '../core/AudioManager';
 import type { GameResizer } from '../utils/GameResizer';
 
@@ -5,12 +6,15 @@ export abstract class AbstractScene extends Phaser.Scene {
   grs!: GameResizer;
   audioManager!: AudioManager;
 
+  initGameData!: IInitGameData ;
+
   abstract resizeAndRepositionElements(): void;
 
   // gets called on each scene init automatically
-  init(initData: { grs: GameResizer}): void {
-    console.warn(initData);
+  init(initData: { grs: GameResizer, initGameData: IInitGameData }): void {
+    console.warn("init", initData);
     this.grs = initData.grs;
+    this.initGameData = initData.initGameData;
     this.attachHandlers();
     this.grs.setCamera(this);
   }

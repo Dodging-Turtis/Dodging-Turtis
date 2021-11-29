@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import 'phaser';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { GameResizer } from '../src/utils/GameResizer';
 import { BootScene } from '../src/scenes/BootScene';
 import { GameScene } from '../src/scenes/GameScene';
@@ -21,47 +21,60 @@ const config: Phaser.Types.Core.GameConfig = {
 const addNewGame = (parent: HTMLDivElement) => {
   const newGame = new Phaser.Game({ ...config, parent });
   const gameResizer = new GameResizer(newGame);
-  window.addEventListener('resize', () => {
+
+  let resizeCB = () => {
     gameResizer.resize();
-  });
-  window.addEventListener('orientationchange', () => {
+  }
+  window.addEventListener('resize', resizeCB);
+
+  let orientationCB = () => {
     // Added a time delay since it's observed that devicePixelRatio updates the next frame
     setTimeout(() => {
       gameResizer.resize();
     }, 1);
-  });
+  }
 
-  newGame.scene.add('boot', BootScene, true, { grs: gameResizer });
+  window.addEventListener('orientationchange', orientationCB);
+
+  newGame.scene.add('boot', BootScene, false);
   newGame.scene.add('game', GameScene, false);
 
-  // const startInterval = setInterval(() => {
-    // if (newGame && newGame.scene && newGame.scene.scenes && newGame.scene.scenes[1]) {
-      // clearInterval(startInterval);
-      // (newGame.scene.scenes as AbstractScene[]).forEach((scene: AbstractScene) => {
-      //   scene.grs = gameResizer;
-      //   scene.attachHandlers();
-      // });
-      // newGame.scene.start('boot');
-    // }
-  // }, 50);
-
-  return newGame;
+  return {
+    newGame,
+    resizeRemCB: () => {
+      window.removeEventListener('resize', resizeCB);
+    },
+    orientationRemCB: () => {
+      window.removeEventListener('orientationchange', orientationCB);
+    },
+    grs: gameResizer
+  };
 }
 
 const useGame = (
   containerRef: React.RefObject<HTMLDivElement>
-): Phaser.Game | undefined => {
+): { game: Phaser.Game | undefined, grs: GameResizer | undefined } => {
   const [game, setGame] = useState<Phaser.Game>();
+  const resizeRemRef = useRef<Function>();
+  const orientationRemRef = useRef<Function>();
+  const grsRef = useRef<GameResizer>();
+
   useEffect(() => {
-    if (!game && containerRef.current) {
-      const newGame = addNewGame(containerRef.current);
+    if (containerRef.current && !game) {
+      const {newGame, resizeRemCB, orientationRemCB, grs} = addNewGame(containerRef.current);
+      resizeRemRef.current = resizeRemCB;
+      orientationRemRef.current = orientationRemCB;
+      grsRef.current = grs;
       setGame(newGame);
     }
     return () => {
-      game?.destroy(true);
+      console.warn('remove game and listeners');
+      game && game.destroy(true);
+      resizeRemRef.current && resizeRemRef.current();
+      orientationRemRef.current && orientationRemRef.current();
     };
-  }, [containerRef, game]);
-  return game;
+  }, [containerRef]);
+  return { game, grs: grsRef.current };
 };
 
 export default useGame;
