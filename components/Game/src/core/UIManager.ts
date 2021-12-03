@@ -1,5 +1,4 @@
-import { CUSTOM_EVENTS } from '../cfg/constants/game-constants';
-import { STAR_FISH_RADIUS } from '../game-objects/Collectibles/CollectiblesManager';
+import { CUSTOM_EVENTS, DEPTH } from '../cfg/constants/game-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
 import { HungerMeter } from '../ui-objects/HungerMeter';
 import { TapToPlay } from '../ui-objects/TapToPlay';
@@ -20,8 +19,8 @@ export class UIManager {
     this.scene = scene;
     this.gameManager = gameManager;
 
-    this.hungerMeter = new HungerMeter(this.scene);
-    this.tapToPlay = new TapToPlay(this.scene);
+    this.hungerMeter = new HungerMeter(this.scene).setDepth(DEPTH.ui);
+    this.tapToPlay = new TapToPlay(this.scene).setDepth(DEPTH.ui);
 
     this.addEventHandlers();
   }
@@ -33,6 +32,9 @@ export class UIManager {
     this.gameManager.gameComponents.pawn.on('pawn-dead', () => {
       this.hungerMeter.fillUpBar();
     });
+    this.gameManager.events.on('collected', (count: number) => {
+      this.hungerMeter.increaseHungerBar(count);
+    });
   }
 
   resizeAndRepositionElements(): void {
@@ -43,34 +45,10 @@ export class UIManager {
     if (this.gameManager.isGameStopped) {
       return;
     }
-    const collectedCount = this.getCollectedCount();
-    if (collectedCount > 0) {
-      this.hungerMeter.increaseHungerBar(collectedCount);
-    }
     this.hungerThreshold -= delta
     if (this.hungerThreshold <= 0) {
       this.hungerMeter.decreaseHungerBar();
       this.hungerThreshold = HUNGER_THRESHOLD;
     }
-  }
-
-  getCollectedCount() {
-    const pawn = this.gameManager.gameComponents.pawn;
-    const collidableCollectibles = this.gameManager.gameComponents.collectibleManager.getCollidableCollectibles();
-
-    let collectedCount = 0;
-    for (let i = 0; i < collidableCollectibles.length; ++i) {
-
-      let dx = (pawn.x + PAWN_RADIUS) - (collidableCollectibles[i].x + STAR_FISH_RADIUS);
-      let dy = (pawn.y + PAWN_RADIUS) - (collidableCollectibles[i].y + STAR_FISH_RADIUS);
-      let distance = Math.sqrt(dx * dx + dy * dy);
-
-      if (distance < PAWN_RADIUS + STAR_FISH_RADIUS) {
-          // collision detected!
-          collidableCollectibles[i].playConsumeTween();
-          ++collectedCount;
-      }
-    }
-    return collectedCount;
   }
 }

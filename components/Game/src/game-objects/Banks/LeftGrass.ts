@@ -40,7 +40,7 @@ export class LeftGrass extends Phaser.GameObjects.Container {
       let grass = this.grasses[i];
       this.grassShadows[i].setPosition(grass.x, grass.y);
       this.grassShadows[i].setOrigin(grass.originX, grass.originY);
-      this.grassShadows[i].setScale(1.01).setTint(0x000000).setAlpha(0.75);
+      this.grassShadows[i].setScale(1.01).setTint(0x000000).setAlpha(0.35);
     }
   }
 

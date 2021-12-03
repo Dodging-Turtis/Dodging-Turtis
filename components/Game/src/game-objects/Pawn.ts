@@ -13,6 +13,7 @@ export class Pawn extends Phaser.GameObjects.Container {
   pawn!: Phaser.GameObjects.Image;
   ripples: Array<Phaser.GameObjects.Arc> = [];
 
+  isGhost = false;
   cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
   isInputEnabled = true;
   speed = 0.25;
@@ -54,7 +55,6 @@ export class Pawn extends Phaser.GameObjects.Container {
     this.pawn.setOrigin(0.5);
     this.add(this.pawn);
   }
-
 
   private addTouchListener(): void {
     this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
@@ -186,7 +186,22 @@ export class Pawn extends Phaser.GameObjects.Container {
       scale: { from: 0, to: 1, ease: TWEEN_EASING.EXPO_EASE_OUT, duration: 250 },
       angle: { from: 0, to: 720, ease: TWEEN_EASING.SINE_EASE_OUT, duration: 500 },
       onComplete: () => {
+        this.playPawnGhostTween();
         this.emit('pawn-revived');
+        this.isInputEnabled = true;
+      }
+    })
+  }
+
+  playPawnGhostTween() {
+    this.isGhost = true;
+    this.scene.tweens.add({
+      targets: this,
+      alpha: { from: 1, to: 0.6, ease: TWEEN_EASING.QUAD_EASE_IN_OUT, duration: 250 },
+      yoyo: true,
+      repeat: 4,
+      onComplete: () => {
+        this.isGhost = false;
         this.isInputEnabled = true;
       }
     })
