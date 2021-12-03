@@ -2,13 +2,13 @@ import { CAM_CENTER } from '../cfg/constants/design-constants';
 import { TWEEN_EASING } from '../cfg/constants/static-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
 import { Water } from './Water';
-import { CollectiblesManager } from './Collectibles/CollectiblesManager';
 import { ObstacleManager } from './Obstacles/ObstacleManager';
 import { Overlay } from './Overlay';
 import { EInputDirection, Pawn } from './Pawn';
 import { PawnParticleTrail } from './PawnParticleTrail';
 import { RiverLines } from './RiverLines';
 import { BankManager } from './Banks/BankManager';
+import { DEPTH } from '../cfg/constants/game-constants';
 
 const SPEED_INCREASE_THRESHOLD = 5000;
 const SPEED_INCREASE = 0.05;
@@ -25,7 +25,6 @@ export class GameComponents {
   // riverLines: RiverLines;
   pawnParticleTrail: PawnParticleTrail;
   obstacleManager: ObstacleManager;
-  collectibleManager: CollectiblesManager;
   pawn: Pawn;
   overlay: Overlay;
 
@@ -49,9 +48,8 @@ export class GameComponents {
     // this.riverLines = new RiverLines(this.scene);
     this.pawnParticleTrail = new PawnParticleTrail(this.scene);
     this.obstacleManager = new ObstacleManager(this.scene);
-    this.collectibleManager = new CollectiblesManager(this.scene);
     this.pawn = new Pawn(this.scene);
-    this.overlay = new Overlay(this.scene);
+    this.overlay = new Overlay(this.scene).setDepth(DEPTH.overlay);
 
     this.pawnParticleTrail.emitter.startFollow(this.pawn);
 
@@ -132,7 +130,6 @@ export class GameComponents {
     this.bankManager.scroll(scrollSpeed);
     // this.riverLines.scroll(scrollSpeed);
     this.obstacleManager.update(scrollSpeed);
-    this.collectibleManager.update(scrollSpeed);
     this.speedIncreaseThreshold -= delta;
     if (this.speedIncreaseThreshold <= 0) {
       this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;

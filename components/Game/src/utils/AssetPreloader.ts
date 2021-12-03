@@ -1,3 +1,4 @@
+import { EASY_PREFABS } from '../cfg/constants/game-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
 
 const ASSETS_PREFIX_URL = 'assets/img/';
@@ -60,6 +61,18 @@ export class AssetsPreloader {
 
     // Particles
     this.scene.load.image('bubble', 'bubble.png');
+
+    this.scene.load.path = `assets/prefabs/`;
+
+    for (let i = 0; i < EASY_PREFABS.length; ++i) {
+      this.scene.load.json(EASY_PREFABS[i], `${EASY_PREFABS[i]}.json`)
+    }
+
+
+    this.scene.load.path = `${ASSETS_PREFIX_URL}ui/`;
+
+    this.scene.load.image('pause_button', 'pause.png');
+    this.scene.load.image('resume_button', 'resume.png');
 
 
     // this.scene.load.atlas('flares', 'flares.png', 'flares.json');
