@@ -8,6 +8,7 @@ import { EInputDirection, Pawn } from './Pawn';
 import { PawnParticleTrail } from './PawnParticleTrail';
 import { RiverLines } from './RiverLines';
 import { BankManager } from './Banks/BankManager';
+import { DEPTH } from '../cfg/constants/game-constants';
 
 const SPEED_INCREASE_THRESHOLD = 5000;
 const SPEED_INCREASE = 0.05;
@@ -48,7 +49,7 @@ export class GameComponents {
     this.pawnParticleTrail = new PawnParticleTrail(this.scene);
     this.obstacleManager = new ObstacleManager(this.scene);
     this.pawn = new Pawn(this.scene);
-    this.overlay = new Overlay(this.scene);
+    this.overlay = new Overlay(this.scene).setDepth(DEPTH.overlay);
 
     this.pawnParticleTrail.emitter.startFollow(this.pawn);
 

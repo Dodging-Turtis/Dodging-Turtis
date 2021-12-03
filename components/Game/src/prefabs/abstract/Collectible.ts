@@ -1,5 +1,5 @@
 import { CAM_CENTER } from "../../cfg/constants/design-constants";
-import { DEPTH } from "../../cfg/constants/game-constants";
+import { DEPTH, SHADOW_ALPHA } from "../../cfg/constants/game-constants";
 import { TWEEN_EASING } from "../../cfg/constants/static-constants";
 import { IPosition } from "../../cfg/interfaces/IPosition";
 import { AbstractScene } from "../../scenes/AbstractScene";
@@ -13,7 +13,7 @@ export class Collectible extends Phaser.GameObjects.Image {
         super(scene, x, y, texture);
         this.scene = scene;
         this.shadow = new Phaser.GameObjects.Image(scene, x - 15, y + 100, texture);
-        this.shadow.setTint(0x000000).setAlpha(0.1).setScale(1.1);
+        this.shadow.setTint(0x000000).setAlpha(SHADOW_ALPHA).setScale(1.1);
         this.depth = DEPTH.collectible;
         this.shadow.depth = DEPTH.shadow;
     }
@@ -23,7 +23,7 @@ export class Collectible extends Phaser.GameObjects.Image {
         this.setPosition(x, y);
         this.setScale(1).setAlpha(1).setVisible(true);
         this.shadow.setPosition(x - 15, y + 100);
-        this.shadow.setScale(1.1).setAlpha(0.1).setVisible(true);
+        this.shadow.setScale(1.1).setAlpha(SHADOW_ALPHA).setVisible(true);
     }
 
     playConsumeTween() {

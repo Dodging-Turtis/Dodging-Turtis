@@ -14,9 +14,10 @@ export class ObstacleGenerator {
     }
 
     getObstacleContainer(heat: number = 5, lastContainerTopEdge: number) {
-        let obs: ObstacleGroup | undefined = this.poolManager.get(EASY_PREFABS[0]);
+        let obsName = EASY_PREFABS[Math.floor(Math.random() * EASY_PREFABS.length)];
+        let obs: ObstacleGroup | undefined = this.poolManager.get(obsName);
         if (!obs) {
-            obs = this.generateObstacleContainer(heat, lastContainerTopEdge);
+            obs = this.generateObstacleContainer(heat, lastContainerTopEdge, obsName);
         }
         obs.position.y = lastContainerTopEdge - obs.contHeight * 0.5;
         obs.spawn();
@@ -29,7 +30,7 @@ export class ObstacleGenerator {
         this.poolManager.put(obs);
     }
 
-    private generateObstacleContainer(heat: number = 5, lastContainerTopEdge: number) {
-        return new ObstacleGroup(this.scene, CAM_CENTER.x, lastContainerTopEdge, EASY_PREFABS[0]);
+    private generateObstacleContainer(heat: number = 5, lastContainerTopEdge: number, obsName: string) {
+        return new ObstacleGroup(this.scene, CAM_CENTER.x, lastContainerTopEdge, obsName);
     }
 }

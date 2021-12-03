@@ -1,9 +1,9 @@
 {
     "contHeight": 720,
     "obstacles": [
-        { "type": "Rock", "x": -0.5, "y": 0},
-        { "type": "Rock", "x": 0, "y": 0},
-        { "type": "Rock", "x": 0.5, "y": 0}
+        { "type": "Rock", "x": -0.5, "y": 0, "texture": "rock_1" },
+        { "type": "Rock", "x": 0, "y": 0 },
+        { "type": "Rock", "x": 0.5, "y": 0, "texture": "rock_1" }
     ],
     "collectibles": [
         { "type": "StarFish", "x": 0, "y": -0.75},

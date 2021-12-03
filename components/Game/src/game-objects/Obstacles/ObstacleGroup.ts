@@ -2,8 +2,8 @@ import { CAM_CENTER } from "../../cfg/constants/design-constants";
 import { COLLECTIBLE_CONSTRUCTORS, COLLECTIBLE_TYPES, OBSTACLE_CONSTRUCTORS, OBSTACLE_TYPES } from "../../cfg/constants/game-constants";
 import { IPosition } from "../../cfg/interfaces/IPosition";
 import { AbstractScene } from "../../scenes/AbstractScene";
-import { Collectible } from "./Collectible";
-import { Obstacle } from "./Obstacle";
+import { Collectible } from "../../prefabs/abstract/Collectible";
+import { Obstacle } from "../../prefabs/abstract/Obstacle";
 
 export class ObstacleGroup extends Phaser.GameObjects.Group {
     scene: AbstractScene;
@@ -61,11 +61,16 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
         this.addCollectibles(prefabData.collectibles);
     }
 
-    private addObstacles(config: Array<{type: OBSTACLE_TYPES; x: number; y: number}>) {
+    private addObstacles(config: Array<{type: OBSTACLE_TYPES; x: number; y: number, texture: string | undefined}>) {
         console.warn('obstacles', config);
         const width = this.scene.grs.designDim.width * 0.5;
         for (let i = 0; i < config.length; ++i) {
-            const obs = new OBSTACLE_CONSTRUCTORS[config[i].type](this.scene, this.position.x + config[i].x * width, this.position.y + config[i].y * (this.contHeight * 0.5));
+            const obs = new OBSTACLE_CONSTRUCTORS[config[i].type](
+                this.scene,
+                this.position.x + config[i].x * width,
+                this.position.y + config[i].y * (this.contHeight * 0.5),
+                config[i].texture
+            );
             this.obstaclesPositions[i] = { x: config[i].x, y: config[i].y };
             this.obstacles[i] = obs;
             this.obstaclesShadow[i] = obs.shadow;

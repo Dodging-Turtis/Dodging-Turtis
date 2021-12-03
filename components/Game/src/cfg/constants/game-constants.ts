@@ -1,7 +1,7 @@
 // const purple = 0xd218ef;
 
-import { Rock } from "../../game-objects/Obstacles/Rock";
-import { StarFish } from "../../game-objects/Obstacles/StarFish";
+import { StarFish } from "../../prefabs/collectibles/StarFish";
+import { Rock } from "../../prefabs/rocks/Rock";
 
 // const redHex = '#ff0000';
 
@@ -25,8 +25,11 @@ export const DEPTH = {
   obstacle: 2,
   collectible: 3,
   player: 4,
+  overlay: 5,
   ui: 10,
 }
+
+export const SHADOW_ALPHA = 0.05;
 
 export const TAP_TO_PLAY_CONFIG = {
   fontSize: '48px',
@@ -46,7 +49,10 @@ export const CUSTOM_EVENTS = {
 };
 
 export const EASY_PREFABS = [
-  'rock-1-prefab'
+  'rock-1-prefab',
+  'rock-2-prefab',
+  'rock-3-prefab',
+  'rock-4-prefab',
 ]
 
 export const OBSTACLE_CONSTRUCTORS = {

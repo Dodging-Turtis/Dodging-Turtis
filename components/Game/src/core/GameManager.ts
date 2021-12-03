@@ -1,6 +1,6 @@
 import { EResizeState } from '../cfg/enums/EResizeState';
 import { GameComponents } from '../game-objects/GameComponents';
-import { Collectible } from '../game-objects/Obstacles/Collectible';
+import { Collectible } from '../prefabs/abstract/Collectible';
 import type { AbstractScene } from '../scenes/AbstractScene';
 
 export const PAWN_RADIUS = 20;
@@ -14,6 +14,7 @@ export class GameManager {
   currentResizeState: EResizeState;
 
   isGameStopped = false;
+  isGamePaused = false;
 
   constructor(scene: AbstractScene) {
     this.scene = scene;
@@ -34,12 +35,29 @@ export class GameManager {
     });
   }
 
+  handleDeath() {
+    this.isGameStopped = true;
+    this.gameComponents.handlePawnCollision();
+  }
+
+  handleGamePause() {
+    this.isGamePaused = true;
+    this.scene.tweens.pauseAll();
+    this.gameComponents.overlay.showOverlay();
+  }
+
+  handleGameResume() {
+    this.isGamePaused = false;
+    this.scene.tweens.resumeAll();
+    this.gameComponents.overlay.hideOverlay();
+  }
+
   resizeAndRepositionElements(): void {
     this.gameComponents.resizeAndRepositionElements();
   }
 
   update(delta: number) {
-    if (this.isGameStopped) {
+    if (this.isGameStopped || this.isGamePaused) {
       return;
     }
 
@@ -50,11 +68,6 @@ export class GameManager {
       return;
     }
 
-  }
-
-  handleDeath() {
-    this.isGameStopped = true;
-    this.gameComponents.handlePawnCollision();
   }
 
   checkCollision() {

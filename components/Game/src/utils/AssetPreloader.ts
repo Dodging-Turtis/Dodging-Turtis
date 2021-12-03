@@ -68,6 +68,13 @@ export class AssetsPreloader {
       this.scene.load.json(EASY_PREFABS[i], `${EASY_PREFABS[i]}.json`)
     }
 
+
+    this.scene.load.path = `${ASSETS_PREFIX_URL}ui/`;
+
+    this.scene.load.image('pause_button', 'pause.png');
+    this.scene.load.image('resume_button', 'resume.png');
+
+
     // this.scene.load.atlas('flares', 'flares.png', 'flares.json');
 
     // this.scene.load.spritesheet('win-particle', 'win/coin.png', {

@@ -1,6 +1,7 @@
 import { CUSTOM_EVENTS, DEPTH } from '../cfg/constants/game-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
 import { HungerMeter } from '../ui-objects/HungerMeter';
+import { PauseResumeButton } from '../ui-objects/PauseResumeButton';
 import { TapToPlay } from '../ui-objects/TapToPlay';
 import { GameManager, PAWN_RADIUS } from './GameManager';
 
@@ -9,6 +10,7 @@ export class UIManager {
   scene: AbstractScene;
   private gameManager: GameManager;
 
+  pauseResumeButton: PauseResumeButton;
   tapToPlay: TapToPlay;
   hungerMeter: HungerMeter;
 
@@ -19,6 +21,7 @@ export class UIManager {
     this.scene = scene;
     this.gameManager = gameManager;
 
+    this.pauseResumeButton = new PauseResumeButton(this.scene).setDepth(DEPTH.ui);
     this.hungerMeter = new HungerMeter(this.scene).setDepth(DEPTH.ui);
     this.tapToPlay = new TapToPlay(this.scene).setDepth(DEPTH.ui);
 
@@ -35,6 +38,13 @@ export class UIManager {
     this.gameManager.events.on('collected', (count: number) => {
       this.hungerMeter.increaseHungerBar(count);
     });
+    this.pauseResumeButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, (isPaused: boolean) => {
+      if (isPaused) {
+        this.gameManager.handleGamePause();
+      } else {
+        this.gameManager.handleGameResume();
+      }
+    });
   }
 
   resizeAndRepositionElements(): void {
@@ -42,7 +52,7 @@ export class UIManager {
   }
 
   update(delta: number): void {
-    if (this.gameManager.isGameStopped) {
+    if (this.gameManager.isGameStopped || this.gameManager.isGamePaused) {
       return;
     }
     this.hungerThreshold -= delta

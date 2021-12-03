@@ -1,4 +1,4 @@
-import { DEPTH } from "../../cfg/constants/game-constants";
+import { DEPTH, SHADOW_ALPHA } from "../../cfg/constants/game-constants";
 import { TWEEN_EASING } from "../../cfg/constants/static-constants";
 import { AbstractScene } from "../../scenes/AbstractScene";
 
@@ -7,17 +7,18 @@ export class Obstacle extends Phaser.GameObjects.Image {
     scene: AbstractScene;
 
     constructor(scene: AbstractScene, x: number, y: number, texture: string) {
-        super(scene, x, y, texture);
-        this.scene = scene;
-        this.shadow = new Phaser.GameObjects.Image(scene, x - 15, y + 100, texture);
-        this.shadow.setTint(0x000000).setAlpha(0.1).setScale(1.1);
-        this.depth = DEPTH.obstacle;
-        this.shadow.depth = DEPTH.shadow;
+      super(scene, x, y, texture);
+      // TODO: Handle collision bounds
+      this.scene = scene;
+      this.shadow = new Phaser.GameObjects.Image(scene, x - 15, y + 100, texture);
+      this.shadow.setTint(0x000000).setAlpha(SHADOW_ALPHA).setScale(1.1);
+      this.depth = DEPTH.obstacle;
+      this.shadow.depth = DEPTH.shadow;
     }
 
     resetObstacle(x: number, y: number) {
-        this.setPosition(x, y);
-        this.shadow.setPosition(x - 15, y + 100);
+      this.setPosition(x, y);
+      this.shadow.setPosition(x - 15, y + 100);
     }
 
     playScaleInOutTween() {
@@ -25,7 +26,7 @@ export class Obstacle extends Phaser.GameObjects.Image {
         targets: this,
         duration: 1000,
         yoyo: true,
-        ease: TWEEN_EASING.QUART_EASE_IN,
+        ease: TWEEN_EASING.SINE_EASE_OUT,
         scale: `+=${0.05}`,
         repeat: -1,
         delay: Math.random() * 500,
