@@ -1,5 +1,6 @@
 import { CUSTOM_EVENTS, DEPTH } from '../cfg/constants/game-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
+import { DistanceMeter } from '../ui-objects/DistanceMeter';
 import { HungerMeter } from '../ui-objects/HungerMeter';
 import { PauseResumeButton } from '../ui-objects/PauseResumeButton';
 import { TapToPlay } from '../ui-objects/TapToPlay';
@@ -11,6 +12,7 @@ export class UIManager {
   private gameManager: GameManager;
 
   pauseResumeButton: PauseResumeButton;
+  distanceMeter: DistanceMeter;
   tapToPlay: TapToPlay;
   hungerMeter: HungerMeter;
 
@@ -22,6 +24,7 @@ export class UIManager {
     this.gameManager = gameManager;
 
     this.pauseResumeButton = new PauseResumeButton(this.scene).setDepth(DEPTH.ui);
+    this.distanceMeter = new DistanceMeter(this.scene).setDepth(DEPTH.ui);
     this.hungerMeter = new HungerMeter(this.scene).setDepth(DEPTH.ui);
     this.tapToPlay = new TapToPlay(this.scene).setDepth(DEPTH.ui);
 
@@ -49,6 +52,9 @@ export class UIManager {
 
   resizeAndRepositionElements(): void {
     this.tapToPlay.resizeAndRepositionElements();
+    this.pauseResumeButton.resizeAndRepositionElements();
+    this.hungerMeter.resizeAndRepositionElements();
+    this.distanceMeter.resizeAndRepositionElements();
   }
 
   update(delta: number): void {
@@ -60,5 +66,6 @@ export class UIManager {
       this.hungerMeter.decreaseHungerBar();
       this.hungerThreshold = HUNGER_THRESHOLD;
     }
+    this.distanceMeter.updateDistance(this.gameManager.gameComponents.scrollSpeed);
   }
 }
