@@ -22,12 +22,12 @@ const Layout: React.FC = ({ children }) => {
     loaded: false,
   });
 
-  useEffect(() => {
-    if (!state.loaded && router.asPath !== '/') {
-      alert('wallet not connected');
-      // router.push('/');
-    }
-  }, [state.loaded, router]);
+  // useEffect(() => {
+  //   if (!state.loaded && router.asPath !== '/') {
+  //     alert('wallet not connected');
+  //     // router.push('/');
+  //   }
+  // }, [state.loaded, router]);
 
   return (
     <GameContext.Provider value={{ state, setState }}>
