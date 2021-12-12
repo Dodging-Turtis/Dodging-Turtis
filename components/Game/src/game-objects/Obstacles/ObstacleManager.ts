@@ -12,7 +12,6 @@ export class ObstacleManager {
   constructor(scene: AbstractScene) {
     this.scene = scene;
     this.obstacleGenerator = new ObstacleGenerator(this.scene);
-    this.generateGroupsInitially();
   }
 
   cullGroups() {

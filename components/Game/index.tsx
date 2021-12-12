@@ -63,7 +63,12 @@ const GameScreen = () => {
     // }
   }, [game, state, ended, router]);
 
-  return <div ref={parentEl} style={{ height: '100vh', overflow: 'hidden' }} />;
+  return (
+    <>
+      <div ref={parentEl} style={{ height: '100vh', overflow: 'hidden' }} />
+      <div id='font-hack'>.</div>
+    </>
+  );
 };
 
 export default GameScreen;

@@ -73,7 +73,9 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
             );
             this.obstaclesPositions[i] = { x: config[i].x, y: config[i].y };
             this.obstacles[i] = obs;
-            this.obstaclesShadow[i] = obs.shadow;
+            if (this.scene.renderer.type === Phaser.WEBGL) {
+                this.obstaclesShadow[i] = obs.shadow;
+            }
         }
     }
 
@@ -84,7 +86,9 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
             const collectible = new COLLECTIBLE_CONSTRUCTORS[config[i].type](this.scene, this.position.x + config[i].x * width, this.position.y + config[i].y * (this.contHeight * 0.5));
             this.collectiblesPositions[i] = { x: config[i].x, y: config[i].y };
             this.collectibles[i] = collectible;
-            this.collectiblesShadow[i] = collectible.shadow;
+            if (this.scene.renderer.type === Phaser.WEBGL) {
+                this.collectiblesShadow[i] = collectible.shadow;
+            }
         }
     }
 

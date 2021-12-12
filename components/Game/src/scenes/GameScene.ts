@@ -2,6 +2,7 @@ import { CUSTOM_EVENTS } from '../cfg/constants/game-constants';
 import { IInitGameData } from '../cfg/interfaces/IInitGameData';
 import { AudioManager } from '../core/AudioManager';
 import { GameManager } from '../core/GameManager';
+import { InputManager } from '../core/InputManager';
 import { UIManager } from '../core/UIManager';
 import { LandscapeOrientation } from '../ui-objects/LandscapeOrientation';
 import { GameResizer } from '../utils/GameResizer';
@@ -27,11 +28,10 @@ export class GameScene extends AbstractScene {
     this.elementsCreated = true;
     this.audioManager = new AudioManager(this);
     this.audioManager.initGameAudio();
+    this.inputManager = new InputManager(this);
     this.gameManager = new GameManager(this);
     this.uiManager = new UIManager(this, this.gameManager);
-    this.uiManager.tapToPlay.once('screen-tapped', () => {
-      // Start Game
-    });
+    this.uiManager.showTurtleSelection();
   }
 
   create(): void {
@@ -66,9 +66,8 @@ export class GameScene extends AbstractScene {
 
   update(time: number, delta: number): void {
     if (this.gameManager) {
+      this.inputManager.update(delta);
       this.gameManager.update(delta);
-    }
-    if (this.uiManager) {
       this.uiManager.update(delta);
     }
   }

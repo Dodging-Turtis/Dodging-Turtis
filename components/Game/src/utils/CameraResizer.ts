@@ -87,13 +87,13 @@ export class CameraResizer {
 
   private getDesignRes(): { width: number; height: number } {
     let designRes;
-    if (this.game.scale.gameSize.width <= this.game.scale.gameSize.height) {
-      designRes = DESIGN_RES.portrait;
-    } else {
-      designRes = DESIGN_RES.landscape;
-    }
-    return designRes;
-    // return DESIGN_RES.landscape;
+    // if (this.game.scale.gameSize.width <= this.game.scale.gameSize.height) {
+    //   designRes = DESIGN_RES.portrait;
+    // } else {
+    //   designRes = DESIGN_RES.landscape;
+    // }
+    // return designRes;
+    return DESIGN_RES.landscape;
   }
 
   private getZoom(): number {

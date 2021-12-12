@@ -1,3 +1,5 @@
+import { CUSTOM_EVENTS } from '../cfg/constants/game-constants';
+import { EInputDirection } from '../cfg/enums/EInputDirection';
 import { EResizeState } from '../cfg/enums/EResizeState';
 import { GameComponents } from '../game-objects/GameComponents';
 import { Collectible } from '../prefabs/abstract/Collectible';
@@ -19,24 +21,34 @@ export class GameManager {
   constructor(scene: AbstractScene) {
     this.scene = scene;
     this.events = new Phaser.Events.EventEmitter();
-    this.currentResizeState = EResizeState.GAME;
+    this.currentResizeState = EResizeState.SELECTION_MENU;
+    this.isGamePaused = true;
     this.gameComponents = new GameComponents(this.scene);
     this.resizeAndRepositionElements();
     this.addEventHandlers();
   }
 
   private addEventHandlers() {
-    this.gameComponents.pawn.on('pawn-dead', () => {
+    this.gameComponents.pawn.turtle.on(CUSTOM_EVENTS.PAWN_DEAD, () => {
       this.gameComponents.resetCamera();
     });
-    this.gameComponents.pawn.on('pawn-revived', () => {
+    this.gameComponents.pawn.turtle.on(CUSTOM_EVENTS.PAWN_REVIVED, () => {
       this.isGameStopped = false;
+      this.scene.inputManager.setInputEnabled(true);
       this.gameComponents.tweenScrollSpeedBackToUsual();
     });
   }
 
+  startGame() {
+    this.gameComponents.startGame();
+    this.currentResizeState = EResizeState.GAME;
+    this.isGamePaused = false;
+  }
+
   handleDeath() {
     this.isGameStopped = true;
+    this.scene.inputManager.setInputEnabled(false);
+    this.scene.inputManager.setInputDirection(EInputDirection.NONE);
     this.gameComponents.handlePawnCollision();
   }
 
@@ -63,11 +75,10 @@ export class GameManager {
 
     this.gameComponents.update(delta);
 
-    if (!this.gameComponents.pawn.isGhost && this.checkCollision()) {
+    if (!this.gameComponents.pawn.turtle.isGhost && this.checkCollision()) {
       this.handleDeath();
       return;
     }
-
   }
 
   checkCollision() {
@@ -80,8 +91,8 @@ export class GameManager {
     }
 
     for (let i = 0; i < collidableObstacles.length; ++i) {
-      let testX = pawn.x;
-      let testY = pawn.y;
+      let testX = pawn.turtle.x;
+      let testY = pawn.turtle.y;
       let posX = new Phaser.Math.Vector2();
       let posY = new Phaser.Math.Vector2();
       if (testX < collidableObstacles[i].getLeftCenter(posX).x) {
@@ -96,8 +107,8 @@ export class GameManager {
         testY = posY.y;     // bottom edge
       }
 
-      let distX = pawn.x - testX;
-      let distY = pawn.y - testY;
+      let distX = pawn.turtle.x - testX;
+      let distY = pawn.turtle.y - testY;
       let distance = Math.sqrt((distX * distX) + (distY * distY));
 
       if (distance <= PAWN_RADIUS) {
@@ -115,8 +126,8 @@ export class GameManager {
       if (collectibles[i].isConsumed) {
         continue;
       }
-      let dx = (pawn.x + PAWN_RADIUS) - (collectibles[i].x + COLLECTIBLE_RADIUS);
-      let dy = (pawn.y + PAWN_RADIUS) - (collectibles[i].y + COLLECTIBLE_RADIUS);
+      let dx = (pawn.turtle.x + PAWN_RADIUS) - (collectibles[i].x + COLLECTIBLE_RADIUS);
+      let dy = (pawn.turtle.y + PAWN_RADIUS) - (collectibles[i].y + COLLECTIBLE_RADIUS);
       let distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < PAWN_RADIUS + COLLECTIBLE_RADIUS) {

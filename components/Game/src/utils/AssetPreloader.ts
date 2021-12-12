@@ -27,6 +27,7 @@ export class AssetsPreloader {
     // Turtle
     // this.scene.load.image('turtle', turtleUrl);
     this.scene.load.image('turtle', 'turtle.png');
+    this.scene.load.image('black_overlay', 'black_overlay.png');
 
     // BackDrop
     this.scene.load.path = `${ASSETS_PREFIX_URL}back/`;
@@ -34,10 +35,10 @@ export class AssetsPreloader {
     this.scene.load.image('water_1', 'water_1.png');
 
     this.scene.load.image('left_bank_1', 'left_bank_1.png');
-    this.scene.load.image('left_grass_1', 'left_grass_1.png');
+    this.scene.load.image('grass_1', 'grass_1.png');
 
     this.scene.load.image('right_bank_1', 'right_bank_1.png');
-    this.scene.load.image('right_grass_1', 'right_grass_1.png');
+    this.scene.load.image('grass_1', 'grass_1.png');
 
     this.scene.load.image('fill_grass', 'fill_grass.png');
 
@@ -73,8 +74,24 @@ export class AssetsPreloader {
 
     this.scene.load.image('pause_button', 'pause.png');
     this.scene.load.image('resume_button', 'resume.png');
+    this.scene.load.image('core_ui', 'core_ui.png');
+    this.scene.load.image('hunger_bar_base', 'hunger_bar_base.png');
+    this.scene.load.image('hunger_bar_white', 'hunger_bar_white.png');
+    this.scene.load.image('hunger_bar_green', 'hunger_bar_green.png');
+    this.scene.load.image('hunger_bar_yellow', 'hunger_bar_yellow.png');
+    this.scene.load.image('hunger_bar_orange', 'hunger_bar_orange.png');
+    this.scene.load.image('hunger_bar_red', 'hunger_bar_red.png');
+    this.scene.load.image('left_arrow', 'left_arrow.png');
+    this.scene.load.image('start_button', 'start_button.png');
 
-
+    this.scene.load.path = `${ASSETS_PREFIX_URL}turtle_parts/`;
+    this.scene.load.image('eyes_1', 'eyes_1.png');
+    this.scene.load.image('head_1', 'head_1.png');
+    this.scene.load.image('left_foot_1', 'left_foot_1.png');
+    this.scene.load.image('left_hand_1', 'left_hand_1.png');
+    this.scene.load.image('tail_1', 'tail_1.png');
+    this.scene.load.image('in_shell_1', 'in_shell_1.png');
+    this.scene.load.image('out_shell_1', 'out_shell_1.png');
     // this.scene.load.atlas('flares', 'flares.png', 'flares.json');
 
     // this.scene.load.spritesheet('win-particle', 'win/coin.png', {

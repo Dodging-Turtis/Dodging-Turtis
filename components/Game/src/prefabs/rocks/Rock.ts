@@ -16,7 +16,9 @@ export class Rock extends Obstacle {
         if (!this.isSpecific) {
             let tex = `rock_${1 + Math.floor(Math.random() * 3)}`;
             this.setTexture(tex);
-            this.shadow.setTexture(tex);
+            if (this.hasShadow) {
+                this.shadow.setTexture(tex);
+            }
             console.warn('texture changed');
         }
       }

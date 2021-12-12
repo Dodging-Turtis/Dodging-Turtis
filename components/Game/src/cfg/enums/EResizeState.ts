@@ -1,4 +1,4 @@
 export const enum EResizeState {
   GAME,
-  MAIN_MENU,
+  SELECTION_MENU,
 }

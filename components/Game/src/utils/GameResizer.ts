@@ -21,15 +21,17 @@ export class GameResizer {
   private _camResizer: CameraResizer;
 
   isPortrait: boolean;
-  resizerType: ResizerType = ResizerType.ZOOM_FIT;
+  resizerType: ResizerType = ResizerType.ZOOM_FIT_DPR;
 
   dpr = 0;
 
-  constructor(game: Phaser.Game) {
+  constructor(game: Phaser.Game, dpr: number) {
     this.game = game;
 
     // Default: Landscape for the game. Change to portrait if the game is mainly designed in portrait
     const designRes = DESIGN_RES.portrait;
+
+    this.dpr = dpr;
 
     this._gameDesignSize = {
       width: designRes.width,
@@ -70,13 +72,13 @@ export class GameResizer {
     const w = window.innerWidth;
     const h = window.innerHeight;
 
-    if (w <= h) {
-      this._gameDesignSize.width = DESIGN_RES.portrait.width;
-      this._gameDesignSize.height = DESIGN_RES.portrait.height;
-    } else {
+    // if (w <= h) {
+    //   this._gameDesignSize.width = DESIGN_RES.portrait.width;
+    //   this._gameDesignSize.height = DESIGN_RES.portrait.height;
+    // } else {
       this._gameDesignSize.height = DESIGN_RES.landscape.height;
       this._gameDesignSize.width = DESIGN_RES.landscape.width;
-    }
+    // }
 
     this.isPortrait = w <= h;
 
@@ -88,10 +90,10 @@ export class GameResizer {
         this._gameDesignSize.height
       );
     } else if (this.resizerType === ResizerType.ZOOM_FIT) {
-      this.dpr = 1;
+      // this.dpr = 1;
       this._camResizer.preserveMainContentUsingZoom(w, h, this.dpr);
     } else if (this.resizerType === ResizerType.ZOOM_FIT_DPR) {
-      this.dpr = window.devicePixelRatio;
+      // this.dpr = window.devicePixelRatio;
       this._camResizer.preserveMainContentUsingZoom(w, h, this.dpr);
     }
   }

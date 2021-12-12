@@ -11,6 +11,8 @@ import { Rock } from "../../prefabs/rocks/Rock";
 
 // const black = 0x000000;
 
+export const GAME_FONT = "JosefinSans";
+
 export const BG_COLOR = 0x73B9EE;
 
 export const SHORE_WIDTH = 150;
@@ -39,13 +41,13 @@ export const TAP_TO_PLAY_CONFIG = {
 };
 
 export const CUSTOM_EVENTS = {
-  DICE_STOPPED: 'dice-stopped',
-  DICE_CLICKED: 'dice-clicked',
-  PAWN_CLICKED: 'pawn-clicked',
   BUTTON_CLICKED: 'button-clicked',
-  GAME_SELECTED: 'game-selected',
-  CANCEL_MATCH_MAKING: 'cancel-match-making',
-  IDLE_TIMER_ENDED: 'idle-timer-ended',
+  START_GAME: 'start-game',
+  ESCAPE: 'escape',
+  PAWN_SPAWNED: 'pawn-spawned',
+  PAWN_REVIVED: 'pawn-revived',
+  PAWN_DEAD: 'pawn-dead',
+  PAWN_STARVED: 'pawn-starved'
 };
 
 export const EASY_PREFABS = [

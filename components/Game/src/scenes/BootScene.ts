@@ -46,11 +46,11 @@ export class BootScene extends AbstractScene {
   }
 
   showLogo(): void {
-    const glow = this.add.image(CAM_CENTER.x, CAM_CENTER.y, 'logo');
-    glow.setTintFill(0xffffff);
-    glow.setScale(1.05);
-    glow.setAlpha(1);
-    const logo = this.add.image(CAM_CENTER.x, CAM_CENTER.y, 'logo');
+    // const glow = this.add.image(CAM_CENTER.x, CAM_CENTER.y, 'logo');
+    // glow.setTintFill(0xffffff);
+    // glow.setScale(1.05);
+    // glow.setAlpha(1);
+    const logo = this.add.image(CAM_CENTER.x, CAM_CENTER.y, 'logo').setScale(2);
   }
 
   private handleLoadingProgress(): void {
@@ -68,6 +68,7 @@ export class BootScene extends AbstractScene {
     this.load.on('complete', () => {
       this.turnOffResizeHandler();
       this.assetsPreloader.createAnimations();
+      console.warn('drawCount', (this.renderer as Phaser.Renderer.Canvas.CanvasRenderer).drawCount);
       this.scene.start('game', { grs: this.grs, initGameData: this.initGameData });
     });
   }
