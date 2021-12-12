@@ -5,25 +5,32 @@ import { IPosition } from "../../cfg/interfaces/IPosition";
 import { AbstractScene } from "../../scenes/AbstractScene";
 
 export class Collectible extends Phaser.GameObjects.Image {
-    shadow: Phaser.GameObjects.Image;
+    shadow!: Phaser.GameObjects.Image;
     scene: AbstractScene;
     isConsumed = false;
+    hasShadow = false;
 
     constructor(scene: AbstractScene, x: number, y: number, texture: string) {
         super(scene, x, y, texture);
         this.scene = scene;
-        this.shadow = new Phaser.GameObjects.Image(scene, x - 15, y + 100, texture);
-        this.shadow.setTint(0x000000).setAlpha(SHADOW_ALPHA).setScale(1.1);
+
         this.depth = DEPTH.collectible;
-        this.shadow.depth = DEPTH.shadow;
+        if (this.scene.renderer.type === Phaser.WEBGL) {
+          this.hasShadow = true;
+          this.shadow = new Phaser.GameObjects.Image(scene, x - 15, y + 100, texture);
+          this.shadow.setTint(0x000000).setAlpha(SHADOW_ALPHA).setScale(1.1);
+          this.shadow.depth = DEPTH.shadow;
+        }
     }
 
     resetCollectible(x: number, y: number) {
         this.isConsumed = false;
         this.setPosition(x, y);
         this.setScale(1).setAlpha(1).setVisible(true);
-        this.shadow.setPosition(x - 15, y + 100);
-        this.shadow.setScale(1.1).setAlpha(SHADOW_ALPHA).setVisible(true);
+        if (this.hasShadow) {
+          this.shadow.setPosition(x - 15, y + 100);
+          this.shadow.setScale(1.1).setAlpha(SHADOW_ALPHA).setVisible(true);
+        }
     }
 
     playConsumeTween() {
@@ -38,11 +45,15 @@ export class Collectible extends Phaser.GameObjects.Image {
         x: CAM_CENTER.x,
         y: CAM_CENTER.y + height * 0.45,
         onUpdate: () => {
-          this.shadow.setScale(this.scale * 1.1);
+          if (this.hasShadow) {
+            this.shadow.setScale(this.scale * 1.1);
+          }
         },
         onComplete: () => {
           this.setVisible(false);
-          this.shadow.setVisible(false);
+          if (this.hasShadow) {
+            this.shadow.setVisible(false);
+          }
         }
       })
     }
@@ -57,7 +68,9 @@ export class Collectible extends Phaser.GameObjects.Image {
         repeat: -1,
         delay: Math.random() * 500,
         onUpdate: () => {
-          this.shadow.setScale(this.scale * 1.1);
+          if (this.hasShadow) {
+            this.shadow.setScale(this.scale * 1.1);
+          }
         }
       });
     }

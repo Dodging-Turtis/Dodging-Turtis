@@ -4,9 +4,8 @@ import type { AbstractScene } from '../scenes/AbstractScene';
 import { Water } from './Water';
 import { ObstacleManager } from './Obstacles/ObstacleManager';
 import { Overlay } from './Overlay';
-import { EInputDirection, Pawn } from './Pawn';
+import { Pawn } from './Pawn';
 import { PawnParticleTrail } from './PawnParticleTrail';
-import { RiverLines } from './RiverLines';
 import { BankManager } from './Banks/BankManager';
 import { DEPTH } from '../cfg/constants/game-constants';
 
@@ -22,8 +21,6 @@ export class GameComponents {
   scrollSpeedTween: Phaser.Tweens.Tween | null = null;
   water: Water;
   bankManager: BankManager;
-  // riverLines: RiverLines;
-  pawnParticleTrail: PawnParticleTrail;
   obstacleManager: ObstacleManager;
   pawn: Pawn;
   overlay: Overlay;
@@ -45,26 +42,17 @@ export class GameComponents {
 
     this.water = new Water(this.scene);
     this.bankManager = new BankManager(this.scene);
-    // this.riverLines = new RiverLines(this.scene);
-    this.pawnParticleTrail = new PawnParticleTrail(this.scene);
     this.obstacleManager = new ObstacleManager(this.scene);
     this.pawn = new Pawn(this.scene);
     this.overlay = new Overlay(this.scene).setDepth(DEPTH.overlay);
+  }
 
-    this.pawnParticleTrail.emitter.startFollow(this.pawn);
-
-    this.pawn.on('direction', (direction: EInputDirection) => {
-      if (direction === EInputDirection.NONE) {
-        this.pawnParticleTrail.emitter.setAngle({ min: 65, max: 115 })
-      } else {
-        this.pawnParticleTrail.emitter.setAngle({ min: 0, max: 360 });
-      }
-    })
+  startGame() {
+    this.obstacleManager.generateGroupsInitially();
   }
 
   handlePawnCollision() {
     this.overlay.showOverlay();
-    this.pawnParticleTrail.emitter.stop();
     this.stopScrollTween();
     this.scrollSpeedBeforeDeath = this.scrollSpeed * 0.75;
     this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;
@@ -76,7 +64,7 @@ export class GameComponents {
   deathCameraEffects() {
     const currZoom = this.scene.cameras.main.zoom;
     this.scene.cameras.main.zoomTo(currZoom + 0.1, 500, TWEEN_EASING.SINE_EASE_IN);
-    this.scene.cameras.main.pan(CAM_CENTER.x - (CAM_CENTER.x - this.pawn.x) * 0.2, CAM_CENTER.y, 500, TWEEN_EASING.SINE_EASE_IN);
+    this.scene.cameras.main.pan(CAM_CENTER.x - (CAM_CENTER.x - this.pawn.turtle.x) * 0.2, CAM_CENTER.y, 500, TWEEN_EASING.SINE_EASE_IN);
     this.scene.cameras.main.shake(500, 0.005);
     window.navigator.vibrate(500);
   }
@@ -88,7 +76,6 @@ export class GameComponents {
     this.scene.cameras.main.pan(CAM_CENTER.x, CAM_CENTER.y, 500, TWEEN_EASING.SINE_EASE_OUT);
     this.scene.cameras.main.once('camerapancomplete', (camera: Phaser.Cameras.Scene2D.Camera) => {
       this.pawn.playPawnReviveTween();
-      this.pawnParticleTrail.emitter.start();
     });
   }
 
@@ -125,10 +112,9 @@ export class GameComponents {
 
   update(delta: number) {
     const scrollSpeed = delta * this.scrollSpeed
-    this.pawn.update(delta);
+    this.pawn.update(delta, scrollSpeed);
     this.water.scroll(scrollSpeed);
     this.bankManager.scroll(scrollSpeed);
-    // this.riverLines.scroll(scrollSpeed);
     this.obstacleManager.update(scrollSpeed);
     this.speedIncreaseThreshold -= delta;
     if (this.speedIncreaseThreshold <= 0) {

@@ -1,210 +1,139 @@
 import { CAM_CENTER } from '../cfg/constants/design-constants';
+import { CUSTOM_EVENTS, DEPTH } from '../cfg/constants/game-constants';
 import { TWEEN_EASING } from '../cfg/constants/static-constants';
+import { EInputDirection } from '../cfg/enums/EInputDirection';
 import type { AbstractScene } from '../scenes/AbstractScene';
+import { Turtle } from '../ui-objects/Turtle';
 
-export const enum EInputDirection {
-  RIGHT = 'RIGHT',
-  LEFT = 'LEFT',
-  NONE = 'NONE'
-}
 
-export class Pawn extends Phaser.GameObjects.Container {
+const RIPPLE_ALPHA_DEC = 0.01;
+const RIPPLE_SCALE_INC = 0.01;
+
+export class Pawn {
   scene: AbstractScene;
-  pawn!: Phaser.GameObjects.Image;
+  // events: Phaser.Events.EventEmitter;
+
+  turtle!: Turtle;
   ripples: Array<Phaser.GameObjects.Arc> = [];
 
-  isGhost = false;
-  cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
-  isInputEnabled = true;
   speed = 0.25;
-  inputDirection: EInputDirection = EInputDirection.NONE;
+
   previousInputDirection: EInputDirection = EInputDirection.NONE;
-  isDesktop = false;
-
-  pawnOrigScale = 1;
-
-  pawnMovementTween: Phaser.Tweens.Tween | null = null;
-
 
   constructor(scene: AbstractScene) {
-    super(scene, CAM_CENTER.x, CAM_CENTER.y + scene.grs.designDim.height * 0.3);
     this.scene = scene;
-
     this.addRipples();
     this.addPawn();
-    this.playMovementTween();
-    this.cursorKeys = this.scene.input.keyboard.createCursorKeys();
-    this.addTouchListener();
-    this.isDesktop = this.scene.game.device.os.desktop;
-    this.scene.add.existing(this);
   }
 
   private addRipples() {
-    for (let i = 0; i < 3; ++i) {
+    for (let i = 0; i < 10; ++i) {
       this.ripples[i] = this.scene.add.arc(0, 0, 75, 0, 360, false, 0xFFFFFF, 0);
-      this.ripples[i].setAlpha(0);
-      this.ripples[i].setScale(0.25 + i * 0.25);
-      this.ripples[i].setStrokeStyle(5, 0xFFFFFF, 0.5);
+      this.ripples[i].setAlpha(0.1 + i * 0.1);
+      this.ripples[i].setScale(0.1 + i * 0.1);
+      this.ripples[i].setStrokeStyle(5, 0xFFFFFF, 0.4);
+      this.ripples[i].setVisible(false);
     }
-    this.add(this.ripples);
   }
 
   private addPawn(): void {
-    this.pawn = this.scene.add.image(0, 0, 'turtle');
-    this.pawn.setScale(this.pawnOrigScale);
-    this.pawn.setOrigin(0.5);
-    this.add(this.pawn);
-  }
-
-  private addTouchListener(): void {
-    this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      const deltaX = pointer.x - pointer.camera.width * 0.5;
-      if (deltaX <= 0) {
-        this.handleInput(EInputDirection.LEFT);
-      } else {
-        this.handleInput(EInputDirection.RIGHT);
-      }
+    this.turtle = new Turtle(this.scene, CAM_CENTER.x, CAM_CENTER.y + this.scene.grs.designDim.height * 0.3);
+    this.turtle.setDepth(DEPTH.player);
+    this.turtle.setScale(0);
+    this.turtle.on(CUSTOM_EVENTS.PAWN_REVIVED, () => {
+      this.resetRipples();
     });
-    this.scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
-      this.handleInput(EInputDirection.NONE);
+    this.turtle.on(CUSTOM_EVENTS.PAWN_SPAWNED, () => {
+      this.resetRipples();
     });
-  }
-
-  private handleInput(direction: EInputDirection) {
-    if (!this.isInputEnabled) {
-      return;
-    }
-    this.inputDirection = direction;
-  }
-
-  resizeAndRepositionElements() {
-    this.isDesktop = this.scene.game.device.os.desktop;
-  }
-
-  update(delta: number) {
-    if (this.isInputEnabled) {
-      if (this.isDesktop) {
-        this.inputDirection = EInputDirection.NONE;
-        if (this.cursorKeys.left.isDown) {
-          this.inputDirection = EInputDirection.LEFT;
-        } else if (this.cursorKeys.right.isDown) {
-          this.inputDirection = EInputDirection.RIGHT;
-        }
-      }
-      if (this.inputDirection !== EInputDirection.NONE) {
-        this.x += delta * (this.inputDirection === EInputDirection.LEFT ? -this.speed : this.speed);
-        const halfWidth = this.scene.grs.designDim.width * 0.5 - 175;
-        if (this.x <= CAM_CENTER.x - halfWidth) {
-          this.x = CAM_CENTER.x - halfWidth;
-        } else if (this.x >= CAM_CENTER.x + halfWidth ) {
-          this.x = CAM_CENTER.x + halfWidth;
-        }
-
-      }
-      if (this.previousInputDirection !== this.inputDirection) {
-        this.playDirectionChangeTween();
-        this.previousInputDirection = this.inputDirection;
-      }
-      this.previousInputDirection = this.inputDirection;
-    }
-
-    for (let i = this.ripples.length - 1; i >= 0; --i) {
-      this.ripples[i].scale += 0.005;
-      this.ripples[i].alpha -= 0.006;
-      if (this.ripples[i].scale >= 1) {
-        this.ripples[i].scale = 0.25;
-        this.ripples[i].alpha = 1;
-      }
-    }
   }
 
   private playDirectionChangeTween() {
     let angle = 0;
-    if (this.inputDirection === EInputDirection.LEFT) {
+    if (this.scene.inputManager.getInputDirection() === EInputDirection.LEFT) {
       angle = -30;
-      this.emit('direction', EInputDirection.LEFT);
-    } else if (this.inputDirection === EInputDirection.RIGHT) {
-      this.emit('direction', EInputDirection.RIGHT);
+      // this.emit('direction', EInputDirection.LEFT);
+    } else if (this.scene.inputManager.getInputDirection() === EInputDirection.RIGHT) {
+      // this.emit('direction', EInputDirection.RIGHT);
       angle = 30;
     }
     if (angle === 0) {
-      this.emit('direction', EInputDirection.NONE);
+      // this.emit('direction', EInputDirection.NONE);
     }
-    this.scene.tweens.add({
-      targets: this.pawn,
-      angle: angle,
-      duration: 250,
-      ease: TWEEN_EASING.QUINT_EASE_OUT,
-    })
-  }
-
-  private playMovementTween() {
-    this.pawnMovementTween = this.scene.tweens.add({
-      targets: this.pawn,
-      scale: this.pawnOrigScale + 0.01,
-      yoyo: true,
-      duration: 250,
-      onLoop: () => {
-        this.pawn.setScale(this.pawnOrigScale);
-      },
-      ease: TWEEN_EASING.SINE_EASE_IN_OUT,
-      loop: -1
-    })
-  }
-
-  private stopMovementTween() {
-    if (this.pawnMovementTween && this.pawnMovementTween.isPlaying()) {
-      this.pawnMovementTween.stop();
-      this.pawnMovementTween = null;
-    }
+    this.turtle.playPawnDirectionChangeTween(angle);
   }
 
   playPawnCollidedTween() {
-    this.isInputEnabled = false;
-    this.stopMovementTween();
-    this.inputDirection = EInputDirection.NONE;
+    this.fadeOutRipplesAfterDeath();
+    this.turtle.stopLimbTweens();
+    this.turtle.stopResetLimbTweens();
     this.previousInputDirection = EInputDirection.NONE;
-    this.scene.tweens.add({
-      targets: this,
-      scale: 0,
-      duration: 500,
-      angle: 720,
-      ease: TWEEN_EASING.BACK_EASE_IN,
-      onComplete: () => {
-        this.pawn.setAngle(0);
-        this.scene.time.delayedCall(120, () => {
-          this.emit('pawn-dead');
-        });
-      }
-    });
+    this.turtle.pawnCollidedTween();
   }
 
   playPawnReviveTween() {
-    this.x = CAM_CENTER.x;
-    this.scene.tweens.add({
-      targets: this,
-      scale: { from: 0, to: 1, ease: TWEEN_EASING.EXPO_EASE_OUT, duration: 250 },
-      angle: { from: 0, to: 720, ease: TWEEN_EASING.SINE_EASE_OUT, duration: 500 },
-      onComplete: () => {
-        this.playPawnGhostTween();
-        this.emit('pawn-revived');
-        this.isInputEnabled = true;
-      }
-    })
+    this.turtle.x = CAM_CENTER.x;
+    this.turtle.playPawnReviveTween();
+    this.resetRipples();
   }
 
-  playPawnGhostTween() {
-    this.isGhost = true;
-    this.scene.tweens.add({
-      targets: this,
-      alpha: { from: 1, to: 0.6, ease: TWEEN_EASING.QUAD_EASE_IN_OUT, duration: 250 },
-      yoyo: true,
-      repeat: 4,
-      onComplete: () => {
-        this.isGhost = false;
-        this.isInputEnabled = true;
-      }
-    })
+  showPawnInitially() {
+    this.turtle.x = CAM_CENTER.x;
+    this.turtle.showPawnInitially();
   }
 
+  private fadeOutRipplesAfterDeath() {
+      // console.warn('fadeout', (1 - this.ripples[i].alpha) * RIPPLE_ALPHA_DEC * 1000);
+      this.scene.tweens.add({
+        targets: this.ripples,
+        alpha: 0,
+        duration: 500,
+      })
+  }
+
+  private resetRipples() {
+    for (let i = 0; i < this.ripples.length; ++i) {
+      this.ripples[i].setPosition(this.turtle.x, this.turtle.y);
+      this.ripples[i].setAlpha(0.1 + i * 0.1);
+      this.ripples[i].setScale(0.1 + i * 0.1);
+      this.ripples[i].setVisible(false);
+    }
+  }
+
+  update(delta: number, scrollSpeed: number) {
+    if (this.scene.inputManager.getIsInputEnabled()) {
+      const direction = this.scene.inputManager.getInputDirection();
+      if (direction !== EInputDirection.NONE) {
+        this.turtle.x += delta * (direction === EInputDirection.LEFT ? -this.speed : this.speed);
+        const halfWidth = this.scene.grs.designDim.width * 0.5 - 175;
+        if (this.turtle.x <= CAM_CENTER.x - halfWidth) {
+          this.turtle.x = CAM_CENTER.x - halfWidth;
+        } else if (this.turtle.x >= CAM_CENTER.x + halfWidth ) {
+          this.turtle.x = CAM_CENTER.x + halfWidth;
+        }
+      }
+      if (this.previousInputDirection !== direction) {
+        this.playDirectionChangeTween();
+        this.previousInputDirection = direction;
+      }
+      this.previousInputDirection = direction;
+    }
+
+    for (let i = this.ripples.length - 1; i >= 0; --i) {
+      this.ripples[i].scale += RIPPLE_SCALE_INC;
+      this.ripples[i].alpha -= RIPPLE_ALPHA_DEC;
+      this.ripples[i].y += 0.15 * delta;
+      if (this.ripples[i].alpha <= 0) {
+        this.ripples[i].scale = 0.75;
+        this.ripples[i].alpha = 0.4;
+        this.ripples[i].x = this.turtle.x;
+        this.ripples[i].y = this.turtle.y;
+        this.ripples[i].setVisible(true);
+      }
+    }
+  }
+
+  resizeAndRepositionElements() {
+
+  }
 }

@@ -1,12 +1,14 @@
 import { IInitGameData } from '../cfg/interfaces/IInitGameData';
 import type { AudioManager } from '../core/AudioManager';
+import { InputManager } from '../core/InputManager';
 import type { GameResizer } from '../utils/GameResizer';
 
 export abstract class AbstractScene extends Phaser.Scene {
   grs!: GameResizer;
   audioManager!: AudioManager;
+  inputManager!: InputManager;
 
-  initGameData!: IInitGameData ;
+  initGameData!: IInitGameData;
 
   abstract resizeAndRepositionElements(): void;
 

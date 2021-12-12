@@ -1,22 +1,21 @@
 import { CAM_CENTER } from '../cfg/constants/design-constants';
+import { GAME_FONT } from '../cfg/constants/game-constants';
 import { AbstractScene } from '../scenes/AbstractScene';
 
 export class DistanceMeter extends Phaser.GameObjects.Text {
   scene: AbstractScene;
 
-  private wasPaused = false;
-
   clickTween: Phaser.Tweens.Tween | null = null;
   isEnabled = true;
 
-  distanceCovered = 1;
+  distanceCovered = 0;
 
   constructor(scene: AbstractScene) {
-    super(scene, CAM_CENTER.x - scene.grs.designDim.width * 0.5 + 250, CAM_CENTER.y - scene.grs.resizeDim.height * 0.5 + 100, '1m', {
-      fontFamily: 'Lato',
-      fontSize: '40px',
+    super(scene, CAM_CENTER.x - scene.grs.designDim.width * 0.5 + 250, CAM_CENTER.y - scene.grs.resizeDim.height * 0.5 + 100, `0m`, {
+      fontFamily: GAME_FONT,
+      fontSize: '48px',
       resolution: 3,
-      color: '#eeeeee',
+      color: '#FFFFFF',
     });
     this.scene = scene;
 
@@ -25,12 +24,21 @@ export class DistanceMeter extends Phaser.GameObjects.Text {
     this.scene.add.existing(this);
   }
 
+  distanceFormatter() {
+    let distance = Math.floor(this.distanceCovered / 10);
+    if (distance > 1000) {
+      distance /= 1000;
+      return `${distance.toFixed(2)}km`;
+    }
+    return `${distance}m`;
+  }
+
   updateDistance(speed: number) {
     this.distanceCovered += speed;
-    this.text = `${Math.floor(this.distanceCovered / 10)}m`;
+    this.text = this.distanceFormatter();
   }
 
   resizeAndRepositionElements(): void {
-    this.setPosition(CAM_CENTER.x - this.scene.grs.designDim.width * 0.5 + 100, CAM_CENTER.y - this.scene.grs.resizeDim.height * 0.5 + 100)
+    this.setPosition(CAM_CENTER.x - this.scene.grs.designDim.width * 0.5 + 250, CAM_CENTER.y - this.scene.grs.resizeDim.height * 0.5 + 100)
   }
 }

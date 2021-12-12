@@ -20,8 +20,8 @@ export const DESIGN_RES = {
  * Can be any value, but must be constant throughout the game
  */
 export const CAM_CENTER = {
-  x: 1920,
-  y: 1920,
+  x: 960,
+  y: 540,
 };
 
 // Full HD resolution, common for most devices

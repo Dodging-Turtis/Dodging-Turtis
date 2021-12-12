@@ -1,26 +1,111 @@
 import 'phaser';
-import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { GameResizer } from '../src/utils/GameResizer';
 import { BootScene } from '../src/scenes/BootScene';
 import { GameScene } from '../src/scenes/GameScene';
-import { AbstractScene } from '../src/scenes/AbstractScene';
+import { GPU } from 'gpu.js';
 
 const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
+  type: Phaser.CANVAS,
   title: 'Dodging Turtis',
   banner: false,
   scale: {
     fullscreenTarget: 'app-root',
     mode: Phaser.Scale.NONE,
-    width: 540,
-    height: 960,
+    width: 1920,
+    height: 1080,
     autoRound: true,
+  },
+  clearBeforeRender: false,
+  fps: {
+    smoothStep: true
   },
 };
 
+const runPerformanceTest = () => {
+  const gpu = new GPU();
+
+  const multiplyMatrix = gpu.createKernel(function (a: any, b: any) {
+    let sum = 0;
+    for (let i = 0; i < 512; i++) {
+      // @ts-ignore
+      sum += a[this.thread.y][i] * b[i][this.thread.x];
+    }
+    return sum;
+  }).setOutput([512, 512]);
+
+  const k = getRandomMatrix(512);
+  const testStart = performance.now();
+  let performanceMeasure = [];
+  let minPerformance = 1000000000000;
+  let sum2 = 0;
+  for (let i = 0; i < 5; i++) {
+    const start = performance.now();
+    multiplyMatrix(k, k);
+    const end = performance.now();
+    if (end - testStart > 1500) {
+      return 1500;
+    }
+    const currentPerformance = end - start;
+    sum2 += currentPerformance;
+    performanceMeasure.push(end - start);
+    if (minPerformance > currentPerformance) {
+      minPerformance = currentPerformance;
+    }
+    if (minPerformance <= 80) {
+      console.log('PERFORMANCE: ' + minPerformance);
+      return minPerformance;
+    }
+  }
+  console.log("RUN", minPerformance);
+  performanceMeasure = performanceMeasure.map((val) => {
+    return val;
+  });
+  const min = Math.min(...performanceMeasure);
+  const result = '----------------------------\nBEST: ' + min + '\nALL: ' + performanceMeasure +
+    '\nWORST: ' + Math.max(...performanceMeasure) + '\nSUM: ' + sum2 + '\n----------------------';
+  console.warn('RESULT: ' + result);
+  return min;
+}
+
+const getRandomMatrix = (size: number) => {
+  const result = [];
+  for (let i = 0; i < size; i++) {
+    const row = [];
+    for (let j = 0; j < size; j++) {
+      row.push(Math.floor(Math.random() * 100) + 1);
+    }
+    result.push(row);
+  }
+  return result;
+}
+
+const getRendererAndDPR = () => {
+  const performance = runPerformanceTest();
+  let dpr = window.devicePixelRatio;
+  let rendererType = Phaser.AUTO;
+  if (performance <= 80) {
+    console.log('High Performance! 0% quality reduction');
+  } else if (performance <= 100) {
+    console.log('Moderate Performance! 20% quality reduction');
+    dpr *= 0.8;
+  } else {
+    console.log('Low Performance! 35% quality reduction');
+    rendererType = Phaser.CANVAS;
+    dpr *= 0.65;
+  }
+
+  if (navigator && (navigator as any).deviceMemory && (navigator as any).deviceMemory <= 2.5) {
+    rendererType = Phaser.CANVAS;
+  }
+
+  return { rendererType, dpr };
+}
+
 const addNewGame = (parent: HTMLDivElement) => {
-  const newGame = new Phaser.Game({ ...config, parent });
-  const gameResizer = new GameResizer(newGame);
+  const { rendererType, dpr } = getRendererAndDPR();
+  const newGame = new Phaser.Game({ ...config, type: rendererType, parent });
+  const gameResizer = new GameResizer(newGame, dpr);
 
   let resizeCB = () => {
     gameResizer.resize();
