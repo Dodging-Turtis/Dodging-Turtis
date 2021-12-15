@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import { GameContext } from '../../src/utils/web3';
 import { useContext, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   const router = useRouter();
@@ -21,7 +23,7 @@ const Navbar = () => {
               className='text-black cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none'
               type='button'
               onClick={() => setNavbarOpen(!navbarOpen)}>
-              <i className='fas fa-bars'></i>
+              <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
             </button>
           </div>
           <div
@@ -31,32 +33,20 @@ const Navbar = () => {
             }
             id='example-navbar-danger'>
             <ul className='flex flex-col lg:flex-row list-none lg:ml-auto'>
-              <li className='nav-item'>
-                <button
-                  className='fas fa-store-alt'
-                  onClick={() => {
-                    router.push('/store');
-                  }}>
-                  store
-                </button>
+              <li className='nav-item px-3'>
+                <a href='#'>Shell Market</a>
               </li>
-              <li className='nav-item'>
-                <button
-                  className='fas fa-play'
-                  onClick={() => {
-                    state.contract.methods
-                      .userAddressToHighScore(state.account)
-                      .call()
-                      .then((highScore: string) => {
-                        if (highScore.length === 0) highScore = '0';
-                        setState({ ...state, highScore });
-                        if (localStorage.getItem('highScore') == null)
-                          localStorage.setItem('highScore', highScore);
-                        router.push('/game');
-                      });
-                  }}>
-                  play
-                </button>
+              <li className='nav-item px-3'>
+                <a href='#'>Leaderboard</a>
+              </li>
+              <li className='nav-item px-3'>
+                <a href='#'>FAQ's</a>
+              </li>
+              <li className='nav-item px-3'>
+                <a href='#'>About</a>
+              </li>
+              <li className='nav-item px-3'>
+                <a href='#'>Sign In</a>
               </li>
             </ul>
           </div>

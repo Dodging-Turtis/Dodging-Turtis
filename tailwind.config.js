@@ -9,6 +9,14 @@ module.exports = {
         primary: ['Josefin Sans', 'sans-serif'],
       },
     },
+    colors: {
+      black: '#313131',
+      blue: '#125F83',
+      lightblue: '#9FE4FF',
+      whiteish: '#F1FCFF',
+      sand: '#E7C7B4',
+      greyish: '#F8F8F8',
+    },
   },
   plugins: [],
 };

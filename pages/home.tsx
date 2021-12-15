@@ -5,7 +5,8 @@ import { GameContext } from '../src/utils/web3';
 import { AbiItem } from 'web3-utils';
 import SmartContract from '../truffle/abis/Turtis.json';
 import Navbar from '../components/Navbar';
-import User from '../components/User';
+import Body from '../components/Body';
+import Footer from '../components/Footer';
 
 const Landing = () => {
   const { state, setState } = useContext(GameContext);
@@ -46,16 +47,8 @@ const Landing = () => {
   return (
     <div>
       <Navbar />
-      <User />
-      <div className='container-fluid landing-page-div'>
-        <button
-          type='button'
-          onClick={initWeb3}
-          className='btn btn-dark'
-          style={{ width: '200px' }}>
-          Connect to wallet
-        </button>
-      </div>
+      <Body />
+      <Footer />
     </div>
   );
 };
