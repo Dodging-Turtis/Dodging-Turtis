@@ -86,13 +86,12 @@ const getRendererAndDPR = () => {
   let rendererType = Phaser.AUTO;
   if (performance <= 80) {
     console.log('High Performance! 0% quality reduction');
-  } else if (performance <= 100) {
+  } else if (performance <= 160) {
     console.log('Moderate Performance! 20% quality reduction');
     dpr *= 0.8;
   } else {
-    console.log('Low Performance! 35% quality reduction');
+    console.log('Low Performance! Switched to Canvas Mode');
     rendererType = Phaser.CANVAS;
-    dpr *= 0.65;
   }
 
   if (navigator && (navigator as any).deviceMemory && (navigator as any).deviceMemory <= 2.5) {
