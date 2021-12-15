@@ -1,3 +1,3 @@
-import LandingPage from '../components/Landing';
+import Landing from './home';
 
-export default LandingPage;
+export default Landing;
