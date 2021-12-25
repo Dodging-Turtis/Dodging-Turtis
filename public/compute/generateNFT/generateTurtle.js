@@ -15,9 +15,7 @@ var total_components = components.length;
 
 var count_images_per_component = [10, 10, 10, 10, 10];
 
-generateRandomTurtle();
-
-export async function generateRandomTurtle() {
+async function generateRandomTurtle() {
   var randomNumbers = new Array();
 
   for (var i = 0; i < total_components; i++) {
@@ -38,4 +36,7 @@ export async function generateRandomTurtle() {
   }
 
   await blendedImage.save("newNFTImage/newTurtle.png");
+  return randomNumbers;
 }
+
+module.exports = { generateRandomTurtle };
