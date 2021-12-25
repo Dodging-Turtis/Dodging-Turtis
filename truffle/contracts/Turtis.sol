@@ -24,13 +24,13 @@ contract Turtis is ERC721 {
   // Emitted when a new Turtle is generated after reaching a new checkpoint in the game
   event NewTurtleGenerated(uint256 tokenId);
 
-  // Emitted when the data received from the API is successful
-  event DataReceivedFromAPI(string ipfsLink);
+  // Emitted when an existing Turtle is upgraded by its owner
+  event TurtleUpgraded(uint256 tokenId);
 
-  // Emitted when a turtle is bought
+  // Emitted when a Turtle is bought
   event TurtleBought(uint256 tokenId);
 
-  // Emitted when a turtle is put up for sale
+  // Emitted when a Turtle is put up for sale
   event TurtleUpForSale(uint256 tokenId);
 
   // Contructor is called when an instance of 'TurtleCharacter' contract is deployed
@@ -92,6 +92,40 @@ contract Turtis is ERC721 {
     _setTokenURI(lastTokenId, _tokenURI);
 
     emit NewTurtleGenerated(lastTokenId);
+  }
+
+  // Function 'upgradeTurtle' upgrades an existing Turtle NFT
+  function upgradeTurtle(
+    uint256 _score,
+    string memory _tokenURI,
+    bytes memory _signature,
+    uint256 _tokenId
+  ) public {
+    string memory message = string(
+      abi.encodePacked(
+        uint2str(_score),
+        string(abi.encodePacked(msg.sender)),
+        _tokenURI,
+        uint2str(_tokenId)
+      )
+    );
+
+    bytes32 hash = keccak256(
+      abi.encodePacked(
+        "\x19Ethereum Signed Message:\n32",
+        keccak256(abi.encodePacked(message))
+      )
+    );
+    address walletAddress = hash.recover(_signature);
+    require(walletAddress == signedWalletAddress, "Invalid signature");
+    require(
+      _score > userAddressToHighScore[msg.sender],
+      "Already minted at this score before"
+    );
+    setHighScore(_score, msg.sender);
+    _setTokenURI(_tokenId, _tokenURI);
+
+    emit TurtleUpgraded(_tokenId);
   }
 
   // Function 'buyTurtle' allows anyone to buy a turtle that is put up for sale
