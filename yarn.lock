@@ -8394,6 +8394,11 @@ image-size@1.0.0:
   dependencies:
     queue "6.0.2"
 
+images@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/images/-/images-3.2.3.tgz#8e86421df163d9b3a60ee4d1dc7cd8205f2d2bd7"
+  integrity sha512-Ga7WPuo1krAdgE+pH641Q2NeAetJsNoU4wjC9DKGpSptWJ/Ljle6m2oA0XdO2c5ujy1Ups8UoH28ejR74m/vqQ==
+
 immediate@3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
