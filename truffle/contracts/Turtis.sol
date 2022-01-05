@@ -1,13 +1,19 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.6;
+pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract Turtis is ERC721 {
+contract Turtis is ERC721URIStorage, ReentrancyGuard {
   using ECDSA for bytes32;
+  using Counters for Counters.Counter;
+  Counters.Counter private _totalSupply;
 
-  address public contractOwner; // Owner of this contract
+  address payable public contractOwner; // Owner of this contract
+  address private marketContractAddress;
 
   address[] private users; // Address array to store all the users
 
@@ -34,8 +40,9 @@ contract Turtis is ERC721 {
   event TurtleUpForSale(uint256 tokenId);
 
   // Contructor is called when an instance of 'TurtleCharacter' contract is deployed
-  constructor() public ERC721("TurtleCharacter", "TRTL") {
-    contractOwner = msg.sender;
+  constructor(address marketplaceAddress) ERC721("TurtleCharacter", "TRTL") {
+    contractOwner = payable(msg.sender);
+    marketContractAddress = marketplaceAddress;
   }
 
   // Modifer that checks to see if msg.sender == contractOwner
@@ -45,6 +52,18 @@ contract Turtis is ERC721 {
       "The caller is not the contract owner"
     );
     _;
+  }
+
+  // Function 'totalSupply' returns the total token supply of this contract
+  function totalSupply() public view returns (uint256) {
+    return _totalSupply.current();
+  }
+
+  function setMarketContractAddress(address _contractAddress)
+    public
+    onlyContractOwner
+  {
+    marketContractAddress = _contractAddress;
   }
 
   // Function 'getUsers' returns the address array of users
@@ -65,7 +84,7 @@ contract Turtis is ERC721 {
     uint256 _score,
     string memory _tokenURI,
     bytes memory _signature
-  ) public {
+  ) public nonReentrant {
     string memory message = string(
       abi.encodePacked(
         uint2str(_score),
@@ -87,11 +106,13 @@ contract Turtis is ERC721 {
       "Already minted at this score before"
     );
     setHighScore(_score, msg.sender);
-    uint256 lastTokenId = totalSupply() - 1;
-    _safeMint(msg.sender, lastTokenId);
-    _setTokenURI(lastTokenId, _tokenURI);
+    uint256 _tokenID = totalSupply();
+    _safeMint(msg.sender, _tokenID);
+    _totalSupply.increment();
+    _setTokenURI(_tokenID, _tokenURI);
+    setApprovalForAll(marketContractAddress, true);
 
-    emit NewTurtleGenerated(lastTokenId);
+    emit NewTurtleGenerated(_tokenID);
   }
 
   // Function 'upgradeTurtle' upgrades an existing Turtle NFT
@@ -207,5 +228,25 @@ contract Turtis is ERC721 {
     onlyContractOwner
   {
     _setTokenURI(_tokenId, _tokenURI);
+  }
+
+  function getBalanceOfUser(address _user) public view returns (uint256) {
+    return balanceOf(_user);
+  }
+
+  function getUserOwnedNFTs(address _user)
+    public
+    view
+    returns (uint256[] memory)
+  {
+    uint256[] memory nfts = new uint256[](getBalanceOfUser(_user));
+    // implement logic
+    return nfts;
+  }
+
+  function getAllNFTs() public view returns (uint256[] memory) {
+    uint256[] memory nfts = new uint256[](totalSupply());
+    // implement logic
+    return nfts;
   }
 }
