@@ -239,14 +239,23 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
     view
     returns (uint256[] memory)
   {
-    uint256[] memory nfts = new uint256[](getBalanceOfUser(_user));
-    // implement logic
+    uint256[] memory nfts = new uint256[](getBalanceOfUser(_user)); // have to modify to add struct with NFT details
+    uint256 totalNFTCount = totalSupply();
+    uint256 curInd = 0;
+    for (uint256 i = 0; i < totalNFTCount; i++) {
+      if (ownerOf(i) == _user) {
+        nfts[curInd++] = i;
+      }
+    }
     return nfts;
   }
 
   function getAllNFTs() public view returns (uint256[] memory) {
-    uint256[] memory nfts = new uint256[](totalSupply());
-    // implement logic
+    uint256 totalNFTCount = totalSupply();
+    uint256[] memory nfts = new uint256[](totalNFTCount); // have to modify to add struct with NFT details
+    for (uint256 i = 0; i < totalNFTCount; i++) {
+      nfts[i] = i;
+    }
     return nfts;
   }
 }
