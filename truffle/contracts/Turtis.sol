@@ -19,9 +19,6 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
 
   address public signedWalletAddress;
 
-  // Mapping from Token ID to Price
-  mapping(uint256 => uint256) public turtlesForSale;
-
   // Mapping from User address to high score
   mapping(address => uint256) public userAddressToHighScore;
 
@@ -156,38 +153,6 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
     tokenIdToNFTItem[_tokenId] = NFTItem(_tokenId, _tokenURI);
 
     emit TurtleUpgraded(_tokenId);
-  }
-
-  // Function 'buyTurtle' allows anyone to buy a turtle that is put up for sale
-  function buyTurtle(uint256 _tokenId) public payable {
-    require(turtlesForSale[_tokenId] > 0, "The Turtle should be up for sale");
-
-    uint256 turtleCost = turtlesForSale[_tokenId];
-    turtlesForSale[_tokenId] = 0;
-
-    address ownerAddress = ownerOf(_tokenId);
-    require(msg.value > turtleCost, "You need to have enough Ether");
-
-    _safeTransfer(ownerAddress, msg.sender, _tokenId, bytes("Buy a Turtle")); // ERC721 Token is safely transferred using this function call
-
-    address payable ownerAddressPayable = payable(ownerAddress);
-    ownerAddressPayable.transfer(turtleCost);
-    if (msg.value > turtleCost) {
-      payable(msg.sender).transfer(msg.value - turtleCost); // Excess Ether is returned back to the buyer
-    }
-
-    emit TurtleBought(_tokenId);
-  }
-
-  // Function 'putUpTurtleForSale' allows a turtle owner to put it up for sale
-  function putUpTurtleForSale(uint256 _tokenId, uint256 _price) public {
-    require(
-      _isApprovedOrOwner(_msgSender(), _tokenId),
-      "ERC721: Caller is not owner nor approved"
-    );
-    turtlesForSale[_tokenId] = _price;
-
-    emit TurtleUpForSale(_tokenId);
   }
 
   // Function 'setTokenURI' sets the Token URI for the ERC721 standard token

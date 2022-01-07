@@ -116,21 +116,25 @@ contract TurtisMarket is ReentrancyGuard {
   }
 
   //
-  function fetchMyNFTs() public view returns (MarketItem[] memory) {
+  function fetchUserNFTs(address _user)
+    public
+    view
+    returns (MarketItem[] memory)
+  {
     // List of currently owned NFTs
     uint256 totalItemCount = _itemIds.current();
     uint256 itemCount = 0;
     uint256 currentIndex = 0;
 
     for (uint256 i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i + 1].owner == msg.sender) {
+      if (idToMarketItem[i + 1].owner == _user) {
         itemCount += 1;
       }
     }
 
     MarketItem[] memory items = new MarketItem[](itemCount);
     for (uint256 i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i + 1].owner == msg.sender) {
+      if (idToMarketItem[i + 1].owner == _user) {
         uint256 currentId = idToMarketItem[i + 1].itemId;
         MarketItem storage currentItem = idToMarketItem[currentId];
         items[currentIndex] = currentItem;
@@ -140,21 +144,25 @@ contract TurtisMarket is ReentrancyGuard {
     return items;
   }
 
-  function fetchMyItemsCreated() public view returns (MarketItem[] memory) {
+  function fetchUserItemsCreated(address _user)
+    public
+    view
+    returns (MarketItem[] memory)
+  {
     // List of NFTs that are created by the user (sold or unsold)
     uint256 totalItemCount = _itemIds.current();
     uint256 itemCount = 0;
     uint256 currentIndex = 0;
 
     for (uint256 i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i + 1].seller == msg.sender) {
+      if (idToMarketItem[i + 1].seller == _user) {
         itemCount += 1;
       }
     }
 
     MarketItem[] memory items = new MarketItem[](itemCount);
     for (uint256 i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i + 1].seller == msg.sender) {
+      if (idToMarketItem[i + 1].seller == _user) {
         uint256 currentId = idToMarketItem[i + 1].itemId;
         MarketItem storage currentItem = idToMarketItem[currentId];
         items[currentIndex] = currentItem;
@@ -164,7 +172,11 @@ contract TurtisMarket is ReentrancyGuard {
     return items;
   }
 
-  function fetchMyItemsSold() public view returns (MarketItem[] memory) {
+  function fetchUserItemsSold(address _user)
+    public
+    view
+    returns (MarketItem[] memory)
+  {
     // List of NFTs that are sold by the user
     uint256 totalItemCount = _itemIds.current();
     uint256 itemCount = 0;
@@ -172,7 +184,7 @@ contract TurtisMarket is ReentrancyGuard {
 
     for (uint256 i = 0; i < totalItemCount; i++) {
       if (
-        idToMarketItem[i + 1].seller == msg.sender &&
+        idToMarketItem[i + 1].seller == _user &&
         idToMarketItem[i + 1].sold == true
       ) {
         itemCount += 1;
@@ -181,7 +193,10 @@ contract TurtisMarket is ReentrancyGuard {
 
     MarketItem[] memory items = new MarketItem[](itemCount);
     for (uint256 i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i + 1].seller == msg.sender) {
+      if (
+        idToMarketItem[i + 1].seller == _user &&
+        idToMarketItem[i + 1].sold == true
+      ) {
         uint256 currentId = idToMarketItem[i + 1].itemId;
         MarketItem storage currentItem = idToMarketItem[currentId];
         items[currentIndex] = currentItem;
