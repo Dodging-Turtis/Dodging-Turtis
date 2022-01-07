@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^3.4.1",
+    "@openzeppelin/contracts": "^4.4.1",
     "@openzeppelin/test-helpers": "^0.5.10",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.11.4",
