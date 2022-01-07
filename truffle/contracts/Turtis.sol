@@ -39,6 +39,13 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
   // Emitted when a Turtle is put up for sale
   event TurtleUpForSale(uint256 tokenId);
 
+  struct NFTItem {
+    uint256 tokenId;
+    string tokenURI;
+  }
+
+  mapping(uint256 => NFTItem) tokenIdToNFTItem;
+
   // Contructor is called when an instance of 'TurtleCharacter' contract is deployed
   constructor(address marketplaceAddress) ERC721("TurtleCharacter", "TRTL") {
     contractOwner = payable(msg.sender);
@@ -110,6 +117,7 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
     _safeMint(msg.sender, _tokenID);
     _totalSupply.increment();
     _setTokenURI(_tokenID, _tokenURI);
+    tokenIdToNFTItem[_tokenID] = NFTItem(_tokenID, _tokenURI);
     setApprovalForAll(marketContractAddress, true);
 
     emit NewTurtleGenerated(_tokenID);
@@ -121,7 +129,7 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
     string memory _tokenURI,
     bytes memory _signature,
     uint256 _tokenId
-  ) public {
+  ) public nonReentrant {
     string memory message = string(
       abi.encodePacked(
         uint2str(_score),
@@ -145,6 +153,7 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
     );
     setHighScore(_score, msg.sender);
     _setTokenURI(_tokenId, _tokenURI);
+    tokenIdToNFTItem[_tokenId] = NFTItem(_tokenId, _tokenURI);
 
     emit TurtleUpgraded(_tokenId);
   }
@@ -185,6 +194,7 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
   function setTokenURI(string memory _tokenURI) private {
     uint256 lastTokenId = totalSupply() - 1;
     _setTokenURI(lastTokenId, _tokenURI);
+    tokenIdToNFTItem[lastTokenId] = NFTItem(lastTokenId, _tokenURI);
   }
 
   // Function 'setSignedWalletAddress' sets the address of the wallet that signs the minting of the Turtle NFT
@@ -228,6 +238,7 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
     onlyContractOwner
   {
     _setTokenURI(_tokenId, _tokenURI);
+    tokenIdToNFTItem[_tokenId] = NFTItem(_tokenId, _tokenURI);
   }
 
   function getBalanceOfUser(address _user) public view returns (uint256) {
@@ -237,24 +248,26 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
   function getUserOwnedNFTs(address _user)
     public
     view
-    returns (uint256[] memory)
+    returns (NFTItem[] memory)
   {
-    uint256[] memory nfts = new uint256[](getBalanceOfUser(_user)); // have to modify to add struct with NFT details
+    NFTItem[] memory nfts = new NFTItem[](getBalanceOfUser(_user));
     uint256 totalNFTCount = totalSupply();
     uint256 curInd = 0;
     for (uint256 i = 0; i < totalNFTCount; i++) {
       if (ownerOf(i) == _user) {
-        nfts[curInd++] = i;
+        NFTItem storage curItem = tokenIdToNFTItem[i];
+        nfts[curInd++] = curItem;
       }
     }
     return nfts;
   }
 
-  function getAllNFTs() public view returns (uint256[] memory) {
+  function getAllNFTs() public view returns (NFTItem[] memory) {
     uint256 totalNFTCount = totalSupply();
-    uint256[] memory nfts = new uint256[](totalNFTCount); // have to modify to add struct with NFT details
+    NFTItem[] memory nfts = new NFTItem[](totalNFTCount);
     for (uint256 i = 0; i < totalNFTCount; i++) {
-      nfts[i] = i;
+      NFTItem storage curItem = tokenIdToNFTItem[i];
+      nfts[i] = curItem;
     }
     return nfts;
   }
