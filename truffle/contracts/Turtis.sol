@@ -87,23 +87,16 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
   function generateTurtle(
     uint256 _score,
     string memory _tokenURI,
-    bytes memory _signature
+    uint8 v,
+    bytes32 r,
+    bytes32 s
   ) public nonReentrant {
-    string memory message = string(
-      abi.encodePacked(
-        uint2str(_score),
-        string(abi.encodePacked(msg.sender)),
-        _tokenURI
-      )
+    bytes32 message = keccak256(
+      abi.encodePacked(_score, msg.sender, _tokenURI)
     );
 
-    bytes32 hash = keccak256(
-      abi.encodePacked(
-        "\x19Ethereum Signed Message:\n32",
-        keccak256(abi.encodePacked(message))
-      )
-    );
-    address walletAddress = hash.recover(_signature);
+    bytes32 messageHash = message.toEthSignedMessageHash();
+    address walletAddress = messageHash.recover(v, r, s);
     require(walletAddress == signedWalletAddress, "Invalid signature");
     require(
       _score > userAddressToHighScore[msg.sender],
@@ -124,25 +117,17 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
   function upgradeTurtle(
     uint256 _score,
     string memory _tokenURI,
-    bytes memory _signature,
-    uint256 _tokenId
+    uint256 _tokenId,
+    uint8 v,
+    bytes32 r,
+    bytes32 s
   ) public nonReentrant {
-    string memory message = string(
-      abi.encodePacked(
-        uint2str(_score),
-        string(abi.encodePacked(msg.sender)),
-        _tokenURI,
-        uint2str(_tokenId)
-      )
+    bytes32 message = keccak256(
+      abi.encodePacked(_score, msg.sender, _tokenURI, _tokenId)
     );
 
-    bytes32 hash = keccak256(
-      abi.encodePacked(
-        "\x19Ethereum Signed Message:\n32",
-        keccak256(abi.encodePacked(message))
-      )
-    );
-    address walletAddress = hash.recover(_signature);
+    bytes32 messageHash = message.toEthSignedMessageHash();
+    address walletAddress = messageHash.recover(v, r, s);
     require(walletAddress == signedWalletAddress, "Invalid signature");
     require(
       _score > userAddressToHighScore[msg.sender],
