@@ -82,6 +82,10 @@ contract TurtisMarket is ReentrancyGuard {
     payable
     nonReentrant
   {
+    require(
+      itemId > 0 && itemId <= _itemIds.current(),
+      "The item does not exist in the marketplace"
+    );
     uint256 price = idToMarketItem[itemId].price;
     uint256 tokenId = idToMarketItem[itemId].tokenId;
     require(
