@@ -40,15 +40,17 @@ export default function handler(req, res) {
 
     const IPFSHash = metadata.ipnft;
 
-    var strToBeSigned =
-      req.body.score.toString() +
-      req.body.walletAddress.toString() +
-      "ipfs://" +
-      IPFSHash.toString();
+    const tokenURI = "ipfs://" + IPFSHash.toString() + "/metadata.json";
 
-    const signature = await signTransaction.generateSig(strToBeSigned);
+    const signature = await signTransaction.generateSig(
+      req.body.score.toString(),
+      req.body.walletAddress,
+      tokenURI
+    );
 
-    req.status(200).json({ ipfsHash: IPFSHash, signature: signature });
+    req
+      .status(200)
+      .json({ ipfsHash: IPFSHash, signature: JSON.stringify(signature) });
   } else {
     req.status(404);
   }

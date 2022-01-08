@@ -1,20 +1,23 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.6;
+pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract Turtis is ERC721 {
+contract Turtis is ERC721URIStorage, ReentrancyGuard {
   using ECDSA for bytes32;
+  using Counters for Counters.Counter;
+  Counters.Counter private _totalSupply;
 
-  address public contractOwner; // Owner of this contract
+  address payable public contractOwner; // Owner of this contract
+  address private marketContractAddress;
 
   address[] private users; // Address array to store all the users
 
   address public signedWalletAddress;
-
-  // Mapping from Token ID to Price
-  mapping(uint256 => uint256) public turtlesForSale;
 
   // Mapping from User address to high score
   mapping(address => uint256) public userAddressToHighScore;
@@ -33,9 +36,17 @@ contract Turtis is ERC721 {
   // Emitted when a Turtle is put up for sale
   event TurtleUpForSale(uint256 tokenId);
 
+  struct NFTItem {
+    uint256 tokenId;
+    string tokenURI;
+  }
+
+  mapping(uint256 => NFTItem) tokenIdToNFTItem;
+
   // Contructor is called when an instance of 'TurtleCharacter' contract is deployed
-  constructor() public ERC721("TurtleCharacter", "TRTL") {
-    contractOwner = msg.sender;
+  constructor(address marketplaceAddress) ERC721("TurtleCharacter", "TRTL") {
+    contractOwner = payable(msg.sender);
+    marketContractAddress = marketplaceAddress;
   }
 
   // Modifer that checks to see if msg.sender == contractOwner
@@ -45,6 +56,18 @@ contract Turtis is ERC721 {
       "The caller is not the contract owner"
     );
     _;
+  }
+
+  // Function 'totalSupply' returns the total token supply of this contract
+  function totalSupply() public view returns (uint256) {
+    return _totalSupply.current();
+  }
+
+  function setMarketContractAddress(address _contractAddress)
+    public
+    onlyContractOwner
+  {
+    marketContractAddress = _contractAddress;
   }
 
   // Function 'getUsers' returns the address array of users
@@ -64,59 +87,47 @@ contract Turtis is ERC721 {
   function generateTurtle(
     uint256 _score,
     string memory _tokenURI,
-    bytes memory _signature
-  ) public {
-    string memory message = string(
-      abi.encodePacked(
-        uint2str(_score),
-        string(abi.encodePacked(msg.sender)),
-        _tokenURI
-      )
+    uint8 v,
+    bytes32 r,
+    bytes32 s
+  ) public nonReentrant {
+    bytes32 message = keccak256(
+      abi.encodePacked(_score, msg.sender, _tokenURI)
     );
 
-    bytes32 hash = keccak256(
-      abi.encodePacked(
-        "\x19Ethereum Signed Message:\n32",
-        keccak256(abi.encodePacked(message))
-      )
-    );
-    address walletAddress = hash.recover(_signature);
+    bytes32 messageHash = message.toEthSignedMessageHash();
+    address walletAddress = messageHash.recover(v, r, s);
     require(walletAddress == signedWalletAddress, "Invalid signature");
     require(
       _score > userAddressToHighScore[msg.sender],
       "Already minted at this score before"
     );
     setHighScore(_score, msg.sender);
-    uint256 lastTokenId = totalSupply() - 1;
-    _safeMint(msg.sender, lastTokenId);
-    _setTokenURI(lastTokenId, _tokenURI);
+    uint256 _tokenID = totalSupply();
+    _safeMint(msg.sender, _tokenID);
+    _totalSupply.increment();
+    _setTokenURI(_tokenID, _tokenURI);
+    tokenIdToNFTItem[_tokenID] = NFTItem(_tokenID, _tokenURI);
+    setApprovalForAll(marketContractAddress, true);
 
-    emit NewTurtleGenerated(lastTokenId);
+    emit NewTurtleGenerated(_tokenID);
   }
 
   // Function 'upgradeTurtle' upgrades an existing Turtle NFT
   function upgradeTurtle(
     uint256 _score,
     string memory _tokenURI,
-    bytes memory _signature,
-    uint256 _tokenId
-  ) public {
-    string memory message = string(
-      abi.encodePacked(
-        uint2str(_score),
-        string(abi.encodePacked(msg.sender)),
-        _tokenURI,
-        uint2str(_tokenId)
-      )
+    uint256 _tokenId,
+    uint8 v,
+    bytes32 r,
+    bytes32 s
+  ) public nonReentrant {
+    bytes32 message = keccak256(
+      abi.encodePacked(_score, msg.sender, _tokenURI, _tokenId)
     );
 
-    bytes32 hash = keccak256(
-      abi.encodePacked(
-        "\x19Ethereum Signed Message:\n32",
-        keccak256(abi.encodePacked(message))
-      )
-    );
-    address walletAddress = hash.recover(_signature);
+    bytes32 messageHash = message.toEthSignedMessageHash();
+    address walletAddress = messageHash.recover(v, r, s);
     require(walletAddress == signedWalletAddress, "Invalid signature");
     require(
       _score > userAddressToHighScore[msg.sender],
@@ -124,46 +135,16 @@ contract Turtis is ERC721 {
     );
     setHighScore(_score, msg.sender);
     _setTokenURI(_tokenId, _tokenURI);
+    tokenIdToNFTItem[_tokenId] = NFTItem(_tokenId, _tokenURI);
 
     emit TurtleUpgraded(_tokenId);
-  }
-
-  // Function 'buyTurtle' allows anyone to buy a turtle that is put up for sale
-  function buyTurtle(uint256 _tokenId) public payable {
-    require(turtlesForSale[_tokenId] > 0, "The Turtle should be up for sale");
-
-    uint256 turtleCost = turtlesForSale[_tokenId];
-    turtlesForSale[_tokenId] = 0;
-
-    address ownerAddress = ownerOf(_tokenId);
-    require(msg.value > turtleCost, "You need to have enough Ether");
-
-    _safeTransfer(ownerAddress, msg.sender, _tokenId, bytes("Buy a Turtle")); // ERC721 Token is safely transferred using this function call
-
-    address payable ownerAddressPayable = payable(ownerAddress);
-    ownerAddressPayable.transfer(turtleCost);
-    if (msg.value > turtleCost) {
-      payable(msg.sender).transfer(msg.value - turtleCost); // Excess Ether is returned back to the buyer
-    }
-
-    emit TurtleBought(_tokenId);
-  }
-
-  // Function 'putUpTurtleForSale' allows a turtle owner to put it up for sale
-  function putUpTurtleForSale(uint256 _tokenId, uint256 _price) public {
-    require(
-      _isApprovedOrOwner(_msgSender(), _tokenId),
-      "ERC721: Caller is not owner nor approved"
-    );
-    turtlesForSale[_tokenId] = _price;
-
-    emit TurtleUpForSale(_tokenId);
   }
 
   // Function 'setTokenURI' sets the Token URI for the ERC721 standard token
   function setTokenURI(string memory _tokenURI) private {
     uint256 lastTokenId = totalSupply() - 1;
     _setTokenURI(lastTokenId, _tokenURI);
+    tokenIdToNFTItem[lastTokenId] = NFTItem(lastTokenId, _tokenURI);
   }
 
   // Function 'setSignedWalletAddress' sets the address of the wallet that signs the minting of the Turtle NFT
@@ -207,5 +188,37 @@ contract Turtis is ERC721 {
     onlyContractOwner
   {
     _setTokenURI(_tokenId, _tokenURI);
+    tokenIdToNFTItem[_tokenId] = NFTItem(_tokenId, _tokenURI);
+  }
+
+  function getBalanceOfUser(address _user) public view returns (uint256) {
+    return balanceOf(_user);
+  }
+
+  function getUserOwnedNFTs(address _user)
+    public
+    view
+    returns (NFTItem[] memory)
+  {
+    NFTItem[] memory nfts = new NFTItem[](getBalanceOfUser(_user));
+    uint256 totalNFTCount = totalSupply();
+    uint256 curInd = 0;
+    for (uint256 i = 0; i < totalNFTCount; i++) {
+      if (ownerOf(i) == _user) {
+        NFTItem storage curItem = tokenIdToNFTItem[i];
+        nfts[curInd++] = curItem;
+      }
+    }
+    return nfts;
+  }
+
+  function getAllNFTs() public view returns (NFTItem[] memory) {
+    uint256 totalNFTCount = totalSupply();
+    NFTItem[] memory nfts = new NFTItem[](totalNFTCount);
+    for (uint256 i = 0; i < totalNFTCount; i++) {
+      NFTItem storage curItem = tokenIdToNFTItem[i];
+      nfts[i] = curItem;
+    }
+    return nfts;
   }
 }
