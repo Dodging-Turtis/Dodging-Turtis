@@ -45,7 +45,7 @@ contract("Turtis", (accounts) => {
     });
   });
   describe("Turtis Mint", () => {
-    it("able to mint NFT by generating signature", async () => {
+    it("should be able to mint NFT by generating signature & verifying valid signature on-chain", async () => {
       const { turtisContract, marketContract } = await bootstrapContract(
         accounts
       );
@@ -88,6 +88,56 @@ contract("Turtis", (accounts) => {
 
       let nftCount = await turtisContract.totalSupply.call();
       assert.equal(parseInt(nftCount), 1, "NFT count is wrong");
+    });
+
+    it("should not be able to mint NFT by generating signature & verifying invalid data for signature on-chain", async () => {
+      const { turtisContract, marketContract } = await bootstrapContract(
+        accounts
+      );
+
+      await turtisContract.setSignedWalletAddress(walletAddress, {
+        from: accounts[0],
+      });
+
+      // type of account[i] is string
+      // type of score is int
+      // type of tokenURI is string
+
+      const score = 250;
+      const IPFSHash =
+        "bafyreickc6kv43f2vnrvycvqcj5zf2nwwdm7hvvsugrothpjge4hhp2pgy";
+      const tokenURI = "ipfs://" + IPFSHash.toString() + "/metadata.json";
+
+      const signature = await generateSig(
+        tokenURI,
+        accounts[2],
+        score.toString()
+      ); // parameters are used to sign a single transaction
+
+      // const address = web3.eth.accounts.recover(signature); // the wallet address associated with the secret private key is retrieved here
+
+      // new turtle is minted using the 'generateTurtle' function on-chain
+
+      const invalidScore = 450;
+
+      await truffleAssert.reverts(
+        turtisContract.generateTurtle(
+          invalidScore,
+          tokenURI,
+          signature.v,
+          signature.r,
+          signature.s,
+          {
+            from: accounts[2],
+          }
+        ),
+        "Invalid signature"
+      );
+
+      // after minting a turtle, nft count is increased by 1
+
+      let nftCount = await turtisContract.totalSupply.call();
+      assert.equal(parseInt(nftCount), 0, "NFT count is wrong");
     });
   });
 });
