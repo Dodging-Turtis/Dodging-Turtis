@@ -43,7 +43,7 @@ export default function handler(req, res) {
     const tokenURI = "ipfs://" + IPFSHash.toString() + "/metadata.json";
 
     const signature = await signTransaction.generateSig(
-      req.body.score,
+      req.body.score.toString(),
       req.body.walletAddress,
       tokenURI
     );

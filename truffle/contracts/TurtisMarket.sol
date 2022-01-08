@@ -50,6 +50,7 @@ contract TurtisMarket is ReentrancyGuard {
   ) public payable nonReentrant {
     require(price > 1, "Price must be at least 1 MATIC");
     require(msg.value == listingPrice, "Price must be equal to listing price");
+    payable(owner).transfer(listingPrice);
 
     _itemIds.increment();
     uint256 itemId = _itemIds.current();
@@ -98,7 +99,6 @@ contract TurtisMarket is ReentrancyGuard {
     idToMarketItem[itemId].owner = payable(msg.sender);
     idToMarketItem[itemId].sold = true;
     _itemsSold.increment();
-    payable(owner).transfer(listingPrice);
   }
 
   function fetchMarketItems() public view returns (MarketItem[] memory) {
@@ -125,7 +125,7 @@ contract TurtisMarket is ReentrancyGuard {
     view
     returns (MarketItem[] memory)
   {
-    // List of currently owned NFTs
+    // List of currently owned NFTs that are bought from the marketplace
     uint256 totalItemCount = _itemIds.current();
     uint256 itemCount = 0;
     uint256 currentIndex = 0;
