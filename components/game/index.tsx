@@ -1,24 +1,18 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { GameContext } from '../../src/utils/web3';
 import { useGame } from './hooks';
+import { useStore } from '../../mobx';
 
 const GameScreen = () => {
-  const { state } = useContext(GameContext);
   const [ended, setEnded] = useState(false);
   const router = useRouter();
+  const state = useStore();
   const parentEl = useRef<HTMLDivElement>(null);
   const { game, grs } = useGame(parentEl);
 
   const endGameCB = useCallback(
     (score: number) => {
-      const currHighScore = parseInt(state.highScore);
+      const currHighScore = state.highScore;
       if (score > parseFloat(localStorage.getItem('highScore') ?? '0'))
         localStorage.setItem('highScore', '' + score);
       if (score - currHighScore > 100) {
@@ -50,8 +44,6 @@ const GameScreen = () => {
       game.scene.start('boot', {
         grs,
         initGameData: {
-          turtleUrl: state.selectedNFT.image,
-          playerSpeed: state.selectedNFT.speed / 100,
           endGameCB,
         },
       });
