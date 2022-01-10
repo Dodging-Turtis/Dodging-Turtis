@@ -8,7 +8,7 @@ const NFTStorageModule = require("nft.storage");
 const apiKey = process.env.NFT_STORAGE_API_KEY;
 const client = new NFTStorageModule.NFTStorage({ token: apiKey });
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method === "POST") {
     const componentIndicesArray = await generateTurtle.generateRandomTurtle();
 
