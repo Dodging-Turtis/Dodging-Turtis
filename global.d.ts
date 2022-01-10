@@ -3,10 +3,13 @@ interface Window {
 }
 
 interface INft {
-  url: string;
   price: number;
-  page: string;
+  owner: string;
+  seller: string;
   tokenId: number;
-  attributes: object;
+}
+
+interface IMetadata {
   name: string;
+  attributes: object;
 }
