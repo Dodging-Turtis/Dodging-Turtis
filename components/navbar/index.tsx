@@ -1,12 +1,10 @@
 import { useRouter } from 'next/router';
-import { GameContext } from '../../src/utils/web3';
 import { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   const router = useRouter();
-  const { state, setState } = useContext(GameContext);
   const [navbarOpen, setNavbarOpen] = useState(false);
 
   return (
@@ -40,7 +38,7 @@ const Navbar = () => {
                 <a href='#'>Leaderboard</a>
               </li>
               <li className='nav-item px-3'>
-                <a href='#'>FAQ's</a>
+                <a href='#'>FAQ&apos;s</a>
               </li>
               <li className='nav-item px-3'>
                 <a href='#'>About</a>

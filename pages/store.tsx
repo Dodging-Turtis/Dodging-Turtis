@@ -1,3 +1,3 @@
-import StorePage from '../components/Store';
+import StorePage from '../components/store';
 
 export default StorePage;
