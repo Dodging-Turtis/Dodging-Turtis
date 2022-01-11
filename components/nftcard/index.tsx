@@ -1,8 +1,7 @@
 import { memo, useContext, useEffect, useState } from 'react';
-import { GameContext } from '../../src/utils/web3';
+import { observer } from 'mobx-react-lite';
 
 const NFT = ({ nft: { url, price, page, tokenId, name } }: { nft: INft }) => {
-  const { state, setState } = useContext(GameContext);
   const [image, setImage] = useState(
     url.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/')
   );
@@ -13,7 +12,7 @@ const NFT = ({ nft: { url, price, page, tokenId, name } }: { nft: INft }) => {
 
   const nftClicked = () => {
     if (page === 'main') {
-      setState({ ...state, selectedNFT: { image, speed, tokenId } });
+      // setState({ ...state, selectedNFT: { image, speed, tokenId } });
     }
   };
 
@@ -28,32 +27,32 @@ const NFT = ({ nft: { url, price, page, tokenId, name } }: { nft: INft }) => {
   const publishNft = async () => {
     const input = prompt('Enter the Amount in MATIC');
     const price = input ?? '0';
-    if (tokenId === -1) {
-      alert('cannot publish default nft!');
-    } else if (parseFloat(price) > 0) {
-      const priceInWie = state.web3.utils.toWei(price, 'ether');
-      try {
-        await state.contract.methods
-          .putUpTurtleForSale(tokenId, priceInWie)
-          .send({
-            from: state.account,
-            gasPrice: state.web3.utils.toWei('50', 'Gwei'),
-            gas: 60000,
-          });
-        setNftPrice(parseFloat(price));
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    // if (tokenId === -1) {
+    //   alert('cannot publish default nft!');
+    // } else if (parseFloat(price) > 0) {
+    //   const priceInWie = state.web3.utils.toWei(price, 'ether');
+    //   try {
+    //     await state.contract.methods
+    //       .putUpTurtleForSale(tokenId, priceInWie)
+    //       .send({
+    //         from: state.account,
+    //         gasPrice: state.web3.utils.toWei('50', 'Gwei'),
+    //         gas: 60000,
+    //       });
+    //     setNftPrice(parseFloat(price));
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
   };
 
   const buyNft = () => {
-    state.contract.methods.buyTurtle(tokenId).send({
-      from: state.account,
-      value: state.web3.utils.toWei((price + 0.0001).toString(), 'ether'),
-      gasPrice: state.web3.utils.toWei('50', 'Gwei'),
-      gas: 150000,
-    });
+    // state.contract.methods.buyTurtle(tokenId).send({
+    //   from: state.account,
+    //   value: state.web3.utils.toWei((price + 0.0001).toString(), 'ether'),
+    //   gasPrice: state.web3.utils.toWei('50', 'Gwei'),
+    //   gas: 150000,
+    // });
   };
 
   const publishedComp = (
@@ -159,4 +158,4 @@ const NFT = ({ nft: { url, price, page, tokenId, name } }: { nft: INft }) => {
   );
 };
 
-export default memo(NFT);
+export default observer(NFT);
