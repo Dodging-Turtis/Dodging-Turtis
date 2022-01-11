@@ -10,7 +10,7 @@ const RPC_URL =
   process.env.NEXT_PUBLIC_RPC_URL ??
   'https://rpc-endpoints.superfluid.dev/mumbai';
 
-enum Order {
+export enum Order {
   PRICE_ASC,
   PRICE_DSC,
   LATEST,
@@ -25,7 +25,7 @@ export class GlobalStore {
   nftList: INft[] = [];
   userNftList: INft[] = [];
   walletConnected: boolean = false;
-  sortFilter: Order = Order.LATEST;
+  sortOrder: Order = Order.LATEST;
 
   constructor() {
     makeAutoObservable(this);
@@ -34,6 +34,48 @@ export class GlobalStore {
       SmartContract.abi as AbiItem[],
       address
     );
+  }
+
+  sortGlobalNfts() {
+    switch (this.sortOrder) {
+      case Order.PRICE_ASC:
+        this.nftList.sort((a, b) => a.price - b.price);
+        break;
+      case Order.PRICE_DSC:
+        this.nftList.sort((a, b) => b.price - a.price);
+        break;
+      case Order.OLDEST:
+        this.nftList.sort((a, b) => b.tokenId - a.tokenId);
+        break;
+      default:
+        this.nftList.sort((a, b) => a.tokenId - b.tokenId);
+        break;
+    }
+  }
+
+  sortUserlNfts() {
+    switch (this.sortOrder) {
+      case Order.PRICE_ASC:
+        this.nftList.sort((a, b) => a.price - b.price);
+        break;
+      case Order.PRICE_DSC:
+        this.nftList.sort((a, b) => b.price - a.price);
+        break;
+      case Order.OLDEST:
+        this.nftList.sort((a, b) => b.tokenId - a.tokenId);
+        break;
+      default:
+        this.nftList.sort((a, b) => a.tokenId - b.tokenId);
+        break;
+    }
+  }
+
+  updateSortOrder(order: Order) {
+    if (order != this.sortOrder) {
+      this.sortOrder = order;
+      this.sortGlobalNfts();
+      this.sortUserlNfts();
+    }
   }
 
   async connectToWallet() {
@@ -69,6 +111,7 @@ export class GlobalStore {
         seller: item.seller,
         tokenId: item.tokenId.toString(),
       }));
+      this.sortGlobalNfts();
     }
   }
 
@@ -86,6 +129,7 @@ export class GlobalStore {
         seller: item.seller,
         tokenId: item.tokenId.toString(),
       }));
+      this.sortUserlNfts();
     }
   }
 }
