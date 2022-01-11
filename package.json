@@ -16,7 +16,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "@truffle/hdwallet-provider": "^1.4.1",
+    "@truffle/hdwallet-provider": "^2.0.0",
     "axios": "^0.24.0",
     "bignumber.js": "^9.0.2",
     "chai": "^4.3.4",

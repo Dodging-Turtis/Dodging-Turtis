@@ -3,7 +3,7 @@ const path = require("path");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 require("dotenv").config();
 const mnemonic = process.env.MNEMONIC;
-const url = process.env.POLYGON_MUMBAI_RPC_URL;
+const url = process.env.ALCHEMY_POLYGON_MUMBAI_RPC_URL;
 
 module.exports = {
   contracts_build_directory: path.join(__dirname, "truffle/abis"),
@@ -47,10 +47,10 @@ module.exports = {
       skipDryRun: true,
     },
     matic: {
-      provider: () => new HDWalletProvider(mnemonic, url),
-      network_id: 80001,
-      confirmations: 2,
-      timeoutBlocks: 200,
+      provider: () => {
+        return new HDWalletProvider(mnemonic, url);
+      },
+      network_id: "80001",
       skipDryRun: true,
     },
   },

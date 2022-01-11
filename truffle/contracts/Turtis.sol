@@ -43,7 +43,7 @@ contract Turtis is ERC721URIStorage, ReentrancyGuard {
 
   mapping(uint256 => NFTItem) tokenIdToNFTItem;
 
-  // Contructor is called when an instance of 'TurtleCharacter' contract is deployed
+  // Contructor is called when an instance of 'TurtleMarket' contract is deployed
   constructor(address marketplaceAddress) ERC721("TurtleCharacter", "TRTL") {
     contractOwner = payable(msg.sender);
     marketContractAddress = marketplaceAddress;
