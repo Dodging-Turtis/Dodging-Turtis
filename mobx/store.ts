@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import type { AbiItem } from 'web3-utils';
 import type { Contract } from 'web3-eth-contract';
 import Web3 from 'web3';
@@ -98,18 +98,24 @@ export class GlobalStore {
       try {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
         this.web3.setProvider(window.ethereum);
-        this.accountAddress = (await this.web3.eth.getAccounts())[0];
-        this.turtisContract = new this.web3.eth.Contract(
-          TurtisContract.abi as AbiItem[],
-          TurtisContract.networks[NET_ID].address
-        );
-        this.marketContract = new this.web3.eth.Contract(
-          MarketContract.abi as AbiItem[],
-          MarketContract.networks[NET_ID].address
-        );
         const netId = await this.web3.eth.net.getId();
-        if (netId !== NET_ID) alert('wrong network');
-        else this.walletConnected = true;
+        if (netId !== NET_ID) {
+          alert('wrong network');
+        } else {
+          const accountAddress = (await this.web3.eth.getAccounts())[0];
+          runInAction(() => {
+            this.accountAddress = accountAddress;
+            this.turtisContract = new this.web3.eth.Contract(
+              TurtisContract.abi as AbiItem[],
+              TurtisContract.networks[NET_ID].address
+            );
+            this.marketContract = new this.web3.eth.Contract(
+              MarketContract.abi as AbiItem[],
+              MarketContract.networks[NET_ID].address
+            );
+            this.walletConnected = true;
+          });
+        }
       } catch (e) {
         console.error(e);
         alert('connection error');
@@ -119,19 +125,23 @@ export class GlobalStore {
 
   async fetchGlobalNfts() {
     const newNftCount = await this.turtisContract.methods.totalSupply().call();
+    console.log(newNftCount);
     if (newNftCount !== this.nftList.length) {
       console.log('fetching nfts');
-      const nftsData: any[] =
-        await this.marketContract.methods.fetchMarketItems.call();
-      this.nftList = nftsData.map((item) => ({
-        price: parseFloat(
-          this.web3.utils.fromWei(item.price.toString(), 'ether')
-        ),
-        owner: item.owner,
-        seller: item.seller,
-        tokenId: item.tokenId.toString(),
-      }));
-      this.sortGlobalNfts();
+      const nftsData: any[] = await this.marketContract.methods
+        .fetchMarketItems()
+        .call();
+      runInAction(() => {
+        this.nftList = nftsData.map((item) => ({
+          price: parseFloat(
+            this.web3.utils.fromWei(item.price.toString(), 'ether')
+          ),
+          owner: item.owner,
+          seller: item.seller,
+          tokenId: item.tokenId.toString(),
+        }));
+        this.sortGlobalNfts();
+      });
     }
   }
 
@@ -140,17 +150,20 @@ export class GlobalStore {
       .balanceOf(this.accountAddress)
       .call();
     if (newUserNftCount !== this.userNftList.length) {
-      const nftsData: any[] =
-        await this.marketContract.methods.fetchUserNFTs.call();
-      this.userNftList = nftsData.map((item) => ({
-        price: parseFloat(
-          this.web3.utils.fromWei(item.price.toString(), 'ether')
-        ),
-        owner: item.owner,
-        seller: item.seller,
-        tokenId: item.tokenId.toString(),
-      }));
-      this.sortUserlNfts();
+      const nftsData: any[] = await this.marketContract.methods
+        .fetchUserNFTs()
+        .call();
+      runInAction(() => {
+        this.userNftList = nftsData.map((item) => ({
+          price: parseFloat(
+            this.web3.utils.fromWei(item.price.toString(), 'ether')
+          ),
+          owner: item.owner,
+          seller: item.seller,
+          tokenId: item.tokenId.toString(),
+        }));
+        this.sortUserlNfts();
+      });
     }
   }
 }
