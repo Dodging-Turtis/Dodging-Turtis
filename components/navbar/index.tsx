@@ -11,8 +11,8 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className='relative lg:max-h-16 flex flex-wrap items-center justify-between px-2 pt-1 mt-0 bg-white  font-primary'>
-        <div className='container mt-0 px-4 mx-auto flex flex-wrap items-center justify-between'>
+      <nav className='relative lg:max-h-16 flex flex-wrap items-center justify-between px-2 pt-1 mt-0 bg-white font-primary '>
+        <div className='container mt-0 px-4 mx-auto flex flex-wrap items-center justify-between '>
           <div className='w-full mt-0 relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start'>
             <Image
               className='absolute -mt-10 cursor-pointer'
@@ -47,7 +47,7 @@ const Navbar = () => {
                 </a>
               </li>
               <li className='nav-item px-3'>
-                <a href='#'>Shell Market</a>
+                <a href='/market'>Shell Market</a>
               </li>
               <li className='nav-item px-3'>
                 <a href='#'>Leaderboard</a>

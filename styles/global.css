@@ -16,4 +16,11 @@
 body {
   margin: 0%;
   padding: 0%;
+  overflow-x: hidden;
+}
+
+nav {
+  box-shadow: -1px 4px 5px 0px rgba(0, 0, 0, 0.03);
+  -webkit-box-shadow: -1px 4px 5px 0px rgba(0, 0, 0, 0.03);
+  -moz-box-shadow: -1px 4px 5px 0px rgba(0, 0, 0, 0.03);
 }

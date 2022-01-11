@@ -24,13 +24,13 @@ const Footer = () => {
             </tr>
             <tr>
               <td className='p-4'>
-                <a href='#'>Market</a>
+                <a href='/market'>Market</a>
               </td>
               <td className='p-4'>
                 <a href='#'>Community</a>
               </td>
               <td className='p-4'>
-                <a href='#'>Roadmap</a>
+                <a href='/roadmap'>Roadmap</a>
               </td>
             </tr>
             <tr>
@@ -41,7 +41,7 @@ const Footer = () => {
                 <a href='#'>Team</a>
               </td>
               <td className='p-4'>
-                <a href='#'>For Developers</a>
+                <a href='https://github.com/Dodging-Turtis'>For Developers</a>
               </td>
             </tr>
           </table>
