@@ -12,3 +12,8 @@
   font-family: 'JosefinSans';
   left: -200%;
 }
+
+body {
+  margin: 0%;
+  padding: 0%;
+}

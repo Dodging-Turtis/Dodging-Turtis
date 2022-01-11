@@ -2,23 +2,31 @@ import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-
+import logo from '../../public/assets/logo.png';
+import Image from 'next/dist/client/image';
+import Router from 'next/router';
 const Navbar = () => {
   const router = useRouter();
   const [navbarOpen, setNavbarOpen] = useState(false);
 
   return (
     <>
-      <nav className='relative flex flex-wrap items-center justify-between px-2 py-3 bg-white mb-3 font-primary'>
-        <div className='container px-4 mx-auto flex flex-wrap items-center justify-between'>
-          <div className='w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start'>
-            <a
-              className='text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-black'
-              href='#pablo'>
-              Logo
-            </a>
+      <nav className='relative lg:max-h-16 flex flex-wrap items-center justify-between px-2 pt-1 mt-0 bg-white  font-primary'>
+        <div className='container mt-0 px-4 mx-auto flex flex-wrap items-center justify-between'>
+          <div className='w-full mt-0 relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start'>
+            <Image
+              className='absolute -mt-10 cursor-pointer'
+              src={logo}
+              alt='Logo'
+              height={150}
+              width={150}
+              onClick={() => {
+                Router.push('/');
+              }}
+            />
+
             <button
-              className='text-black cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none'
+              className='text-black cursor-pointer text-xl leading-none px-3 pt-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none'
               type='button'
               onClick={() => setNavbarOpen(!navbarOpen)}>
               <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
@@ -30,7 +38,14 @@ const Navbar = () => {
               (navbarOpen ? ' flex' : ' hidden')
             }
             id='example-navbar-danger'>
-            <ul className='flex flex-col lg:flex-row list-none lg:ml-auto'>
+            <ul className='flex flex-col lg:flex-row list-none lg:ml-auto -pt-5 -mt-24'>
+              <li className='nav-item px-3'>
+                <a
+                  href='#'
+                  className='rounded-full text-right text-blue font-bold bg-purple text-white p-2 '>
+                  Connect to wallet
+                </a>
+              </li>
               <li className='nav-item px-3'>
                 <a href='#'>Shell Market</a>
               </li>
@@ -44,7 +59,7 @@ const Navbar = () => {
                 <a href='#'>About</a>
               </li>
               <li className='nav-item px-3'>
-                <a href='#'>Sign In</a>
+                <a href='/signin'>Sign In</a>
               </li>
             </ul>
           </div>

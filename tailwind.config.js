@@ -1,3 +1,5 @@
+const { url } = require('inspector');
+
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
@@ -5,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        website_bg: 'url(../public/assets/website-bg.png)',
+        pattern: 'url(../public/assets/turtle-pattern.png)',
+      },
       fontFamily: {
         primary: ['Josefin Sans', 'sans-serif'],
       },
@@ -16,6 +22,8 @@ module.exports = {
       whiteish: '#F1FCFF',
       sand: '#E7C7B4',
       greyish: '#F8F8F8',
+      purple: '#B6D8F8',
+      grey: '#8E8E8E',
     },
   },
   plugins: [],
