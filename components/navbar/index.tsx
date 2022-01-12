@@ -5,6 +5,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import logo from '../../public/assets/logo.png';
 import Image from 'next/dist/client/image';
 import Router from 'next/router';
+import Link from 'next/link';
 const Navbar = () => {
   const router = useRouter();
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -47,7 +48,7 @@ const Navbar = () => {
                 </a>
               </li>
               <li className='nav-item px-3'>
-                <a href='/market'>Shell Market</a>
+                <Link href='/market'>Shell Market</Link>
               </li>
               <li className='nav-item px-3'>
                 <a href='#'>Leaderboard</a>
@@ -59,7 +60,7 @@ const Navbar = () => {
                 <a href='#'>About</a>
               </li>
               <li className='nav-item px-3'>
-                <a href='/signin'>Sign In</a>
+                <Link href='/signin'>Sign In</Link>
               </li>
             </ul>
           </div>

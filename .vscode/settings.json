@@ -1,7 +1,0 @@
-{
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "diffEditor.ignoreTrimWhitespace": false,
-    "trailing-spaces.trimOnSave": true,
-    "files.trimTrailingWhitespace": true,
-}
