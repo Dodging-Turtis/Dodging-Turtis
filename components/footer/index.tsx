@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelopeSquare } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
 library.add(fab);
 
@@ -24,24 +25,26 @@ const Footer = () => {
             </tr>
             <tr>
               <td className='p-4'>
-                <a href='/market'>Market</a>
+                <Link href='/market'>Market</Link>
               </td>
               <td className='p-4'>
-                <a href='#'>Community</a>
+                <Link href='#'>Community</Link>
               </td>
               <td className='p-4'>
-                <a href='/roadmap'>Roadmap</a>
+                <Link href='/roadmap'>Roadmap</Link>
               </td>
             </tr>
             <tr>
               <td className='p-4'>
-                <a href='#'>Player's Docs</a>
+                <Link href='#'>Player&apos;s Docs</Link>
               </td>
               <td className='p-4'>
-                <a href='#'>Team</a>
+                <Link href='#'>Team</Link>
               </td>
               <td className='p-4'>
-                <a href='https://github.com/Dodging-Turtis'>For Developers</a>
+                <Link href='https://github.com/Dodging-Turtis'>
+                  For Developers
+                </Link>
               </td>
             </tr>
           </table>

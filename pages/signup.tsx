@@ -1,5 +1,6 @@
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from '../components/navbar';
+import Footer from '../components/footer';
+import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -38,11 +39,11 @@ function signup() {
           </button>
           <br />
           <br />
-          <a href='/signup'>
+          <Link href='/signup' passHref>
             <h2 className='py-2'>
-              <u>I already have an account</u>
+              <a>I already have an account</a>
             </h2>
-          </a>
+          </Link>
           <h2 className='py-2'>OR</h2>
           <h2 className='py-2'>Sign up using</h2>
           <div className='flex flex-col flex-wrap text-center py-2 text-3xl'>

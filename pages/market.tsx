@@ -1,6 +1,6 @@
 import Footer from '../components/footer';
-import Navbar from '../components/Navbar';
-import Cards from '../components/body/Cards';
+import Navbar from '../components/navbar';
+import Cards from '../components/body/cards';
 function market() {
   return (
     <div className='h-screen w-screen overflow-x-hidden font-primary'>

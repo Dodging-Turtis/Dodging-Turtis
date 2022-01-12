@@ -1,8 +1,9 @@
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from '../components/navbar';
+import Footer from '../components/footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
+import Link from 'next/link';
 
 library.add(fab);
 
@@ -33,11 +34,11 @@ function signin() {
           </button>
           <br />
           <br />
-          <a href='/signup'>
+          <Link href='/signup' passHref>
             <h2 className='py-2'>
-              <u>I don't have an account</u>
+              <a>I don&apos;t have an account</a>
             </h2>
-          </a>
+          </Link>
           <h2 className='py-2'>OR</h2>
           <h2 className='py-2'>Sign in using</h2>
           <div className='flex flex-col flex-wrap text-center py-2 text-3xl'>
