@@ -1,12 +1,9 @@
 import { observer } from 'mobx-react-lite';
-import { storeAnnotation } from 'mobx/dist/internal';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useStore } from '../../mobx';
-import NFT from '../nftcard';
 
 const Store = observer(() => {
-  const [page, setPage] = useState(1);
   const state = useStore();
   const nfts: INft[] = state.globalNfts;
 
