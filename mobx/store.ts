@@ -131,6 +131,7 @@ export class GlobalStore {
       const nftsData: any[] = await this.marketContract.methods
         .fetchMarketItems()
         .call();
+      console.log(nftsData);
       runInAction(() => {
         this.nftList = nftsData.map((item) => ({
           price: parseFloat(
@@ -139,31 +140,50 @@ export class GlobalStore {
           owner: item.owner,
           seller: item.seller,
           tokenId: item.tokenId.toString(),
+          tokenUri: item.tokenURI,
         }));
-        this.sortGlobalNfts();
       });
+      this.sortGlobalNfts();
     }
   }
 
   async fetchUserNfts() {
-    const newUserNftCount = await this.turtisContract.methods
-      .balanceOf(this.accountAddress)
-      .call();
-    if (newUserNftCount !== this.userNftList.length) {
-      const nftsData: any[] = await this.marketContract.methods
-        .fetchUserNFTs()
+    if (this.accountAddress) {
+      const newUserNftCount = await this.turtisContract.methods
+        .balanceOf(this.accountAddress)
         .call();
-      runInAction(() => {
-        this.userNftList = nftsData.map((item) => ({
-          price: parseFloat(
-            this.web3.utils.fromWei(item.price.toString(), 'ether')
-          ),
-          owner: item.owner,
-          seller: item.seller,
-          tokenId: item.tokenId.toString(),
-        }));
-        this.sortUserlNfts();
-      });
+      if (newUserNftCount !== this.userNftList.length) {
+        const nftsData: any[] = await this.turtisContract.methods
+          .getUserOwnedNFTs(this.accountAddress)
+          .call();
+        runInAction(() => {
+          this.userNftList = nftsData.map((item) => ({
+            // price: parseFloat(
+            //   this.web3.utils.fromWei(item.price?.toString() ?? '0', 'ether')
+            // ),
+            // owner: item.owner,
+            // seller: item.seller,
+            tokenId: parseInt(item.tokenId.toString()),
+            tokenUri: item.tokenURI,
+            price: 0,
+          }));
+          this.sortUserlNfts();
+        });
+      }
+    } else {
+      console.log('wallet not connected');
     }
+  }
+
+  async mintNFT() {
+    await this.turtisContract.methods
+      .generateTurtle(
+        300,
+        'ipfs://bafyreiewc2ctsxcmmjs6c3yprc7xho723ur6ogihbiz4gqiq45g2v4o6vm/metadata.json',
+        '0x1b',
+        '0xc1cd758d8987b9b0e7f3ca8ae96ddaa27631a8cd0fa4a24e84e9c31e8a3b3b55',
+        '0x63e648ecff13bf87d174b4294e083a50d0ae0e1c36a8b53be551fb6f09ad2c28'
+      )
+      .send({ from: this.accountAddress });
   }
 }

@@ -3,10 +3,9 @@ interface Window {
 }
 
 interface INft {
-  price: number;
-  owner: string;
-  seller: string;
   tokenId: number;
+  tokenUri: string;
+  price: number;
 }
 
 interface IMetadata {
