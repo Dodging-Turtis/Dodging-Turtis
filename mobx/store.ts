@@ -23,7 +23,7 @@ export class GlobalStore {
   marketContract: Contract;
   accountAddress: string = '';
   highScore: number = 0;
-  nftList: INft[] = [];
+  nftList: IMarketItem[] = [];
   userNftList: INft[] = [];
   walletConnected: boolean = false;
   sortOrder: Order = Order.LATEST;
@@ -42,54 +42,44 @@ export class GlobalStore {
   }
 
   get globalNfts() {
-    return this.nftList;
-  }
-
-  sortGlobalNfts() {
+    const globalNfts = [...this.nftList];
     switch (this.sortOrder) {
       case Order.PRICE_ASC:
-        this.nftList.sort((a, b) => a.price - b.price);
-        break;
-
+        return globalNfts.sort((a, b) => a.price - b.price);
       case Order.PRICE_DSC:
-        this.nftList.sort((a, b) => b.price - a.price);
-        break;
-
+        return globalNfts.sort((a, b) => b.price - a.price);
       case Order.OLDEST:
-        this.nftList.sort((a, b) => b.tokenId - a.tokenId);
-        break;
-
+        return globalNfts.sort((a, b) => b.tokenId - a.tokenId);
       default:
-        this.nftList.sort((a, b) => a.tokenId - b.tokenId);
-        break;
+        return globalNfts.sort((a, b) => a.tokenId - b.tokenId);
     }
   }
 
-  sortUserlNfts() {
-    switch (this.sortOrder) {
-      case Order.PRICE_ASC:
-        this.nftList.sort((a, b) => a.price - b.price);
-        break;
+  async getUserNftsByPage(page: number) {
+    let promises: Promise<IMetadata>[] = [];
+    console.log('fetch by page');
 
-      case Order.PRICE_DSC:
-        this.nftList.sort((a, b) => b.price - a.price);
-        break;
+    const fetchIpfs = async (url: string) => {
+      url = url.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
+      const data = await fetch(url);
+      return await data.json();
+    };
 
-      case Order.OLDEST:
-        this.nftList.sort((a, b) => b.tokenId - a.tokenId);
-        break;
-
-      default:
-        this.nftList.sort((a, b) => a.tokenId - b.tokenId);
-        break;
+    for (
+      let index = page * 6;
+      index < Math.min(this.userNftList.length, (page + 1) * 6);
+      index++
+    ) {
+      let url = this.userNftList[index].tokenUri;
+      promises.push(fetchIpfs(url));
     }
+
+    return await Promise.all(promises);
   }
 
   updateSortOrder(order: Order) {
     if (order != this.sortOrder) {
       this.sortOrder = order;
-      this.sortGlobalNfts();
-      this.sortUserlNfts();
     }
   }
 
@@ -138,12 +128,11 @@ export class GlobalStore {
             this.web3.utils.fromWei(item.price.toString(), 'ether')
           ),
           owner: item.owner,
-          seller: item.seller,
-          tokenId: item.tokenId.toString(),
+          tokenId: parseInt(item.tokenId.toString()),
+          itemId: parseInt(item.itemId.toString()),
           tokenUri: item.tokenURI,
         }));
       });
-      this.sortGlobalNfts();
     }
   }
 
@@ -158,16 +147,9 @@ export class GlobalStore {
           .call();
         runInAction(() => {
           this.userNftList = nftsData.map((item) => ({
-            // price: parseFloat(
-            //   this.web3.utils.fromWei(item.price?.toString() ?? '0', 'ether')
-            // ),
-            // owner: item.owner,
-            // seller: item.seller,
             tokenId: parseInt(item.tokenId.toString()),
             tokenUri: item.tokenURI,
-            price: 0,
           }));
-          this.sortUserlNfts();
         });
       }
     } else {

@@ -5,25 +5,25 @@ import { useStore } from '../../mobx';
 
 const Store = observer(() => {
   const state = useStore();
-  const nfts: INft[] = state.userNftList;
+  const [page, setPage] = useState<number>(0);
+  const [nfts, setNfts] = useState<any>([]);
 
   useEffect(() => {
-    console.log('calling effetct');
     state.fetchUserNfts();
   }, [state, state.accountAddress]);
 
-  const fetchIpfs = async (url: string) => {
-    url = url.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
-    const data = await fetch(url);
-    console.log(await data.json());
-  };
+  useEffect(() => {
+    state.getUserNftsByPage(page).then((userNfts) => {
+      setNfts(userNfts);
+    });
+  }, [setNfts, state, state.userNftList, page]);
 
   const items =
     nfts.length > 0 ? (
-      nfts.map(async (nft: INft) => {
+      nfts.map((nft: INft, index: number) => {
         return (
-          <div key={nft.tokenId}>
-            id:{nft.tokenId}attributes:{await fetchIpfs(nft.tokenUri)}
+          <div key={index}>
+            <pre>{JSON.stringify(nft, null, 2)}</pre>
           </div>
         );
       })
@@ -41,18 +41,8 @@ const Store = observer(() => {
         style={{ flexWrap: 'wrap' }}>
         {items}
       </div>
-      <button
-        onClick={() => {
-          state.connectToWallet();
-        }}>
-        connect to wallet
-      </button>
-      <button
-        onClick={() => {
-          state.mintNFT();
-        }}>
-        mint nft
-      </button>
+      <button onClick={() => state.connectToWallet()}>connect to wallet</button>
+      <button onClick={() => state.mintNFT()}>mint nft</button>
     </div>
   );
 });
