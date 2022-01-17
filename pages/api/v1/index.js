@@ -10,7 +10,7 @@ const client = new NFTStorage({ token: apiKey });
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { componentIndicesArray, imgdata } = await dummyTurtle();
+    const { componentIndicesArray, imgdata } = await generateRandomTurtle();
     const { score, walletAddress } = JSON.parse(req.body);
     const characterName = 'Floppy Turtle';
 
