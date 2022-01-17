@@ -5,22 +5,25 @@ import { useStore } from '../../mobx';
 
 const Store = observer(() => {
   const state = useStore();
-  const nfts: INft[] = state.globalNfts;
+  const [page, setPage] = useState<number>(0);
+  const [nfts, setNfts] = useState<any>([]);
 
   useEffect(() => {
-    console.log('calling effetct');
-    state.fetchGlobalNfts();
-  }, [state]);
+    state.fetchUserNfts();
+  }, [state, state.accountAddress]);
+
+  useEffect(() => {
+    state.getUserNftsByPage(page).then((userNfts) => {
+      setNfts(userNfts);
+    });
+  }, [setNfts, state, state.userNftList, page]);
 
   const items =
     nfts.length > 0 ? (
-      // nfts.map((nft: INft) => <NFT key={nft.tokenId} nft={nft} />)
-      nfts.map((nft: INft) => {
+      nfts.map((nft: INft, index: number) => {
         return (
-          <div key={nft.tokenId}>
-            {nft.owner}
-            {nft.price}
-            {nft.tokenId}
+          <div key={index}>
+            <pre>{JSON.stringify(nft, null, 2)}</pre>
           </div>
         );
       })
@@ -38,6 +41,8 @@ const Store = observer(() => {
         style={{ flexWrap: 'wrap' }}>
         {items}
       </div>
+      <button onClick={() => state.connectToWallet()}>connect to wallet</button>
+      <button onClick={() => state.mintNFT()}>mint nft</button>
     </div>
   );
 });
