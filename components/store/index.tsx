@@ -1,35 +1,36 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useStore } from '../../mobx';
+import { useStore, Order } from '../../mobx';
 
 const Store = observer(() => {
-  const state = useStore();
-  const [page, setPage] = useState<number>(0);
-  const [nfts, setNfts] = useState<any>([]);
+  const store = useStore();
+  const [isLoading, setLoading] = useState(true);
+  const nfts: IMarketNftWithMetadata[] = store.marketNftWithMetadata;
+
+  const nextPage = () => {
+    store.page++;
+    store.fetchGLobalNftByPage();
+  };
 
   useEffect(() => {
-    state.fetchUserNfts();
-  }, [state, state.accountAddress]);
+    setLoading(true);
+    store.fetchGLobalNftByPage().then(() => setLoading(false));
+  }, [store, store.accountAddress]);
 
-  useEffect(() => {
-    state.getUserNftsByPage(page).then((userNfts) => {
-      setNfts(userNfts);
-    });
-  }, [setNfts, state, state.userNftList, page]);
-
-  const items =
-    nfts.length > 0 ? (
-      nfts.map((nft: INft, index: number) => {
-        return (
-          <div key={index}>
-            <pre>{JSON.stringify(nft, null, 2)}</pre>
-          </div>
-        );
-      })
-    ) : (
-      <div className='container-fluid position-absolute top-50 start-50 translate-middle'></div>
-    );
+  const items = !isLoading ? (
+    nfts.map((nft: IMarketNftWithMetadata, index: number) => {
+      return (
+        <div key={index}>
+          <pre>{JSON.stringify(nft, null, 2)}</pre>
+        </div>
+      );
+    })
+  ) : (
+    <div className='container-fluid position-absolute top-50 start-50 translate-middle'>
+      loading
+    </div>
+  );
 
   return (
     <div>
@@ -41,8 +42,10 @@ const Store = observer(() => {
         style={{ flexWrap: 'wrap' }}>
         {items}
       </div>
-      <button onClick={() => state.connectToWallet()}>connect to wallet</button>
-      <button onClick={() => state.mintNFT()}>mint nft</button>
+      <button onClick={() => store.connectToWallet()}>connect to wallet</button>
+      <button onClick={() => store.mintNFT()}>mint nft</button>
+      <button onClick={() => store.updateSortOrder(Order.OLDEST)}>sort</button>
+      <button onClick={nextPage}>next</button>
     </div>
   );
 });

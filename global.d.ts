@@ -2,23 +2,33 @@ interface Window {
   ethereum: any;
 }
 
-interface INft {
+interface IUserNft {
   tokenId: number;
   tokenUri: string;
 }
 
-interface IMarketItem {
+interface IMarketNft {
   itemId: number;
   tokenId: number;
+  tokenUri: string;
   owner: string;
+  seller: string;
+  sold: boolean;
   price: number;
 }
 
 interface IMetadata {
-  tokenId: number;
   name: string;
   description: string;
   componentIndices: object;
   attributes: object;
   image: string;
+}
+
+interface IUserNftWithMetadata extends IUserNft {
+  metadata: IMetadata;
+}
+
+interface IMarketNftWithMetadata extends IMarketNft {
+  metadata: IMetadata;
 }
