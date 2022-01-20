@@ -38,6 +38,7 @@ export async function generateRandomTurtle() {
   return {
     componentIndicesArray: randomNumbers,
     imgdata: blendedImage.toBuffer('png'),
+    breed: breedRandomNumber,
   };
 }
 
@@ -51,5 +52,6 @@ export async function dummyTurtle() {
   return {
     componentIndicesArray: randomNumbers,
     imgdata: blendedImage.toBuffer('png'),
+    breed: 1,
   };
 }
