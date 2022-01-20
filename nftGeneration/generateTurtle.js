@@ -6,13 +6,13 @@ let components = [
   'feet',
   'hands',
   'heads',
-  'innerShell',
-  'outerShell',
+  'innerShells',
+  'outerShells',
   'tails',
 ];
 let file_extension = '.png';
 let total_components = components.length;
-let images_per_component = 1;
+let images_per_component = 5;
 let total_number_of_breeds = 10;
 
 export async function generateRandomTurtle() {
