@@ -10,12 +10,11 @@ const client = new NFTStorage({ token: apiKey });
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { componentIndicesArray, imgdata } = await generateRandomTurtle();
+    const { componentIndicesArray, imgdata, breed } = await generateRandomTurtle();
     const { score, walletAddress } = JSON.parse(req.body);
-    const characterName = 'Floppy Turtle';
 
-    let speed = score;
-    speed += parseInt(Math.random() * 51);
+    const characterName = 'Breed ' + breed + ' Turtle';
+    const speed = score + parseInt(Math.random() * 51);
 
     const metadata = await client.store({
       name: characterName,
@@ -30,7 +29,8 @@ export default async function handler(req, res) {
         shellOuter: componentIndicesArray[5],
         tail: componentIndicesArray[6],
       },
-      attributes: [{ trait_type: 'speed', value: speed }],
+      attributes: [{ trait_type: 'speed', value: speed }, 
+        { trait_type: 'breed', value: breed }],
     });
 
     const IPFSHash = metadata.ipnft;
