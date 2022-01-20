@@ -1,8 +1,13 @@
 # Dodging Turtis
 
-We created an NFT based game which runs on the `POLYGON` network in the `Ethereum` Blockchain and is powered by decentralized `Chainlink` Oracles.
+![Turtis](https://user-images.githubusercontent.com/55662714/150418640-92754365-f2a5-410b-840d-65f1e95204ee.png)
 
-![Turtis](https://user-images.githubusercontent.com/55662714/140104440-6cf7ed0d-5b7f-47ba-8b8a-f234504515e1.png)
+> Dodging Turtis is an NFT based game which runs on the `POLYGON` network in the `Ethereum` Blockchain and is powered by decentralized `Chainlink` Oracles.
+
+<br />
+
+![Turtis](https://user-images.githubusercontent.com/55662714/150414116-cdc6c2e1-fca0-4c46-8242-b306f1292291.png)
+
 
 ## About the project
 
@@ -10,12 +15,12 @@ The game involves a Turtle character who dodges through the platforms coming tow
 
 Inorder to dodge through the blocks, the Turtle can move left or right using the arrow keys. The speed of the left and right movement of the Turtle varies for each Turtle NFT. The game is really fun to play and it can get really challenging as the speed of the platforms increase with time.
 
-![Turtis](https://user-images.githubusercontent.com/55662714/140104554-1bd03532-92e7-470a-90a8-badf23fe72e5.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/150413926-84b65d7f-052f-4c0d-b1b0-09a8dcdb95cd.jpg)
 
 
 The player is rewarded with a new random Turtle NFT everytime a new checkpoint score is reached by the user. The checkpoint score is atleast 110 more than the previous high score of the player.
 
-![Turtis](https://user-images.githubusercontent.com/55662714/140104603-71aafdbd-ff8e-4519-85c6-e8dd9bc579aa.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/150415170-f281718d-d16f-4880-95ae-06f189135ab4.png)
 
 
 Higher the score achieved for a new checkpoint, higher the `speed` of the NFT character that the user receives as a reward. More speed allows the player to move faster through the platforms and reach high score easily. Users would want to own NFTs with higher speed and hence it acts a selling point.
@@ -24,18 +29,10 @@ The NFTs are dynamic. Every new Turtle NFT has a unique name, randomized image a
 
 ### Some of the randomly generated Turtles are as follows:
 
-![Turtis](https://user-images.githubusercontent.com/55662714/140104676-36a49b28-a034-495b-9f18-ff7ed22ae127.png)
+![Turtis](https://user-images.githubusercontent.com/55662714/150414723-1417bdd3-229d-4b66-b528-f66e1b999445.png)
 
+![Turtis](https://user-images.githubusercontent.com/55662714/150417567-ebeea9d8-4daf-447c-b976-a59898621560.png)
 
-![Turtis](https://user-images.githubusercontent.com/55662714/140104732-ee8a9c93-1b65-4c77-9595-d14c9712e159.png)
-
-
-Visit the [Custom API](https://github.com/DineshBS44/Turtis-API) github repo https://github.com/DineshBS44/Turtis-API to know more about the Random Turtle Image generation and usage of `nft.storage`
-<br><br>
-
-<img src="https://user-images.githubusercontent.com/55662714/140104850-8c5c93dd-78bc-4cb0-805f-c5b9a40b20b1.png" alt="center" width="40" height="40"><br>
-
-`ChainlinkClient` contract is used to create a Request for calling the API to get metadata for the NFT such as name, image and speed. The Chainlink oracle used for making GET request from the API is [Linkriver](https://linkriver.io/)
 <br>
 
 ![Turtis](https://user-images.githubusercontent.com/55662714/140104978-b4662328-fa0c-4e5f-84f5-d8c43bcaeef8.png)
