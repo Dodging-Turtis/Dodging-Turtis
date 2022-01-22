@@ -2,31 +2,26 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import type { AbiItem } from 'web3-utils';
 import type { Contract } from 'web3-eth-contract';
 import Web3 from 'web3';
+import { NET_ID, RPC_URL, Order, fetchIpfs, sortNfts } from './helpers';
 import TurtisContract from '../truffle/abis/Turtis.json';
 import MarketContract from '../truffle/abis/TurtisMarket.json';
-
-const NET_ID = 80001;
-const RPC_URL =
-  process.env.NEXT_PUBLIC_RPC_URL ??
-  'https://rpc-endpoints.superfluid.dev/mumbai';
-
-export enum Order {
-  PRICE_ASC,
-  PRICE_DSC,
-  LATEST,
-  OLDEST,
-}
 
 export class GlobalStore {
   web3: Web3;
   turtisContract: Contract;
   marketContract: Contract;
+
   accountAddress: string = '';
-  highScore: number = 0;
-  nftList: INft[] = [];
-  userNftList: INft[] = [];
   walletConnected: boolean = false;
+  highScore: number = 0;
   sortOrder: Order = Order.LATEST;
+
+  marketNftList: IMarketNft[] = [];
+  userNftList: IUserNft[] = [];
+
+  page: number = 0;
+  marketNftWithMetadata: IMarketNftWithMetadata[] = [];
+  userNftWithMetadata: IUserNftWithMetadata[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -41,55 +36,60 @@ export class GlobalStore {
     );
   }
 
-  get globalNfts() {
-    return this.nftList;
+  async fetchGLobalNftByPage() {
+    console.log('fetch global by page');
+
+    await this.fetchGlobalNftsList();
+    const nfts = sortNfts(this.marketNftList, this.sortOrder);
+    const min = Math.min((this.page + 1) * 6, nfts.length);
+    const promises: Promise<IMetadata>[] = [];
+    const nftSlice: IMarketNft[] = [];
+    for (let i = this.page * 6; i < min; i++) {
+      promises.push(fetchIpfs(nfts[i].tokenUri));
+      nftSlice.push(nfts[i]);
+    }
+    const metadata: IMetadata[] = await Promise.all(promises);
+    const nftsWithMetadata: IMarketNftWithMetadata[] = nftSlice.map(
+      (nft, index): IMarketNftWithMetadata => ({
+        ...nft,
+        metadata: metadata[index],
+      })
+    );
+
+    runInAction(() => {
+      this.marketNftWithMetadata = nftsWithMetadata;
+    });
   }
 
-  sortGlobalNfts() {
-    switch (this.sortOrder) {
-      case Order.PRICE_ASC:
-        this.nftList.sort((a, b) => a.price - b.price);
-        break;
+  async fetchUserlNfts() {
+    console.log('fetch user nfts with metadata');
 
-      case Order.PRICE_DSC:
-        this.nftList.sort((a, b) => b.price - a.price);
-        break;
-
-      case Order.OLDEST:
-        this.nftList.sort((a, b) => b.tokenId - a.tokenId);
-        break;
-
-      default:
-        this.nftList.sort((a, b) => a.tokenId - b.tokenId);
-        break;
+    await this.fetchUserNftsList();
+    const promises = [];
+    const nftSlice: IUserNft[] = [];
+    for (let i = 0; i < this.userNftList.length; i++) {
+      promises.push(fetchIpfs(this.userNftList[i].tokenUri));
+      nftSlice.push(this.userNftList[i]);
     }
-  }
+    const metadata = await Promise.all(promises);
+    const nftsWithMetadata: IUserNftWithMetadata[] = nftSlice.map(
+      (nft, index): IUserNftWithMetadata => ({
+        ...nft,
+        metadata: metadata[index],
+      })
+    );
 
-  sortUserlNfts() {
-    switch (this.sortOrder) {
-      case Order.PRICE_ASC:
-        this.nftList.sort((a, b) => a.price - b.price);
-        break;
-
-      case Order.PRICE_DSC:
-        this.nftList.sort((a, b) => b.price - a.price);
-        break;
-
-      case Order.OLDEST:
-        this.nftList.sort((a, b) => b.tokenId - a.tokenId);
-        break;
-
-      default:
-        this.nftList.sort((a, b) => a.tokenId - b.tokenId);
-        break;
-    }
+    runInAction(() => {
+      this.userNftWithMetadata = nftsWithMetadata;
+    });
   }
 
   updateSortOrder(order: Order) {
-    if (order != this.sortOrder) {
+    console.log('sorting');
+
+    if (order !== this.sortOrder) {
       this.sortOrder = order;
-      this.sortGlobalNfts();
-      this.sortUserlNfts();
+      this.fetchGLobalNftByPage();
     }
   }
 
@@ -123,31 +123,39 @@ export class GlobalStore {
     } else alert('wallet not detected');
   }
 
-  async fetchGlobalNfts() {
+  async fetchGlobalNftsList() {
+    console.log('fetch global nft');
+    console.log(this.marketNftList.length);
+
     const newNftCount = await this.turtisContract.methods.totalSupply().call();
-    console.log(newNftCount);
-    if (newNftCount !== this.nftList.length) {
-      console.log('fetching nfts');
+    if (newNftCount !== this.marketNftList.length) {
       const nftsData: any[] = await this.marketContract.methods
         .fetchMarketItems()
         .call();
-      console.log(nftsData);
+      const uri = await Promise.all(
+        nftsData.map((nft) =>
+          this.turtisContract.methods.tokenURI(nft.tokenId).call()
+        )
+      );
       runInAction(() => {
-        this.nftList = nftsData.map((item) => ({
+        this.marketNftList = nftsData.map((item, index) => ({
           price: parseFloat(
             this.web3.utils.fromWei(item.price.toString(), 'ether')
           ),
           owner: item.owner,
           seller: item.seller,
-          tokenId: item.tokenId.toString(),
-          tokenUri: item.tokenURI,
+          sold: item.sold,
+          tokenId: parseInt(item.tokenId.toString()),
+          itemId: parseInt(item.itemId.toString()),
+          tokenUri: uri[index],
         }));
       });
-      this.sortGlobalNfts();
     }
   }
 
-  async fetchUserNfts() {
+  async fetchUserNftsList() {
+    console.log('fetch user nft');
+
     if (this.accountAddress) {
       const newUserNftCount = await this.turtisContract.methods
         .balanceOf(this.accountAddress)
@@ -158,16 +166,9 @@ export class GlobalStore {
           .call();
         runInAction(() => {
           this.userNftList = nftsData.map((item) => ({
-            // price: parseFloat(
-            //   this.web3.utils.fromWei(item.price?.toString() ?? '0', 'ether')
-            // ),
-            // owner: item.owner,
-            // seller: item.seller,
             tokenId: parseInt(item.tokenId.toString()),
             tokenUri: item.tokenURI,
-            price: 0,
           }));
-          this.sortUserlNfts();
         });
       }
     } else {
