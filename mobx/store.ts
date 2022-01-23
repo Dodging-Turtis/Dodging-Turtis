@@ -2,7 +2,14 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import type { AbiItem } from 'web3-utils';
 import type { Contract } from 'web3-eth-contract';
 import Web3 from 'web3';
-import { NET_ID, RPC_URL, Order, fetchIpfs, sortNfts } from './helpers';
+import {
+  NET_ID,
+  RPC_URL,
+  Order,
+  fetchIpfs,
+  sortNfts,
+  dummyTurtle,
+} from './helpers';
 import TurtisContract from '../truffle/abis/Turtis.json';
 import MarketContract from '../truffle/abis/TurtisMarket.json';
 
@@ -22,6 +29,7 @@ export class GlobalStore {
   page: number = 0;
   marketNftWithMetadata: IMarketNftWithMetadata[] = [];
   userNftWithMetadata: IUserNftWithMetadata[] = [];
+  dummyUserNftWithMetadata: IUserNftWithMetadata[] = [dummyTurtle];
 
   constructor() {
     makeAutoObservable(this);

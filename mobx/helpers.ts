@@ -29,3 +29,30 @@ export function sortNfts(globalNfts: IMarketNft[], sortOrder: Order) {
       return globalNfts.sort((a, b) => a.tokenId - b.tokenId);
   }
 }
+
+export const dummyTurtle = {
+  tokenId: 1,
+  tokenUri:
+    'ipfs://bafyreicjwky6t2dcdqpj6r6lx2tl2rgdo5riazknoq4yzgyvkrhyuxyqfm/metadata.json',
+  metadata: {
+    name: 'Floppy Turtle',
+    description: 'A Turtle that is on a journey in the river',
+    componentIndices: {
+      eyes: '8',
+      hands: '9',
+      head: '6',
+      legs: '10',
+      shell: '6',
+      shellOuter: 'NaN',
+      tail: 'NaN',
+    },
+    attributes: [
+      {
+        trait_type: 'speed',
+        value: 106,
+      },
+    ],
+    image:
+      'ipfs://bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
+  },
+};
