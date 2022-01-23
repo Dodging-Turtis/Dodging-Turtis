@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import Router from 'next/router';
+import turtles from '../../public/assets/website/turtles.svg';
+import Image from 'next/image';
 
 function Body() {
   return (
@@ -59,20 +61,30 @@ function Body() {
       </div>
 
       {/* section-4 */}
-      <div className='container w-2/3 px-16 text-left pt-16  bg-pattern'>
-        <h1 className='font-bold text-3xl text-blue p-2'>
-          Title gonna be here
-        </h1>
-        <p className='p-2'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu
-          scelerisque pretium ullamcorper in scelerisque id amet quam. Vivamus
-          imperdiet imperdiet urna gravida pellentesque duis. Felis fringilla
-          faucibus amet, et. Massa sit in iaculis ornare.
-        </p>
+      <div className='container lg:text-left text-center flex flex-col-reverse lg:flex-row w-full px-16 pt-16  bg-pattern'>
+        <div className='lg:w-2/3 w-full mx-auto'>
+          <h1 className='font-bold text-3xl text-blue py-2'>
+            Title gonna be here
+          </h1>
+          <p className='py-2'>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu
+            scelerisque pretium ullamcorper in scelerisque id amet quam. Vivamus
+            imperdiet imperdiet urna gravida pellentesque duis. Felis fringilla
+            faucibus amet, et. Massa sit in iaculis ornare.
+          </p>
 
-        <button className='w-full text-9xl text-center mx-auto p-10 mb-20 mt-10 text-lightblue'>
-          <FontAwesomeIcon icon={faPlayCircle}></FontAwesomeIcon>
-        </button>
+          <button className='w-full text-9xl text-center mx-auto py-10 text-lightblue'>
+            <FontAwesomeIcon icon={faPlayCircle}></FontAwesomeIcon>
+          </button>
+        </div>
+        <div className='mx-auto lg:w-1/3 w-full'>
+          <Image
+            src={turtles}
+            alt='Homepage turtles'
+            height={450}
+            width={450}
+          />
+        </div>
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ function Cards() {
           logo Price MATIC
         </button>
       </div>
-      <div className='text-xl w-full flex flex-row flex-wrap px-4 py-1'>
+      <div className='text-xl w-full flex flex-row flex-wrap justify-center'>
         <div className='px-2'>Attribute 1</div>
         <div className='px-2'>Attribute 2</div>
         <div className='px-2'>Attribute 3</div>

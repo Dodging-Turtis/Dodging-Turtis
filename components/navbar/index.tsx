@@ -60,7 +60,7 @@ const Navbar = () => {
                 <a href='#'>About</a>
               </li>
               <li className='nav-item px-3'>
-                <Link href='/signin'>Sign In</Link>
+                <Link href='/signup'>Sign Up</Link>
               </li>
             </ul>
           </div>

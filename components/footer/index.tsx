@@ -14,7 +14,7 @@ const Footer = () => {
           <table className='text-left mx-auto table-auto'>
             <tr>
               <td className='p-4'>
-                <a href='#'>My Profile</a>
+                <a href='/profile'>My Profile</a>
               </td>
               <td className='p-4'>
                 <a href='#'>FAQs</a>

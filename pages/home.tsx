@@ -6,6 +6,7 @@ import SmartContract from '../truffle/abis/Turtis.json';
 import Navbar from '../components/navbar';
 import Body from '../components/body';
 import Footer from '../components/footer';
+import Test from '../components/signedIn/test.tsx';
 
 const Landing = () => {
   return (
