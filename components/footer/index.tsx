@@ -20,7 +20,7 @@ const Footer = () => {
                 <a href='#'>FAQs</a>
               </td>
               <td className='p-4'>
-                <a href='#'>About us</a>
+                <a href='/aboutus'>About us</a>
               </td>
             </tr>
             <tr>
@@ -35,13 +35,7 @@ const Footer = () => {
               </td>
             </tr>
             <tr>
-              <td className='p-4'>
-                <Link href='#'>Player&apos;s Docs</Link>
-              </td>
-              <td className='p-4'>
-                <Link href='#'>Team</Link>
-              </td>
-              <td className='p-4'>
+              <td className='p-4' colSpan={3}>
                 <Link href='https://github.com/Dodging-Turtis'>
                   For Developers
                 </Link>
