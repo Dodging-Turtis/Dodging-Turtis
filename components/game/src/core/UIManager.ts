@@ -4,7 +4,8 @@ import type { AbstractScene } from '../scenes/AbstractScene';
 import { CoreUI } from '../ui-objects/CoreUI';
 import { DistanceMeter } from '../ui-objects/DistanceMeter';
 import { PausedText } from '../ui-objects/PausedText';
-import { PauseResumeButton } from '../ui-objects/PauseResumeButton';
+import { PauseResumeButton } from '../ui-objects/sidebar/PauseResumeButton';
+import { SideBar } from '../ui-objects/sidebar/SideBar';
 import { TurtleSelectionMenu } from '../ui-objects/TurtleSelectionMenu';
 import { GameManager } from './GameManager';
 
@@ -15,7 +16,7 @@ export class UIManager {
   private gameManager: GameManager;
 
   turtleSelectionMenu: TurtleSelectionMenu;
-  pauseResumeButton!: PauseResumeButton;
+  sideBar!: SideBar;
   coreUI!: CoreUI;
   distanceMeter!: DistanceMeter;
   pausedText!: PausedText;
@@ -26,7 +27,7 @@ export class UIManager {
     this.scene = scene;
     this.gameManager = gameManager;
     this.turtleSelectionMenu = new TurtleSelectionMenu(this.scene).setDepth(DEPTH.ui);
-    this.pauseResumeButton = new PauseResumeButton(this.scene).setDepth(DEPTH.ui).setVisible(false);
+    this.sideBar = new SideBar(this.scene).setVisible(false).setDepth(DEPTH.ui);
     this.pausedText = new PausedText(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.coreUI = new CoreUI(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.distanceMeter = new DistanceMeter(this.scene).setDepth(DEPTH.ui).setVisible(false);
@@ -39,7 +40,7 @@ export class UIManager {
   }
 
   showGameUI() {
-    this.pauseResumeButton.setVisible(true);
+    this.sideBar.setVisible(true);
     this.coreUI.setVisible(true);
     this.distanceMeter.setVisible(true);
   }
@@ -47,9 +48,11 @@ export class UIManager {
   private handlePauseResume() {
     if (this.gameManager.isGamePaused) {
       this.gameManager.handleGameResume();
+      this.sideBar.hideSideBar();
       this.pausedText.hide();
     } else {
       this.gameManager.handleGamePause();
+      this.sideBar.showSideBar();
       this.pausedText.show();
     }
   }
@@ -65,12 +68,12 @@ export class UIManager {
       this.coreUI.hungerMeter.decreaseHunger(count);
       this.coreUI.increaseScore(count * COLLECTIBLE_MULT);
     });
-    this.pauseResumeButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
+    this.sideBar.pauseResumeButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
       this.handlePauseResume();
     });
     this.scene.inputManager.events.on(CUSTOM_EVENTS.ESCAPE, () => {
       this.handlePauseResume();
-      this.pauseResumeButton.handleOnClick(true);
+      this.sideBar.pauseResumeButton.handleOnClick(true);
     });
     this.turtleSelectionMenu.on(CUSTOM_EVENTS.START_GAME, (turtleDetails: any) => {
       this.gameManager.gameComponents.pawn.showPawnInitially();
@@ -83,7 +86,7 @@ export class UIManager {
 
   resizeAndRepositionElements(): void {
     if (this.gameManager.currentResizeState === EResizeState.GAME) {
-      this.pauseResumeButton.resizeAndRepositionElements();
+      this.sideBar.resizeAndRepositionElements();
       this.distanceMeter.resizeAndRepositionElements();
       this.coreUI.resizeAndRepositionElements();
     } else if (this.gameManager.currentResizeState === EResizeState.SELECTION_MENU) {
