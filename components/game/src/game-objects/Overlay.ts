@@ -25,7 +25,7 @@ export class Overlay extends Phaser.GameObjects.Image {
   showOverlay() {
     this.scene.tweens.add({
       targets: this,
-      alpha: 0.25,
+      alpha: 0.6,
       duration: 400,
       ease: TWEEN_EASING.QUAD_EASE_OUT,
       onStart: () => {

@@ -131,9 +131,9 @@ export class GameManager {
       let distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < PAWN_RADIUS + COLLECTIBLE_RADIUS) {
-          // collision detected!
-          collectibles[i].playConsumeTween();
-          ++collectedCount;
+        // collision detected!
+        collectibles[i].playConsumeTween();
+        ++collectedCount;
       }
     }
     return collectedCount;

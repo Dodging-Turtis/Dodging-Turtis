@@ -3,6 +3,7 @@ import { EResizeState } from '../cfg/enums/EResizeState';
 import type { AbstractScene } from '../scenes/AbstractScene';
 import { CoreUI } from '../ui-objects/CoreUI';
 import { DistanceMeter } from '../ui-objects/DistanceMeter';
+import { PausedText } from '../ui-objects/PausedText';
 import { PauseResumeButton } from '../ui-objects/PauseResumeButton';
 import { TurtleSelectionMenu } from '../ui-objects/TurtleSelectionMenu';
 import { GameManager } from './GameManager';
@@ -17,6 +18,7 @@ export class UIManager {
   pauseResumeButton!: PauseResumeButton;
   coreUI!: CoreUI;
   distanceMeter!: DistanceMeter;
+  pausedText!: PausedText;
 
   hungerThreshold = HUNGER_THRESHOLD;
 
@@ -25,6 +27,7 @@ export class UIManager {
     this.gameManager = gameManager;
     this.turtleSelectionMenu = new TurtleSelectionMenu(this.scene).setDepth(DEPTH.ui);
     this.pauseResumeButton = new PauseResumeButton(this.scene).setDepth(DEPTH.ui).setVisible(false);
+    this.pausedText = new PausedText(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.coreUI = new CoreUI(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.distanceMeter = new DistanceMeter(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.addEventHandlers();
@@ -41,6 +44,16 @@ export class UIManager {
     this.distanceMeter.setVisible(true);
   }
 
+  private handlePauseResume() {
+    if (this.gameManager.isGamePaused) {
+      this.gameManager.handleGameResume();
+      this.pausedText.hide();
+    } else {
+      this.gameManager.handleGamePause();
+      this.pausedText.show();
+    }
+  }
+
   private addEventHandlers() {
     this.coreUI.hungerMeter.on(CUSTOM_EVENTS.PAWN_STARVED, () => {
       this.gameManager.handleDeath();
@@ -53,18 +66,10 @@ export class UIManager {
       this.coreUI.increaseScore(count * COLLECTIBLE_MULT);
     });
     this.pauseResumeButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
-      if (this.gameManager.isGamePaused) {
-        this.gameManager.handleGameResume();
-      } else {
-        this.gameManager.handleGamePause();
-      }
+      this.handlePauseResume();
     });
     this.scene.inputManager.events.on(CUSTOM_EVENTS.ESCAPE, () => {
-      if (this.gameManager.isGamePaused) {
-        this.gameManager.handleGameResume();
-      } else {
-        this.gameManager.handleGamePause();
-      }
+      this.handlePauseResume();
       this.pauseResumeButton.handleOnClick(true);
     });
     this.turtleSelectionMenu.on(CUSTOM_EVENTS.START_GAME, (turtleDetails: any) => {
