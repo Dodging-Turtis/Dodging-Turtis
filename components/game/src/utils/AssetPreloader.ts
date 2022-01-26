@@ -78,7 +78,7 @@ export class AssetsPreloader {
     this.scene.load.image('menu_button', 'menu_button.png');
     this.scene.load.image('sound_off', 'sound_off.png');
     this.scene.load.image('sound_on', 'sound_on.png');
-    this.scene.load.image('health', 'health.png');
+    this.scene.load.image('lives', 'lives.png');
     this.scene.load.image('core_ui', 'core_ui.png');
     this.scene.load.image('hunger_bar_base', 'hunger_bar_base.png');
     this.scene.load.image('hunger_bar_white', 'hunger_bar_white.png');

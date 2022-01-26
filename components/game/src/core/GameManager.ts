@@ -29,9 +29,6 @@ export class GameManager {
   }
 
   private addEventHandlers() {
-    this.gameComponents.pawn.turtle.on(CUSTOM_EVENTS.PAWN_DEAD, () => {
-      this.gameComponents.resetCamera();
-    });
     this.gameComponents.pawn.turtle.on(CUSTOM_EVENTS.PAWN_REVIVED, () => {
       this.isGameStopped = false;
       this.scene.inputManager.setInputEnabled(true);

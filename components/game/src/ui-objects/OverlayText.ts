@@ -2,7 +2,7 @@ import { CAM_CENTER } from '../cfg/constants/design-constants';
 import { GAME_FONT } from '../cfg/constants/game-constants';
 import { AbstractScene } from '../scenes/AbstractScene';
 
-export class PausedText extends Phaser.GameObjects.Text {
+export class OverlayText extends Phaser.GameObjects.Text {
 
   scene: AbstractScene;
 
@@ -13,7 +13,7 @@ export class PausedText extends Phaser.GameObjects.Text {
       resolution: 3,
       color: '#FFFFFF',
     }
-    super(scene, CAM_CENTER.x, CAM_CENTER.y, 'PAUSED', titleConfig);
+    super(scene, CAM_CENTER.x, CAM_CENTER.y, 'TEXT', titleConfig);
     this.scene = scene;
     this.setOrigin(0.5);
     this.scene.add.existing(this);
@@ -25,6 +25,10 @@ export class PausedText extends Phaser.GameObjects.Text {
 
   hide() {
     this.visible = false;
+  }
+
+  changeText(text: string) {
+    this.text = text;
   }
 
   resizeAndRepositionElements(): void {

@@ -68,7 +68,7 @@ export class GameComponents {
     window.navigator.vibrate(500);
   }
 
-  resetCamera() {
+  resetCameraAndReviveTurtle() {
     this.overlay.hideOverlay();
     const currZoom = this.scene.cameras.main.zoom;
     this.scene.cameras.main.zoomTo(currZoom - 0.1, 500, TWEEN_EASING.SINE_EASE_OUT);

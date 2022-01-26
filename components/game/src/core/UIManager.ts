@@ -3,7 +3,7 @@ import { EResizeState } from '../cfg/enums/EResizeState';
 import type { AbstractScene } from '../scenes/AbstractScene';
 import { CoreUI } from '../ui-objects/CoreUI';
 import { DistanceMeter } from '../ui-objects/DistanceMeter';
-import { PausedText } from '../ui-objects/PausedText';
+import { OverlayText } from '../ui-objects/OverlayText';
 import { PauseResumeButton } from '../ui-objects/sidebar/PauseResumeButton';
 import { SideBar } from '../ui-objects/sidebar/SideBar';
 import { TurtleSelectionMenu } from '../ui-objects/TurtleSelectionMenu';
@@ -19,7 +19,7 @@ export class UIManager {
   sideBar!: SideBar;
   coreUI!: CoreUI;
   distanceMeter!: DistanceMeter;
-  pausedText!: PausedText;
+  overlayText!: OverlayText;
 
   hungerThreshold = HUNGER_THRESHOLD;
 
@@ -28,7 +28,7 @@ export class UIManager {
     this.gameManager = gameManager;
     this.turtleSelectionMenu = new TurtleSelectionMenu(this.scene).setDepth(DEPTH.ui);
     this.sideBar = new SideBar(this.scene).setVisible(false).setDepth(DEPTH.ui);
-    this.pausedText = new PausedText(this.scene).setDepth(DEPTH.ui).setVisible(false);
+    this.overlayText = new OverlayText(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.coreUI = new CoreUI(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.distanceMeter = new DistanceMeter(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.addEventHandlers();
@@ -49,12 +49,20 @@ export class UIManager {
     if (this.gameManager.isGamePaused) {
       this.gameManager.handleGameResume();
       this.sideBar.hideSideBar();
-      this.pausedText.hide();
+      this.overlayText.hide();
     } else {
       this.gameManager.handleGamePause();
       this.sideBar.showSideBar();
-      this.pausedText.show();
+      this.overlayText.changeText('PAUSED');
+      this.overlayText.show();
     }
+  }
+
+  private handleGameOver() {
+    this.overlayText.changeText('GAME OVER');
+    this.gameManager.gameComponents.overlay.showOverlay();
+    this.overlayText.show();
+    this.sideBar.setVisible(false);
   }
 
   private addEventHandlers() {
@@ -62,7 +70,13 @@ export class UIManager {
       this.gameManager.handleDeath();
     });
     this.gameManager.gameComponents.pawn.turtle.on(CUSTOM_EVENTS.PAWN_DEAD, () => {
-      this.coreUI.hungerMeter.fillUpBar();
+      this.coreUI.decrementLives();
+      if (this.coreUI.lives === 0) {
+        this.handleGameOver();
+      } else {
+        this.coreUI.hungerMeter.fillUpBar();
+        this.gameManager.gameComponents.resetCameraAndReviveTurtle();
+      }
     });
     this.gameManager.events.on('collected', (count: number) => {
       this.coreUI.hungerMeter.decreaseHunger(count);
