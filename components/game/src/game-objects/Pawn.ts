@@ -37,7 +37,7 @@ export class Pawn {
   }
 
   private addPawn(): void {
-    this.turtle = new Turtle(this.scene, CAM_CENTER.x, CAM_CENTER.y + this.scene.grs.designDim.height * 0.3);
+    this.turtle = new Turtle(this.scene, CAM_CENTER.x, CAM_CENTER.y + this.scene.grs.designDim.height * 0.4);
     this.turtle.setDepth(DEPTH.player);
     this.turtle.setScale(0);
     this.turtle.on(CUSTOM_EVENTS.PAWN_REVIVED, () => {
@@ -52,13 +52,8 @@ export class Pawn {
     let angle = 0;
     if (this.scene.inputManager.getInputDirection() === EInputDirection.LEFT) {
       angle = -30;
-      // this.emit('direction', EInputDirection.LEFT);
     } else if (this.scene.inputManager.getInputDirection() === EInputDirection.RIGHT) {
-      // this.emit('direction', EInputDirection.RIGHT);
       angle = 30;
-    }
-    if (angle === 0) {
-      // this.emit('direction', EInputDirection.NONE);
     }
     this.turtle.playPawnDirectionChangeTween(angle);
   }
@@ -83,12 +78,12 @@ export class Pawn {
   }
 
   private fadeOutRipplesAfterDeath() {
-      // console.warn('fadeout', (1 - this.ripples[i].alpha) * RIPPLE_ALPHA_DEC * 1000);
-      this.scene.tweens.add({
-        targets: this.ripples,
-        alpha: 0,
-        duration: 500,
-      })
+    // console.warn('fadeout', (1 - this.ripples[i].alpha) * RIPPLE_ALPHA_DEC * 1000);
+    this.scene.tweens.add({
+      targets: this.ripples,
+      alpha: 0,
+      duration: 500,
+    })
   }
 
   private resetRipples() {
@@ -105,10 +100,10 @@ export class Pawn {
       const direction = this.scene.inputManager.getInputDirection();
       if (direction !== EInputDirection.NONE) {
         this.turtle.x += delta * (direction === EInputDirection.LEFT ? -this.speed : this.speed);
-        const halfWidth = this.scene.grs.designDim.width * 0.5 - 175;
+        const halfWidth = this.scene.grs.designDim.width * 0.5 - 200;
         if (this.turtle.x <= CAM_CENTER.x - halfWidth) {
           this.turtle.x = CAM_CENTER.x - halfWidth;
-        } else if (this.turtle.x >= CAM_CENTER.x + halfWidth ) {
+        } else if (this.turtle.x >= CAM_CENTER.x + halfWidth) {
           this.turtle.x = CAM_CENTER.x + halfWidth;
         }
       }

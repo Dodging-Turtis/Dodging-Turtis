@@ -5,7 +5,6 @@ import { Water } from './Water';
 import { ObstacleManager } from './Obstacles/ObstacleManager';
 import { Overlay } from './Overlay';
 import { Pawn } from './Pawn';
-import { PawnParticleTrail } from './PawnParticleTrail';
 import { BankManager } from './Banks/BankManager';
 import { DEPTH } from '../cfg/constants/game-constants';
 

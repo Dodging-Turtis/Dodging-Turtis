@@ -19,7 +19,7 @@ export class Turtle extends Phaser.GameObjects.Container {
   innerShell!: Phaser.GameObjects.Image;
   outerShell!: Phaser.GameObjects.Image;
 
-  turtleOrigScale = 0.2;
+  turtleOrigScale = 0.175;
   isGhost = false;
   pawnLimbTweens: Array<Phaser.Tweens.Tween | null> = [];
   pawnResetLimbTweens: Array<Phaser.Tweens.Tween | null> = [];
