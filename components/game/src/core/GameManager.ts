@@ -112,6 +112,7 @@ export class GameManager {
       if (distance < PAWN_RADIUS + COLLECTIBLE_RADIUS) {
         // collision detected!
         collectibles[i].playConsumeTween(pawn.turtle.x, pawn.turtle.y);
+        pawn.playConsumeTween();
         ++collectedCount;
       }
     }

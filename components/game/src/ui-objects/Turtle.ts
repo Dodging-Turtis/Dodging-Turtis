@@ -112,6 +112,20 @@ export class Turtle extends Phaser.GameObjects.Container {
     });
   }
 
+  playConsumeTween(): void {
+    this.scene.tweens.add({
+      targets: [this.head, this.eyes],
+      scale: 1.1,
+      yoyo: true,
+      duration: 50,
+      ease: TWEEN_EASING.QUINT_EASE_OUT,
+      onComplete: () => {
+        this.head.setScale(1);
+        this.eyes.setScale(1);
+      }
+    })
+  }
+
   playPawnReviveTween(): void {
     this.scene.tweens.add({
       targets: this,

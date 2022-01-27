@@ -66,6 +66,10 @@ export class Pawn {
     this.turtle.pawnCollidedTween();
   }
 
+  playConsumeTween() {
+    this.turtle.playConsumeTween();
+  }
+
   playPawnReviveTween() {
     this.turtle.x = CAM_CENTER.x;
     this.turtle.playPawnReviveTween();
