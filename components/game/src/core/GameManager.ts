@@ -1,5 +1,7 @@
+import { faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
 import { CUSTOM_EVENTS } from '../cfg/constants/game-constants';
 import { EInputDirection } from '../cfg/enums/EInputDirection';
+import { EPowerUpType } from '../cfg/enums/EPowerUpType';
 import { EResizeState } from '../cfg/enums/EResizeState';
 import { GameComponents } from '../game-objects/GameComponents';
 import { Collectible } from '../prefabs/abstract/Collectible';
@@ -55,13 +57,31 @@ export class GameManager {
   handleGamePause() {
     this.isGamePaused = true;
     this.scene.tweens.pauseAll();
+    this.scene.time.paused = true;
     this.gameComponents.overlay.showOverlay();
   }
 
   handleGameResume() {
     this.isGamePaused = false;
     this.scene.tweens.resumeAll();
+    this.scene.time.paused = false;
     this.gameComponents.overlay.hideOverlay();
+  }
+
+  handlePowerUp(powerUpType: EPowerUpType, powerUpTex: string) {
+    this.events.emit('powerUp', powerUpType, powerUpTex);
+    console.error('powerUp', powerUpType);
+    switch (powerUpType) {
+      case EPowerUpType.INVINCIBILITY:
+        this.gameComponents.pawn.playInvincibilityTween();
+        break;
+      case EPowerUpType.MOVEMENT_SPEED:
+        this.gameComponents.pawn.increasePawnMovementSpeed();
+        break;
+      case EPowerUpType.SCROLL_SLOW:
+        this.gameComponents.reduceScrollSpeed();
+        break;
+    }
   }
 
   resizeAndRepositionElements(): void {
@@ -75,7 +95,7 @@ export class GameManager {
 
     this.gameComponents.update(delta);
 
-    if (!this.gameComponents.pawn.turtle.isGhost && this.checkCollision()) {
+    if (this.checkCollision()) {
       this.handleDeath();
       return;
     }
@@ -91,10 +111,14 @@ export class GameManager {
 
     const powerUpCollected = this.getCollectedPowerUp(collidablePowerUps);
     if (powerUpCollected) {
-      this.events.emit('powerUp', powerUpCollected.powerUpType)
+      this.handlePowerUp(powerUpCollected.powerUpType, powerUpCollected.texture.key);
     }
 
-    this.checkForObstacleCollision(collidableObstacles);
+    if (this.gameComponents.pawn.turtle.isGhost || this.gameComponents.pawn.turtle.isInvincible) {
+      return false;
+    }
+
+    return this.checkForObstacleCollision(collidableObstacles);
   }
 
   private getCollectedCount(collectibles: Array<Collectible>) {

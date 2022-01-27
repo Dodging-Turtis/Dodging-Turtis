@@ -70,6 +70,26 @@ export class Pawn {
     this.turtle.playConsumeTween();
   }
 
+  playInvincibilityTween() {
+    this.turtle.playPawnInvincibilityTween();
+  }
+
+  increasePawnMovementSpeed() {
+    const origSpeed = this.speed;
+    this.speed *= 1.25;
+    this.scene.time.delayedCall(5000, () => {
+      this.scene.tweens.add({
+        targets: this,
+        speed: origSpeed,
+        ease: TWEEN_EASING.QUAD_EASE_IN,
+        duration: 500,
+        onComplete: () => {
+          this.speed = origSpeed;
+        }
+      })
+    })
+  }
+
   playPawnReviveTween() {
     this.turtle.x = CAM_CENTER.x;
     this.turtle.playPawnReviveTween();

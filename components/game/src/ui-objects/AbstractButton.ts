@@ -26,6 +26,7 @@ export abstract class AbstractButton extends Phaser.GameObjects.Image {
       if (!this.isEnabled) {
         return;
       }
+      this.isEnabled = false;
       this.handleOnClick(onClickEnable);
       this.emit(CUSTOM_EVENTS.BUTTON_CLICKED);
     });

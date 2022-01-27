@@ -1,7 +1,9 @@
 import { CUSTOM_EVENTS, DEPTH } from '../cfg/constants/game-constants';
+import { EPowerUpType } from '../cfg/enums/EPowerUpType';
 import { EResizeState } from '../cfg/enums/EResizeState';
 import type { AbstractScene } from '../scenes/AbstractScene';
 import { CoreUI } from '../ui-objects/CoreUI';
+import { DisplayPowerUp } from '../ui-objects/DisplayPowerUp';
 import { DistanceMeter } from '../ui-objects/DistanceMeter';
 import { OverlayText } from '../ui-objects/OverlayText';
 import { PauseResumeButton } from '../ui-objects/sidebar/PauseResumeButton';
@@ -19,6 +21,7 @@ export class UIManager {
   sideBar!: SideBar;
   coreUI!: CoreUI;
   distanceMeter!: DistanceMeter;
+  displayPowerUp!: DisplayPowerUp;
   overlayText!: OverlayText;
 
   hungerThreshold = HUNGER_THRESHOLD;
@@ -31,6 +34,7 @@ export class UIManager {
     this.overlayText = new OverlayText(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.coreUI = new CoreUI(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.distanceMeter = new DistanceMeter(this.scene).setDepth(DEPTH.ui).setVisible(false);
+    this.displayPowerUp = new DisplayPowerUp(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.addEventHandlers();
   }
 
@@ -83,6 +87,11 @@ export class UIManager {
       this.coreUI.hungerMeter.decreaseHunger(count);
       this.coreUI.increaseScore(count * COLLECTIBLE_MULT);
     });
+    this.gameManager.events.on('powerUp', (powerUpType: EPowerUpType, powerUpTex: string) => {
+      if (powerUpType !== EPowerUpType.SCROLL_SLOW) {
+        this.displayPowerUp.showPowerUp(powerUpTex);
+      }
+    });
     this.sideBar.pauseResumeButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
       this.handlePauseResume();
     });
@@ -113,10 +122,12 @@ export class UIManager {
     if (this.gameManager.isGameStopped || this.gameManager.isGamePaused) {
       return;
     }
-    this.hungerThreshold -= delta
-    if (this.hungerThreshold <= 0) {
-      this.coreUI.hungerMeter.increaseHunger();
-      this.hungerThreshold = HUNGER_THRESHOLD;
+    if (!this.gameManager.gameComponents.pawn.turtle.isGhost && !this.gameManager.gameComponents.pawn.turtle.isInvincible) {
+      this.hungerThreshold -= delta
+      if (this.hungerThreshold <= 0) {
+        this.coreUI.hungerMeter.increaseHunger();
+        this.hungerThreshold = HUNGER_THRESHOLD;
+      }
     }
     this.distanceMeter.updateDistance(this.gameManager.gameComponents.scrollSpeed);
     this.coreUI.increaseScore(this.gameManager.gameComponents.scrollSpeed);

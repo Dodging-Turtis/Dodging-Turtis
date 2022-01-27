@@ -26,7 +26,7 @@ export class GameComponents {
 
 
   scrollSpeed = INIT_SPEED;
-  speedIncreaseThreshold = 5000;  // ms;
+  speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;  // ms;
   scrollSpeedBeforeDeath = INIT_SPEED;
 
 
@@ -68,7 +68,6 @@ export class GameComponents {
     window.navigator.vibrate(500);
   }
 
-
   resetCamera() {
     const currZoom = this.scene.cameras.main.zoom;
     this.scene.cameras.main.zoomTo(currZoom - 0.05, 500, TWEEN_EASING.SINE_EASE_OUT);
@@ -105,7 +104,18 @@ export class GameComponents {
       scrollSpeed: `+=${SPEED_INCREASE}`,
       duration: 4000,
       ease: TWEEN_EASING.SINE_EASE_OUT,
-    })
+    });
+  }
+
+  reduceScrollSpeed() {
+    this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;
+    this.stopScrollTween();
+    this.scrollSpeedTween = this.scene.tweens.add({
+      targets: this,
+      scrollSpeed: this.scrollSpeed * 0.6,
+      duration: 1000,
+      ease: TWEEN_EASING.SINE_EASE_OUT,
+    });
   }
 
   resizeAndRepositionElements() {

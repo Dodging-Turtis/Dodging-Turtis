@@ -21,6 +21,7 @@ export class Turtle extends Phaser.GameObjects.Container {
 
   turtleOrigScale = 0.175;
   isGhost = false;
+  isInvincible = false;
   pawnLimbTweens: Array<Phaser.Tweens.Tween | null> = [];
   pawnResetLimbTweens: Array<Phaser.Tweens.Tween | null> = [];
 
@@ -148,6 +149,19 @@ export class Turtle extends Phaser.GameObjects.Container {
       onComplete: () => {
         this.playLimbTweens();
         this.isGhost = false;
+      }
+    })
+  }
+
+  playPawnInvincibilityTween() {
+    this.isInvincible = true;
+    this.scene.tweens.add({
+      targets: this,
+      alpha: { from: 0.9, to: 0.6, ease: TWEEN_EASING.QUAD_EASE_IN_OUT, duration: 250 },
+      yoyo: true,
+      repeat: 10,
+      onComplete: () => {
+        this.isInvincible = false;
       }
     })
   }

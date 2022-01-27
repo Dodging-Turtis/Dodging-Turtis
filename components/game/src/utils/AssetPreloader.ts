@@ -76,6 +76,8 @@ export class AssetsPreloader {
 
     this.scene.load.path = `${ASSETS_PREFIX_URL}ui/`;
 
+    this.scene.load.image('power_up_base_outer', 'power_up_base_outer.png');
+    this.scene.load.image('power_up_base_inner', 'power_up_base_inner.png');
     this.scene.load.image('pause_button', 'pause.png');
     this.scene.load.image('resume_button', 'resume.png');
     this.scene.load.image('side_bar', 'side_bar.png');

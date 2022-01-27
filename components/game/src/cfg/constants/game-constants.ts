@@ -36,6 +36,7 @@ export const DEPTH = {
   player: 4,
   overlay: 5,
   ui: 10,
+  powerUpDisplay: 11
 }
 
 export const SHADOW_ALPHA = 0.05;
