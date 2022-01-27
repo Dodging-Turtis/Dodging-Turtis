@@ -60,8 +60,9 @@ export class UIManager {
 
   private handleGameOver() {
     this.overlayText.changeText('GAME OVER');
-    this.gameManager.gameComponents.overlay.showOverlay();
     this.overlayText.show();
+    this.gameManager.gameComponents.overlay.showOverlay();
+    this.gameManager.gameComponents.resetCamera();
     this.sideBar.setVisible(false);
   }
 
@@ -75,7 +76,7 @@ export class UIManager {
         this.handleGameOver();
       } else {
         this.coreUI.hungerMeter.fillUpBar();
-        this.gameManager.gameComponents.resetCameraAndReviveTurtle();
+        this.gameManager.gameComponents.startTurtleRevival();
       }
     });
     this.gameManager.events.on('collected', (count: number) => {

@@ -3,10 +3,13 @@ import { EInputDirection } from '../cfg/enums/EInputDirection';
 import { EResizeState } from '../cfg/enums/EResizeState';
 import { GameComponents } from '../game-objects/GameComponents';
 import { Collectible } from '../prefabs/abstract/Collectible';
+import { Obstacle } from '../prefabs/abstract/Obstacle';
+import { PowerUp } from '../prefabs/abstract/PowerUp';
 import type { AbstractScene } from '../scenes/AbstractScene';
 
 export const PAWN_RADIUS = 20;
 export const COLLECTIBLE_RADIUS = 50;
+export const POWER_UP_RADIUS = 75;
 
 export class GameManager {
   scene: AbstractScene;
@@ -79,43 +82,22 @@ export class GameManager {
   }
 
   checkCollision() {
-    const pawn = this.gameComponents.pawn;
-    const { collidableObstacles, collidableCollectibles } = this.gameComponents.obstacleManager.getCollidableObstaclesAndCollectibles();
+    const { collidableObstacles, collidableCollectibles, collidablePowerUps } = this.gameComponents.obstacleManager.getCollidables();
 
     const count = this.getCollectedCount(collidableCollectibles);
     if (count > 0) {
       this.events.emit('collected', count);
     }
 
-    for (let i = 0; i < collidableObstacles.length; ++i) {
-      let testX = pawn.turtle.x;
-      let testY = pawn.turtle.y;
-      let posX = new Phaser.Math.Vector2();
-      let posY = new Phaser.Math.Vector2();
-      if (testX < collidableObstacles[i].getLeftCenter(posX).x) {
-        testX = posX.x;        // left edge
-      } else if (testX > collidableObstacles[i].getRightCenter(posX).x) {
-        testX = posX.x;     // right edge
-      }
-
-      if (testY < collidableObstacles[i].getTopCenter(posY).y) {
-        testY = posY.y;        // top edge
-      } else if (testY > collidableObstacles[i].getBottomCenter(posY).y) {
-        testY = posY.y;     // bottom edge
-      }
-
-      let distX = pawn.turtle.x - testX;
-      let distY = pawn.turtle.y - testY;
-      let distance = Math.sqrt((distX * distX) + (distY * distY));
-
-      if (distance <= PAWN_RADIUS) {
-        return true;
-      }
+    const powerUpCollected = this.getCollectedPowerUp(collidablePowerUps);
+    if (powerUpCollected) {
+      this.events.emit('powerUp', powerUpCollected.powerUpType)
     }
-    return false;
+
+    this.checkForObstacleCollision(collidableObstacles);
   }
 
-  getCollectedCount(collectibles: Array<Collectible>) {
+  private getCollectedCount(collectibles: Array<Collectible>) {
     const pawn = this.gameComponents.pawn;
 
     let collectedCount = 0;
@@ -129,10 +111,62 @@ export class GameManager {
 
       if (distance < PAWN_RADIUS + COLLECTIBLE_RADIUS) {
         // collision detected!
-        collectibles[i].playConsumeTween();
+        collectibles[i].playConsumeTween(pawn.turtle.x, pawn.turtle.y);
         ++collectedCount;
       }
     }
     return collectedCount;
+  }
+
+  private getCollectedPowerUp(powerUps: Array<PowerUp>) {
+    const pawn = this.gameComponents.pawn;
+
+    for (let i = 0; i < powerUps.length; ++i) {
+      if (!powerUps[i].isDisplayed || powerUps[i].isConsumed) {
+        continue;
+      }
+      let dx = (pawn.turtle.x + PAWN_RADIUS) - (powerUps[i].x + POWER_UP_RADIUS);
+      let dy = (pawn.turtle.y + PAWN_RADIUS) - (powerUps[i].y + POWER_UP_RADIUS);
+      let distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < PAWN_RADIUS + POWER_UP_RADIUS) {
+        // collision detected!
+        powerUps[i].playConsumeTween(pawn.turtle.x, pawn.turtle.y);
+        return powerUps[i];
+      }
+    }
+  }
+
+
+
+  private checkForObstacleCollision(obstacles: Array<Obstacle>) {
+    const pawn = this.gameComponents.pawn;
+
+    for (let i = 0; i < obstacles.length; ++i) {
+      let testX = pawn.turtle.x;
+      let testY = pawn.turtle.y;
+      let posX = new Phaser.Math.Vector2();
+      let posY = new Phaser.Math.Vector2();
+      if (testX < obstacles[i].getLeftCenter(posX).x) {
+        testX = posX.x;        // left edge
+      } else if (testX > obstacles[i].getRightCenter(posX).x) {
+        testX = posX.x;     // right edge
+      }
+
+      if (testY < obstacles[i].getTopCenter(posY).y) {
+        testY = posY.y;        // top edge
+      } else if (testY > obstacles[i].getBottomCenter(posY).y) {
+        testY = posY.y;     // bottom edge
+      }
+
+      let distX = pawn.turtle.x - testX;
+      let distY = pawn.turtle.y - testY;
+      let distance = Math.sqrt((distX * distX) + (distY * distY));
+
+      if (distance <= PAWN_RADIUS) {
+        return true;
+      }
+    }
+    return false;
   }
 }

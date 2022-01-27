@@ -17,8 +17,8 @@ export class Overlay extends Phaser.GameObjects.Image {
 
   resizeAndRepositionElements(): void {
     this.setDisplaySize(
-      this.scene.grs.resizeDim.width,
-      this.scene.grs.resizeDim.height
+      this.scene.grs.resizeDim.width * 1.25,
+      this.scene.grs.resizeDim.height * 1.25
     );
   }
 

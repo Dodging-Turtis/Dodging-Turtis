@@ -58,7 +58,11 @@ export class AssetsPreloader {
     this.scene.load.path = ASSETS_PREFIX_URL;
 
     this.scene.load.image('orange_star_fish', 'orange_star_fish.png');
-    this.scene.load.image('blue_star_fish', 'blue_star_fish.png');
+    this.scene.load.image('yellow_star_fish', 'yellow_star_fish.png');
+    this.scene.load.image('red_star_fish', 'red_star_fish.png');
+
+    this.scene.load.image('movement_power', 'movement_power.png');
+    this.scene.load.image('slow_scroll_power', 'slow_scroll_power.png');
 
     // Particles
     this.scene.load.image('bubble', 'bubble.png');

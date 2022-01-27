@@ -62,17 +62,22 @@ export class GameComponents {
 
   deathCameraEffects() {
     const currZoom = this.scene.cameras.main.zoom;
-    this.scene.cameras.main.zoomTo(currZoom + 0.1, 500, TWEEN_EASING.SINE_EASE_IN);
+    this.scene.cameras.main.zoomTo(currZoom + 0.05, 500, TWEEN_EASING.SINE_EASE_IN);
     this.scene.cameras.main.pan(CAM_CENTER.x - (CAM_CENTER.x - this.pawn.turtle.x) * 0.2, CAM_CENTER.y, 500, TWEEN_EASING.SINE_EASE_IN);
     this.scene.cameras.main.shake(500, 0.005);
     window.navigator.vibrate(500);
   }
 
-  resetCameraAndReviveTurtle() {
-    this.overlay.hideOverlay();
+
+  resetCamera() {
     const currZoom = this.scene.cameras.main.zoom;
-    this.scene.cameras.main.zoomTo(currZoom - 0.1, 500, TWEEN_EASING.SINE_EASE_OUT);
+    this.scene.cameras.main.zoomTo(currZoom - 0.05, 500, TWEEN_EASING.SINE_EASE_OUT);
     this.scene.cameras.main.pan(CAM_CENTER.x, CAM_CENTER.y, 500, TWEEN_EASING.SINE_EASE_OUT);
+  }
+
+  startTurtleRevival() {
+    this.overlay.hideOverlay();
+    this.resetCamera();
     this.scene.cameras.main.once('camerapancomplete', (camera: Phaser.Cameras.Scene2D.Camera) => {
       this.pawn.playPawnReviveTween();
     });
@@ -114,7 +119,7 @@ export class GameComponents {
     this.pawn.update(delta, scrollSpeed);
     this.water.scroll(scrollSpeed);
     this.bankManager.scroll(scrollSpeed);
-    this.obstacleManager.update(scrollSpeed);
+    this.obstacleManager.update(delta, scrollSpeed);
     this.speedIncreaseThreshold -= delta;
     if (this.speedIncreaseThreshold <= 0) {
       this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;
