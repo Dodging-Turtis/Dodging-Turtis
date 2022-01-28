@@ -78,14 +78,25 @@ export class AssetsPreloader {
 
     this.scene.load.path = `${ASSETS_PREFIX_URL}ui/`;
 
+    // Main Menu
+    this.scene.load.image('end_menu_button', 'end_menu_button.png');
+    this.scene.load.image('main_menu_popup', 'main_menu_popup.png');
+    this.scene.load.image('no_button', 'no_button.png');
+    this.scene.load.image('yes_button', 'yes_button.png');
+
+    // Power Up
     this.scene.load.image('power_up_base_outer', 'power_up_base_outer.png');
     this.scene.load.image('power_up_base_inner', 'power_up_base_inner.png');
+
+    // Side Bar
     this.scene.load.image('pause_button', 'pause.png');
     this.scene.load.image('resume_button', 'resume.png');
     this.scene.load.image('side_bar', 'side_bar.png');
     this.scene.load.image('menu_button', 'menu_button.png');
     this.scene.load.image('sound_off', 'sound_off.png');
     this.scene.load.image('sound_on', 'sound_on.png');
+
+    // Core UI
     this.scene.load.image('lives', 'lives.png');
     this.scene.load.image('core_ui', 'core_ui.png');
     this.scene.load.image('hunger_bar_base', 'hunger_bar_base.png');
@@ -94,6 +105,8 @@ export class AssetsPreloader {
     this.scene.load.image('hunger_bar_yellow', 'hunger_bar_yellow.png');
     this.scene.load.image('hunger_bar_orange', 'hunger_bar_orange.png');
     this.scene.load.image('hunger_bar_red', 'hunger_bar_red.png');
+
+    // Turtle Selection
     this.scene.load.image('left_arrow', 'left_arrow.png');
     this.scene.load.image('start_button', 'start_button.png');
 
