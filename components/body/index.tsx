@@ -1,4 +1,4 @@
-import Cards from './cards';
+import DummyCard from './dummycard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
@@ -56,7 +56,7 @@ function Body() {
           faucibus amet, et. Massa sit in iaculis ornare.
         </p>
         <div className='container flex flex-row w-full p-5'>
-          <Cards />
+          <DummyCard />
         </div>
       </div>
 
