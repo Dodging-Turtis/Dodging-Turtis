@@ -21,7 +21,7 @@ interface IMetadata {
   name: string;
   description: string;
   componentIndices: object;
-  attributes: object;
+  attributes: any[];
   image: string;
 }
 

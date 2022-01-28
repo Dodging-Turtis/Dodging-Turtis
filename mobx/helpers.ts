@@ -14,7 +14,12 @@ export enum Order {
 export async function fetchIpfs(url: string) {
   url = url.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
   const data = await fetch(url);
-  return await data.json();
+  const metadata: IMetadata = await data.json();
+  metadata.image = metadata.image.replace(
+    'ipfs://',
+    'https://cloudflare-ipfs.com/ipfs/'
+  );
+  return metadata;
 }
 
 export function sortNfts(globalNfts: IMarketNft[], sortOrder: Order) {
