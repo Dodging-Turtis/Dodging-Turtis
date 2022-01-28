@@ -58,7 +58,7 @@ export const CUSTOM_EVENTS = {
   PAWN_STARVED: 'pawn-starved'
 };
 
-export const EASY_PREFABS = [
+export const PREFABS = [
   'rock-1-prefab',
   'rock-2-prefab',
   'rock-3-prefab',

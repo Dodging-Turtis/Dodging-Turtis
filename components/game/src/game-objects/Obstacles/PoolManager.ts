@@ -1,5 +1,5 @@
 import { CAM_CENTER } from "../../cfg/constants/design-constants";
-import { EASY_PREFABS } from "../../cfg/constants/game-constants";
+import { PREFABS } from "../../cfg/constants/game-constants";
 import { AbstractScene } from "../../scenes/AbstractScene";
 import { ObstacleGroup } from "./ObstacleGroup";
 

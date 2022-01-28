@@ -1,5 +1,5 @@
 import { CAM_CENTER } from "../../cfg/constants/design-constants";
-import { CONTAINER_GAP, EASY_PREFABS } from "../../cfg/constants/game-constants";
+import { CONTAINER_GAP, PREFABS } from "../../cfg/constants/game-constants";
 import { AbstractScene } from "../../scenes/AbstractScene";
 import { ObstacleGroup } from "./ObstacleGroup";
 import { PoolManager } from "./PoolManager";
@@ -14,7 +14,7 @@ export class ObstacleGenerator {
     }
 
     getObstacleContainer(lastContainerTopEdge: number, genPowerUp: boolean) {
-        let obsName = EASY_PREFABS[Math.floor(Math.random() * EASY_PREFABS.length)];
+        let obsName = PREFABS[Math.floor(Math.random() * PREFABS.length)];
         let obs: ObstacleGroup | undefined = this.poolManager.get(obsName);
         if (!obs) {
             obs = this.generateObstacleContainer(lastContainerTopEdge, obsName);

@@ -1,4 +1,4 @@
-import { EASY_PREFABS } from '../cfg/constants/game-constants';
+import { PREFABS } from '../cfg/constants/game-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
 
 const ASSETS_PREFIX_URL = 'assets/img/';
@@ -71,8 +71,8 @@ export class AssetsPreloader {
 
     this.scene.load.path = `assets/prefabs/`;
 
-    for (let i = 0; i < EASY_PREFABS.length; ++i) {
-      this.scene.load.json(EASY_PREFABS[i], `${EASY_PREFABS[i]}.json`)
+    for (let i = 0; i < PREFABS.length; ++i) {
+      this.scene.load.json(PREFABS[i], `${PREFABS[i]}.json`)
     }
 
 
