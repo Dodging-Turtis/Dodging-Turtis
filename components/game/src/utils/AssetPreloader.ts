@@ -50,8 +50,10 @@ export class AssetsPreloader {
 
     this.scene.load.path = `${ASSETS_PREFIX_URL}obstacles/`;
     // River Obstacles
-    for (let i = 1; i <= 3; ++i) {
+    for (let i = 1; i <= 6; ++i) {
       this.scene.load.image(`rock_${i}`, `rock_${i}.png`);
+    }
+    for (let i = 1; i <= 3; ++i) {
       this.scene.load.image(`log_${i}`, `log_${i}.png`);
     }
 
