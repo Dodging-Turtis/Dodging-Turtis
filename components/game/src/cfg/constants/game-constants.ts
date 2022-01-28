@@ -2,6 +2,7 @@
 
 import { PowerUp } from "../../prefabs/abstract/PowerUp";
 import { StarFish } from "../../prefabs/collectibles/StarFish";
+import { Log } from "../../prefabs/logs/Log";
 import { InvincibilityPowerUp } from "../../prefabs/powerups/InvincibilityPowerUp";
 import { MovementSpeedPowerUp } from "../../prefabs/powerups/MovementSpeedPowerUp";
 import { ScrollSlowPowerUp } from "../../prefabs/powerups/ScrollSlowPowerUp";
@@ -63,10 +64,13 @@ export const PREFABS = [
   'rock-2-prefab',
   'rock-3-prefab',
   'rock-4-prefab',
+  'log-1-prefab',
+  'log-2-prefab',
 ]
 
 export const OBSTACLE_CONSTRUCTORS = {
   'Rock': Rock,
+  'Log': Log,
 }
 
 export type OBSTACLE_TYPES = keyof typeof OBSTACLE_CONSTRUCTORS;

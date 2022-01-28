@@ -27,7 +27,7 @@ export class ObstacleManager {
   cullGroups() {
     const height = this.scene.grs.resizeDim.height * 0.5;
     const firstPrefab = this.obsGroups[0];
-    if (firstPrefab.y - firstPrefab.contHeight * 0.5 >= CAM_CENTER.y + height) {
+    if (firstPrefab.y - firstPrefab.contHeight * 0.75 >= CAM_CENTER.y + height) {
       const obsGroup = this.obsGroups.shift();
       if (obsGroup) {
         this.obstacleGenerator.putObstacleContainer(obsGroup);

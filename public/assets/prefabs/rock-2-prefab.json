@@ -45,7 +45,6 @@
         }
     ],
     "powerUp": {
-        "type": "MovementSpeedPowerUp",
         "x": 0,
         "y": 0
     },

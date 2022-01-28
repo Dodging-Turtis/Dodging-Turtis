@@ -107,7 +107,8 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
     private addPowerUp(config: { type: POWER_UP_TYPES; x: number; y: number }) {
         console.warn('powerups', config);
         const width = this.scene.grs.designDim.width * 0.5;
-        const powerUp = new POWER_UP_CONSTRUCTORS[config.type](this.scene, this.position.x + config.x * width, this.position.y + config.y * (this.contHeight * 0.5));
+        const powerUpConstructor = POWER_UP_CONSTRUCTORS[config.type] || Object.values(POWER_UP_CONSTRUCTORS)[Math.floor(Object.keys(POWER_UP_CONSTRUCTORS).length * Math.random())]
+        const powerUp = new powerUpConstructor(this.scene, this.position.x + config.x * width, this.position.y + config.y * (this.contHeight * 0.5));
         this.powerUpPosition = { x: config.x, y: config.y };
         this.powerUp = powerUp;
         if (this.scene.renderer.type === Phaser.WEBGL) {
