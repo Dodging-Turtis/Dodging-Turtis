@@ -5,8 +5,8 @@ import type { AbstractScene } from '../scenes/AbstractScene';
 import { CoreUI } from '../ui-objects/CoreUI';
 import { DisplayPowerUp } from '../ui-objects/DisplayPowerUp';
 import { DistanceMeter } from '../ui-objects/DistanceMeter';
+import { Menu } from '../ui-objects/menu/Menu';
 import { OverlayText } from '../ui-objects/OverlayText';
-import { PauseResumeButton } from '../ui-objects/sidebar/PauseResumeButton';
 import { SideBar } from '../ui-objects/sidebar/SideBar';
 import { TurtleSelectionMenu } from '../ui-objects/TurtleSelectionMenu';
 import { GameManager } from './GameManager';
@@ -22,6 +22,7 @@ export class UIManager {
   coreUI!: CoreUI;
   distanceMeter!: DistanceMeter;
   displayPowerUp!: DisplayPowerUp;
+  menu!: Menu;
   overlayText!: OverlayText;
 
   hungerThreshold = HUNGER_THRESHOLD;
@@ -35,6 +36,7 @@ export class UIManager {
     this.coreUI = new CoreUI(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.distanceMeter = new DistanceMeter(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.displayPowerUp = new DisplayPowerUp(this.scene).setDepth(DEPTH.ui).setVisible(false);
+    this.menu = new Menu(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.addEventHandlers();
   }
 
@@ -54,6 +56,9 @@ export class UIManager {
       this.gameManager.handleGameResume();
       this.sideBar.hideSideBar();
       this.overlayText.hide();
+      if (this.menu.visible) {
+        this.menu.hideMenu();
+      }
     } else {
       this.gameManager.handleGamePause();
       this.sideBar.showSideBar();
@@ -67,7 +72,7 @@ export class UIManager {
     this.overlayText.show();
     this.gameManager.gameComponents.overlay.showOverlay();
     this.gameManager.gameComponents.resetCamera();
-    this.sideBar.setVisible(false);
+    this.sideBar.showEndMenuButton();
   }
 
   private addEventHandlers() {
@@ -95,8 +100,17 @@ export class UIManager {
     this.sideBar.pauseResumeButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
       this.handlePauseResume();
     });
+    this.sideBar.menuButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
+      if (!this.menu.visible) {
+        this.menu.showMenu();
+      }
+    });
+    this.menu.noButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
+      this.menu.hideMenu();
+    });
     this.scene.inputManager.events.on(CUSTOM_EVENTS.ESCAPE, () => {
       this.handlePauseResume();
+
       this.sideBar.pauseResumeButton.handleOnClick(true);
     });
     this.turtleSelectionMenu.on(CUSTOM_EVENTS.START_GAME, (turtleDetails: any) => {

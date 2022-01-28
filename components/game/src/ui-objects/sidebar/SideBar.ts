@@ -47,8 +47,13 @@ export class SideBar extends Phaser.GameObjects.Container {
   }
 
   private addMenuButton() {
-    this.menuButton = new MenuButton(this.scene, 0, 175).setVisible(false);
+    this.menuButton = new MenuButton(this.scene, 0, 175, 0, 0).setVisible(false);
     this.add(this.menuButton);
+  }
+
+  showEndMenuButton() {
+    this.menuButton.showEndMenuButton();
+    this.pauseResumeButton.setVisible(false);
   }
 
   showSideBar() {
@@ -67,7 +72,7 @@ export class SideBar extends Phaser.GameObjects.Container {
         if (!this.buttonProps.menu.isShown && this.base.scaleY > this.buttonProps.menu.threshold) {
           this.buttonProps.menu.isShown = true;
           this.menuButton.setVisible(true);
-          this.menuButton.show();
+          this.menuButton.showNormalMenuButton();
         }
       }
     })
