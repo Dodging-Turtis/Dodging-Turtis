@@ -1,0 +1,57 @@
+{
+    "contHeight": 720,
+    "obstacles": [
+        {
+            "type": "Log",
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "collectibles": [
+        {
+            "type": "StarFish",
+            "x": -0.75,
+            "y": -0.75
+        },
+        {
+            "type": "StarFish",
+            "x": 0.75,
+            "y": -0.75
+        },
+        {
+            "type": "StarFish",
+            "x": -0.65,
+            "y": -0.5
+        },
+        {
+            "type": "StarFish",
+            "x": 0.65,
+            "y": -0.5
+        },
+        {
+            "type": "StarFish",
+            "x": -0.55,
+            "y": -0.25
+        },
+        {
+            "type": "StarFish",
+            "x": 0.55,
+            "y": -0.25
+        },
+        {
+            "type": "StarFish",
+            "x": -0.45,
+            "y": 0
+        },
+        {
+            "type": "StarFish",
+            "x": 0.45,
+            "y": 0
+        }
+    ],
+    "powerUp": {
+        "x": 0,
+        "y": -1
+    },
+    "innerContainers": []
+}

@@ -1,21 +1,80 @@
 {
-    "contHeight": 720,
+    "contHeight": 960,
     "obstacles": [
-        { "type": "Rock", "x": 0, "y": -0.5, "texture": "rock_1" },
-        { "type": "Rock", "x": -0.4, "y": 0},
-        { "type": "Rock", "x": 0.4, "y": 0},
-        { "type": "Rock", "x": -0.2, "y": 0.5, "texture": "rock_2" },
-        { "type": "Rock", "x": 0.2, "y": 0.5, "texture": "rock_2" }
+        {
+            "type": "Rock",
+            "x": 0,
+            "y": -0.5,
+            "texture": "rock_1"
+        },
+        {
+            "type": "Rock",
+            "x": -0.4,
+            "y": 0
+        },
+        {
+            "type": "Rock",
+            "x": 0.4,
+            "y": 0
+        },
+        {
+            "type": "Rock",
+            "x": -0.2,
+            "y": 0.5,
+            "texture": "rock_2"
+        },
+        {
+            "type": "Rock",
+            "x": 0.2,
+            "y": 0.5,
+            "texture": "rock_2"
+        }
     ],
     "collectibles": [
-        { "type": "StarFish", "x": 0, "y": -0.25 },
-        { "type": "StarFish", "x": -0.6, "y": -0.25 },
-        { "type": "StarFish", "x": 0.6, "y": -0.25 },
-        { "type": "StarFish", "x": -0.3, "y": 0.5 },
-        { "type": "StarFish", "x": 0.3, "y": 0.5 },
-        { "type": "StarFish", "x": -0.3, "y": 0.75 },
-        { "type": "StarFish", "x": 0.3, "y": 0.75 },
-        { "type": "StarFish", "x": 0, "y": 1}
+        {
+            "type": "StarFish",
+            "x": 0,
+            "y": -0.25
+        },
+        {
+            "type": "StarFish",
+            "x": -0.6,
+            "y": -0.25
+        },
+        {
+            "type": "StarFish",
+            "x": 0.6,
+            "y": -0.25
+        },
+        {
+            "type": "StarFish",
+            "x": -0.35,
+            "y": 0.6
+        },
+        {
+            "type": "StarFish",
+            "x": 0.35,
+            "y": 0.6
+        },
+        {
+            "type": "StarFish",
+            "x": -0.35,
+            "y": 0.8
+        },
+        {
+            "type": "StarFish",
+            "x": 0.35,
+            "y": 0.8
+        },
+        {
+            "type": "StarFish",
+            "x": 0,
+            "y": 1
+        }
     ],
+    "powerUp": {
+        "x": 0,
+        "y": -1
+    },
     "innerContainers": []
 }

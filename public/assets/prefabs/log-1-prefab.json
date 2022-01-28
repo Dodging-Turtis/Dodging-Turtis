@@ -1,0 +1,83 @@
+{
+    "contHeight": 720,
+    "obstacles": [
+        {
+            "type": "Log",
+            "x": -0.75,
+            "y": -0.25,
+            "texture": "log_2"
+        },
+        {
+            "type": "Log",
+            "x": 0,
+            "y": -0.25,
+            "texture": "log_2"
+        },
+        {
+            "type": "Log",
+            "x": 0.75,
+            "y": -0.25,
+            "texture": "log_2"
+        },
+        {
+            "type": "Log",
+            "x": -0.35,
+            "y": 0.3,
+            "texture": "log_1"
+        },
+        {
+            "type": "Log",
+            "x": 0,
+            "y": 0.3,
+            "texture": "log_3"
+        },
+        {
+            "type": "Log",
+            "x": 0.35,
+            "y": 0.3,
+            "texture": "log_1"
+        }
+    ],
+    "collectibles": [
+        {
+            "type": "StarFish",
+            "x": -0.25,
+            "y": -0.25
+        },
+        {
+            "type": "StarFish",
+            "x": 0.25,
+            "y": -0.25
+        },
+        {
+            "type": "StarFish",
+            "x": -0.5,
+            "y": 0.5
+        },
+        {
+            "type": "StarFish",
+            "x": 0.5,
+            "y": 0.5
+        },
+        {
+            "type": "StarFish",
+            "x": -0.5,
+            "y": 0.75
+        },
+        {
+            "type": "StarFish",
+            "x": 0.5,
+            "y": 0.75
+        }
+    ],
+    "powerUp": {
+        "x": 0,
+        "y": -0.75
+    },
+    "innerContainers": [
+        {
+            "name": "test-1-prefab",
+            "y": 0
+        }
+    ]
+}

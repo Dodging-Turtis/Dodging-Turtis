@@ -1,4 +1,4 @@
-import { EASY_PREFABS } from '../cfg/constants/game-constants';
+import { PREFABS } from '../cfg/constants/game-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
 
 const ASSETS_PREFIX_URL = 'assets/img/';
@@ -50,30 +50,54 @@ export class AssetsPreloader {
 
     this.scene.load.path = `${ASSETS_PREFIX_URL}obstacles/`;
     // River Obstacles
-    for (let i = 1; i <= 3; ++i) {
+    for (let i = 1; i <= 6; ++i) {
       this.scene.load.image(`rock_${i}`, `rock_${i}.png`);
+    }
+    for (let i = 1; i <= 3; ++i) {
       this.scene.load.image(`log_${i}`, `log_${i}.png`);
     }
 
     this.scene.load.path = ASSETS_PREFIX_URL;
 
     this.scene.load.image('orange_star_fish', 'orange_star_fish.png');
-    this.scene.load.image('blue_star_fish', 'blue_star_fish.png');
+    this.scene.load.image('yellow_star_fish', 'yellow_star_fish.png');
+    this.scene.load.image('red_star_fish', 'red_star_fish.png');
+
+    this.scene.load.image('movement_power', 'movement_power.png');
+    this.scene.load.image('slow_scroll_power', 'slow_scroll_power.png');
 
     // Particles
     this.scene.load.image('bubble', 'bubble.png');
 
     this.scene.load.path = `assets/prefabs/`;
 
-    for (let i = 0; i < EASY_PREFABS.length; ++i) {
-      this.scene.load.json(EASY_PREFABS[i], `${EASY_PREFABS[i]}.json`)
+    for (let i = 0; i < PREFABS.length; ++i) {
+      this.scene.load.json(PREFABS[i], `${PREFABS[i]}.json`)
     }
 
 
     this.scene.load.path = `${ASSETS_PREFIX_URL}ui/`;
 
+    // Main Menu
+    this.scene.load.image('end_menu_button', 'end_menu_button.png');
+    this.scene.load.image('main_menu_popup', 'main_menu_popup.png');
+    this.scene.load.image('no_button', 'no_button.png');
+    this.scene.load.image('yes_button', 'yes_button.png');
+
+    // Power Up
+    this.scene.load.image('power_up_base_outer', 'power_up_base_outer.png');
+    this.scene.load.image('power_up_base_inner', 'power_up_base_inner.png');
+
+    // Side Bar
     this.scene.load.image('pause_button', 'pause.png');
     this.scene.load.image('resume_button', 'resume.png');
+    this.scene.load.image('side_bar', 'side_bar.png');
+    this.scene.load.image('menu_button', 'menu_button.png');
+    this.scene.load.image('sound_off', 'sound_off.png');
+    this.scene.load.image('sound_on', 'sound_on.png');
+
+    // Core UI
+    this.scene.load.image('lives', 'lives.png');
     this.scene.load.image('core_ui', 'core_ui.png');
     this.scene.load.image('hunger_bar_base', 'hunger_bar_base.png');
     this.scene.load.image('hunger_bar_white', 'hunger_bar_white.png');
@@ -81,6 +105,8 @@ export class AssetsPreloader {
     this.scene.load.image('hunger_bar_yellow', 'hunger_bar_yellow.png');
     this.scene.load.image('hunger_bar_orange', 'hunger_bar_orange.png');
     this.scene.load.image('hunger_bar_red', 'hunger_bar_red.png');
+
+    // Turtle Selection
     this.scene.load.image('left_arrow', 'left_arrow.png');
     this.scene.load.image('start_button', 'start_button.png');
 

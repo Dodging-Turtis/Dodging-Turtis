@@ -1,9 +1,10 @@
 import { CAM_CENTER } from "../../cfg/constants/design-constants";
-import { COLLECTIBLE_CONSTRUCTORS, COLLECTIBLE_TYPES, OBSTACLE_CONSTRUCTORS, OBSTACLE_TYPES } from "../../cfg/constants/game-constants";
+import { COLLECTIBLE_CONSTRUCTORS, COLLECTIBLE_TYPES, OBSTACLE_CONSTRUCTORS, OBSTACLE_TYPES, POWER_UP_CONSTRUCTORS, POWER_UP_TYPES } from "../../cfg/constants/game-constants";
 import { IPosition } from "../../cfg/interfaces/IPosition";
 import { AbstractScene } from "../../scenes/AbstractScene";
 import { Collectible } from "../../prefabs/abstract/Collectible";
 import { Obstacle } from "../../prefabs/abstract/Obstacle";
+import { PowerUp } from "../../prefabs/abstract/PowerUp";
 
 export class ObstacleGroup extends Phaser.GameObjects.Group {
     scene: AbstractScene;
@@ -16,16 +17,18 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
     obstaclesShadow: Array<Phaser.GameObjects.Image> = [];
     obstaclesPositions: Array<IPosition> = [];
 
-
     collectibles: Array<Collectible> = [];
     collectiblesShadow: Array<Phaser.GameObjects.Image> = [];
     collectiblesPositions: Array<IPosition> = [];
 
+    powerUp!: PowerUp;
+    powerUpShadow!: Phaser.GameObjects.Image;
+    powerUpPosition!: IPosition;
 
     constructor(scene: AbstractScene, x = CAM_CENTER.x, y: number, prefabKey: string) {
         super(scene);
         this.scene = scene;
-        this.position = {x, y};
+        this.position = { x, y };
         this.name = prefabKey;
         console.warn('initial active', this.active);
         this.setup(prefabKey);
@@ -47,10 +50,15 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
         this.setActive(false);
     }
 
-    spawn() {
+    spawn(showPowerUp: boolean) {
         this.resetCollectibles();
         this.resetObstacles();
         this.addMultiple([...this.collectibles, ...this.collectiblesShadow, ...this.obstacles, ...this.obstaclesShadow], true);
+        if (showPowerUp) {
+            console.log('spawning powerup');
+            this.resetPowerUp();
+            this.add(this.powerUp, true);
+        }
         this.setActive(true);
     }
 
@@ -59,9 +67,11 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
         this.contHeight = prefabData.contHeight;
         this.addObstacles(prefabData.obstacles);
         this.addCollectibles(prefabData.collectibles);
+        this.addPowerUp(prefabData.powerUp);
     }
 
-    private addObstacles(config: Array<{type: OBSTACLE_TYPES; x: number; y: number, texture: string | undefined}>) {
+    // Use prefab data to add obstacles based on the type given in the prefab data
+    private addObstacles(config: Array<{ type: OBSTACLE_TYPES; x: number; y: number, texture: string | undefined }>) {
         console.warn('obstacles', config);
         const width = this.scene.grs.designDim.width * 0.5;
         for (let i = 0; i < config.length; ++i) {
@@ -79,7 +89,8 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
         }
     }
 
-    private addCollectibles(config: Array<{type: COLLECTIBLE_TYPES; x: number; y: number}>) {
+    // Use prefab data to add collectibles based on the type given in the prefab data
+    private addCollectibles(config: Array<{ type: COLLECTIBLE_TYPES; x: number; y: number }>) {
         console.warn('collectibles', config);
         const width = this.scene.grs.designDim.width * 0.5;
         for (let i = 0; i < config.length; ++i) {
@@ -92,6 +103,27 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
         }
     }
 
+    // Use prefab data to add powerup based on the type given in the prefab data
+    private addPowerUp(config: { type: POWER_UP_TYPES; x: number; y: number }) {
+        console.warn('powerups', config);
+        const width = this.scene.grs.designDim.width * 0.5;
+        const powerUpConstructor = POWER_UP_CONSTRUCTORS[config.type] || Object.values(POWER_UP_CONSTRUCTORS)[Math.floor(Object.keys(POWER_UP_CONSTRUCTORS).length * Math.random())]
+        const powerUp = new powerUpConstructor(this.scene, this.position.x + config.x * width, this.position.y + config.y * (this.contHeight * 0.5));
+        this.powerUpPosition = { x: config.x, y: config.y };
+        this.powerUp = powerUp;
+        if (this.scene.renderer.type === Phaser.WEBGL) {
+            this.powerUpShadow = powerUp.shadow;
+        }
+    }
+
+    // Reset the powerUp to their original position and stats if they have been moved
+    private resetPowerUp() {
+        const width = this.scene.grs.designDim.width * 0.5;
+        const position = this.powerUpPosition;
+        this.powerUp.resetPowerUp(this.position.x + position.x * width, this.position.y + position.y * (this.contHeight * 0.5));
+    }
+
+    // Reset the collectibles to their original position and stats if they have been moved or collected
     private resetCollectibles() {
         const width = this.scene.grs.designDim.width * 0.5;
         for (let i = 0; i < this.collectiblesPositions.length; ++i) {
@@ -100,6 +132,7 @@ export class ObstacleGroup extends Phaser.GameObjects.Group {
         }
     }
 
+    // Reset the obstacles to their original position and stats if they have been moved
     private resetObstacles() {
         const width = this.scene.grs.designDim.width * 0.5;
         for (let i = 0; i < this.obstaclesPositions.length; ++i) {

@@ -1,21 +1,65 @@
 {
     "contHeight": 720,
     "obstacles": [
-        { "type": "Rock", "x": -0.5, "y": 0, "texture": "rock_1" },
-        { "type": "Rock", "x": 0, "y": 0 },
-        { "type": "Rock", "x": 0.5, "y": 0, "texture": "rock_1" }
+        {
+            "type": "Rock",
+            "x": -0.5,
+            "y": 0,
+            "texture": "rock_1"
+        },
+        {
+            "type": "Rock",
+            "x": 0,
+            "y": 0
+        },
+        {
+            "type": "Rock",
+            "x": 0.5,
+            "y": 0,
+            "texture": "rock_1"
+        }
     ],
     "collectibles": [
-        { "type": "StarFish", "x": 0, "y": -0.75},
-        { "type": "StarFish", "x": 0, "y": 0.75},
-        { "type": "StarFish", "x": 0.15, "y": 0.325},
-        { "type": "StarFish", "x": -0.15, "y": 0.325},
-        { "type": "StarFish", "x": 0.15, "y": -0.325},
-        { "type": "StarFish", "x": -0.15, "y": -0.325},
-        { "type": "StarFish", "x": 0.25, "y": 0},
-        { "type": "StarFish", "x": -0.25, "y": 0}
+        {
+            "type": "StarFish",
+            "x": 0,
+            "y": 0.75
+        },
+        {
+            "type": "StarFish",
+            "x": 0.15,
+            "y": 0.325
+        },
+        {
+            "type": "StarFish",
+            "x": -0.15,
+            "y": 0.325
+        },
+        {
+            "type": "StarFish",
+            "x": 0.15,
+            "y": -0.325
+        },
+        {
+            "type": "StarFish",
+            "x": -0.15,
+            "y": -0.325
+        },
+        {
+            "type": "StarFish",
+            "x": 0.25,
+            "y": 0
+        },
+        {
+            "type": "StarFish",
+            "x": -0.25,
+            "y": 0
+        }
     ],
-    "innerContainers": [
-        { "name": "test-1-prefab", "y": 0 }
-    ]
+    "powerUp": {
+        "type": "InvincibilityPowerUp",
+        "x": 0,
+        "y": -0.75
+    },
+    "innerContainers": []
 }

@@ -5,13 +5,13 @@ import { Water } from './Water';
 import { ObstacleManager } from './Obstacles/ObstacleManager';
 import { Overlay } from './Overlay';
 import { Pawn } from './Pawn';
-import { PawnParticleTrail } from './PawnParticleTrail';
 import { BankManager } from './Banks/BankManager';
 import { DEPTH } from '../cfg/constants/game-constants';
 
-const SPEED_INCREASE_THRESHOLD = 5000;
-const SPEED_INCREASE = 0.05;
+const SPEED_INCREASE_THRESHOLD = 10000;
+const SPEED_INCREASE = 0.025;
 const INIT_SPEED = 0.15;
+const MAX_SPEED = 1;
 
 export class GameComponents {
   scene: AbstractScene;
@@ -27,7 +27,7 @@ export class GameComponents {
 
 
   scrollSpeed = INIT_SPEED;
-  speedIncreaseThreshold = 5000;  // ms;
+  speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;  // ms;
   scrollSpeedBeforeDeath = INIT_SPEED;
 
 
@@ -55,6 +55,9 @@ export class GameComponents {
     this.overlay.showOverlay();
     this.stopScrollTween();
     this.scrollSpeedBeforeDeath = this.scrollSpeed * 0.75;
+    if (this.scrollSpeedBeforeDeath < INIT_SPEED) {
+      this.scrollSpeedBeforeDeath = INIT_SPEED;
+    }
     this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;
     this.scrollSpeed = INIT_SPEED;
     this.pawn.playPawnCollidedTween();
@@ -63,17 +66,21 @@ export class GameComponents {
 
   deathCameraEffects() {
     const currZoom = this.scene.cameras.main.zoom;
-    this.scene.cameras.main.zoomTo(currZoom + 0.1, 500, TWEEN_EASING.SINE_EASE_IN);
+    this.scene.cameras.main.zoomTo(currZoom + 0.05, 500, TWEEN_EASING.SINE_EASE_IN);
     this.scene.cameras.main.pan(CAM_CENTER.x - (CAM_CENTER.x - this.pawn.turtle.x) * 0.2, CAM_CENTER.y, 500, TWEEN_EASING.SINE_EASE_IN);
     this.scene.cameras.main.shake(500, 0.005);
     window.navigator.vibrate(500);
   }
 
   resetCamera() {
-    this.overlay.hideOverlay();
     const currZoom = this.scene.cameras.main.zoom;
-    this.scene.cameras.main.zoomTo(currZoom - 0.1, 500, TWEEN_EASING.SINE_EASE_OUT);
+    this.scene.cameras.main.zoomTo(currZoom - 0.05, 500, TWEEN_EASING.SINE_EASE_OUT);
     this.scene.cameras.main.pan(CAM_CENTER.x, CAM_CENTER.y, 500, TWEEN_EASING.SINE_EASE_OUT);
+  }
+
+  startTurtleRevival() {
+    this.overlay.hideOverlay();
+    this.resetCamera();
     this.scene.cameras.main.once('camerapancomplete', (camera: Phaser.Cameras.Scene2D.Camera) => {
       this.pawn.playPawnReviveTween();
     });
@@ -96,12 +103,30 @@ export class GameComponents {
   }
 
   increaseScrollSpeed() {
+    if (this.scrollSpeed >= MAX_SPEED) {
+      return;
+    }
     this.scrollSpeedTween = this.scene.tweens.add({
       targets: this,
       scrollSpeed: `+=${SPEED_INCREASE}`,
       duration: 4000,
       ease: TWEEN_EASING.SINE_EASE_OUT,
-    })
+    });
+  }
+
+  reduceScrollSpeed() {
+    this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;
+    this.stopScrollTween();
+    let reducedSpeed = this.scrollSpeed * 0.6;
+    if (reducedSpeed < INIT_SPEED) {
+      reducedSpeed = INIT_SPEED;
+    }
+    this.scrollSpeedTween = this.scene.tweens.add({
+      targets: this,
+      scrollSpeed: reducedSpeed,
+      duration: 1000,
+      ease: TWEEN_EASING.SINE_EASE_OUT,
+    });
   }
 
   resizeAndRepositionElements() {
@@ -115,7 +140,7 @@ export class GameComponents {
     this.pawn.update(delta, scrollSpeed);
     this.water.scroll(scrollSpeed);
     this.bankManager.scroll(scrollSpeed);
-    this.obstacleManager.update(scrollSpeed);
+    this.obstacleManager.update(delta, scrollSpeed);
     this.speedIncreaseThreshold -= delta;
     if (this.speedIncreaseThreshold <= 0) {
       this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;

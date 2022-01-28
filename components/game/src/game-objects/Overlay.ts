@@ -17,15 +17,15 @@ export class Overlay extends Phaser.GameObjects.Image {
 
   resizeAndRepositionElements(): void {
     this.setDisplaySize(
-      this.scene.grs.resizeDim.width,
-      this.scene.grs.resizeDim.height
+      this.scene.grs.resizeDim.width * 1.25,
+      this.scene.grs.resizeDim.height * 1.25
     );
   }
 
   showOverlay() {
     this.scene.tweens.add({
       targets: this,
-      alpha: 0.25,
+      alpha: 0.6,
       duration: 400,
       ease: TWEEN_EASING.QUAD_EASE_OUT,
       onStart: () => {

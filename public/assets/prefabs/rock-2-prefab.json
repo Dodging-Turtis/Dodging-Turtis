@@ -1,17 +1,52 @@
 {
     "contHeight": 720,
     "obstacles": [
-        { "type": "Rock", "x": -0.25, "y": 0},
-        { "type": "Rock", "x": 0.25, "y": 0}
+        {
+            "type": "Rock",
+            "x": -0.25,
+            "y": 0
+        },
+        {
+            "type": "Rock",
+            "x": 0.25,
+            "y": 0
+        }
     ],
     "collectibles": [
-        { "type": "StarFish", "x": 0, "y": -0.75},
-        { "type": "StarFish", "x": 0, "y": 0.75},
-        { "type": "StarFish", "x": 0.1, "y": 0.325},
-        { "type": "StarFish", "x": -0.1, "y": 0.325},
-        { "type": "StarFish", "x": 0.1, "y": -0.325},
-        { "type": "StarFish", "x": -0.1, "y": -0.325},
-        { "type": "StarFish", "x": 0, "y": 0}
+        {
+            "type": "StarFish",
+            "x": 0,
+            "y": -0.75
+        },
+        {
+            "type": "StarFish",
+            "x": 0,
+            "y": 0.75
+        },
+        {
+            "type": "StarFish",
+            "x": 0.1,
+            "y": 0.325
+        },
+        {
+            "type": "StarFish",
+            "x": -0.1,
+            "y": 0.325
+        },
+        {
+            "type": "StarFish",
+            "x": 0.1,
+            "y": -0.325
+        },
+        {
+            "type": "StarFish",
+            "x": -0.1,
+            "y": -0.325
+        }
     ],
+    "powerUp": {
+        "x": 0,
+        "y": 0
+    },
     "innerContainers": []
 }
