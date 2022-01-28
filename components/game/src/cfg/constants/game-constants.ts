@@ -60,14 +60,16 @@ export const CUSTOM_EVENTS = {
 };
 
 export const PREFABS = [
-  // 'rock-1-prefab',
-  // 'rock-2-prefab',
-  // 'rock-3-prefab',
-  // 'rock-4-prefab',
-  // 'log-1-prefab',
-  // 'log-2-prefab',
-  // 'log-3-prefab',
+  'rock-1-prefab',
+  'rock-2-prefab',
+  'rock-3-prefab',
+  'rock-4-prefab',
+  'log-1-prefab',
+  'log-2-prefab',
+  'log-3-prefab',
   'log-4-prefab',
+  'mix-1-prefab',
+  'mix-2-prefab',
 ]
 
 export const OBSTACLE_CONSTRUCTORS = {

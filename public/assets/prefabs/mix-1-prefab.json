@@ -1,0 +1,102 @@
+{
+    "contHeight": 720,
+    "obstacles": [
+        {
+            "type": "Rock",
+            "x": 0,
+            "y": -0.75
+        },
+        {
+            "type": "Rock",
+            "x": 0,
+            "y": 0.75
+        },
+        {
+            "type": "Log",
+            "x": -0.6,
+            "y": -0.75
+        },
+        {
+            "type": "Log",
+            "x": 0.6,
+            "y": -0.75
+        },
+        {
+            "type": "Log",
+            "x": 0.3,
+            "y": 0
+        },
+        {
+            "type": "Log",
+            "x": -0.3,
+            "y": 0
+        },
+        {
+            "type": "Log",
+            "x": 0.6,
+            "y": 0.75
+        },
+        {
+            "type": "Log",
+            "x": -0.6,
+            "y": 0.75
+        }
+    ],
+    "collectibles": [
+        {
+            "type": "StarFish",
+            "x": -0.1,
+            "y": -0.35
+        },
+        {
+            "type": "StarFish",
+            "x": 0.1,
+            "y": -0.35
+        },
+        {
+            "type": "StarFish",
+            "x": -0.1,
+            "y": 0.35
+        },
+        {
+            "type": "StarFish",
+            "x": 0.1,
+            "y": 0.35
+        },
+        {
+            "type": "StarFish",
+            "x": -0.6,
+            "y": 0
+        },
+        {
+            "type": "StarFish",
+            "x": 0.6,
+            "y": 0
+        },
+        {
+            "type": "StarFish",
+            "x": -0.6,
+            "y": 0.25
+        },
+        {
+            "type": "StarFish",
+            "x": 0.6,
+            "y": 0.25
+        },
+        {
+            "type": "StarFish",
+            "x": -0.6,
+            "y": -0.25
+        },
+        {
+            "type": "StarFish",
+            "x": 0.6,
+            "y": -0.25
+        }
+    ],
+    "powerUp": {
+        "x": 0,
+        "y": 0
+    },
+    "innerContainers": []
+}
