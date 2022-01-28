@@ -11,18 +11,18 @@
         {
             "type": "StarFish",
             "x": 0,
-            "y": -0.5
+            "y": -0.75
         },
         {
             "type": "StarFish",
             "x": 0,
-            "y": 0.5
+            "y": 0.75
         }
     ],
     "powerUp": {
         "type": "ScrollSlowPowerUp",
         "x": 0,
-        "y": -0.75
+        "y": 1
     },
     "innerContainers": []
 }

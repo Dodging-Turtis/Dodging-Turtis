@@ -8,9 +8,10 @@ import { Pawn } from './Pawn';
 import { BankManager } from './Banks/BankManager';
 import { DEPTH } from '../cfg/constants/game-constants';
 
-const SPEED_INCREASE_THRESHOLD = 5000;
-const SPEED_INCREASE = 0.05;
+const SPEED_INCREASE_THRESHOLD = 10000;
+const SPEED_INCREASE = 0.025;
 const INIT_SPEED = 0.15;
+const MAX_SPEED = 1;
 
 export class GameComponents {
   scene: AbstractScene;
@@ -54,6 +55,9 @@ export class GameComponents {
     this.overlay.showOverlay();
     this.stopScrollTween();
     this.scrollSpeedBeforeDeath = this.scrollSpeed * 0.75;
+    if (this.scrollSpeedBeforeDeath < INIT_SPEED) {
+      this.scrollSpeedBeforeDeath = INIT_SPEED;
+    }
     this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;
     this.scrollSpeed = INIT_SPEED;
     this.pawn.playPawnCollidedTween();
@@ -99,6 +103,9 @@ export class GameComponents {
   }
 
   increaseScrollSpeed() {
+    if (this.scrollSpeed >= MAX_SPEED) {
+      return;
+    }
     this.scrollSpeedTween = this.scene.tweens.add({
       targets: this,
       scrollSpeed: `+=${SPEED_INCREASE}`,
@@ -110,9 +117,13 @@ export class GameComponents {
   reduceScrollSpeed() {
     this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;
     this.stopScrollTween();
+    let reducedSpeed = this.scrollSpeed * 0.6;
+    if (reducedSpeed < INIT_SPEED) {
+      reducedSpeed = INIT_SPEED;
+    }
     this.scrollSpeedTween = this.scene.tweens.add({
       targets: this,
-      scrollSpeed: this.scrollSpeed * 0.6,
+      scrollSpeed: reducedSpeed,
       duration: 1000,
       ease: TWEEN_EASING.SINE_EASE_OUT,
     });

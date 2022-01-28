@@ -76,7 +76,7 @@ export class Pawn {
 
   increasePawnMovementSpeed() {
     const origSpeed = this.speed;
-    this.speed *= 1.25;
+    this.speed *= 1.5;
     this.scene.time.delayedCall(5000, () => {
       this.scene.tweens.add({
         targets: this,

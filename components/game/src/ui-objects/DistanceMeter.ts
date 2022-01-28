@@ -25,7 +25,7 @@ export class DistanceMeter extends Phaser.GameObjects.Text {
   }
 
   distanceFormatter() {
-    let distance = Math.floor(this.distanceCovered / 10);
+    let distance = Math.floor(this.distanceCovered / 25);
     if (distance > 1000) {
       distance /= 1000;
       return `${distance.toFixed(2)}km`;
