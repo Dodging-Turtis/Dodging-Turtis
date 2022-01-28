@@ -108,10 +108,5 @@
         "x": 0,
         "y": 0
     },
-    "innerContainers": [
-        {
-            "name": "test-1-prefab",
-            "y": 0
-        }
-    ]
+    "innerContainers": []
 }

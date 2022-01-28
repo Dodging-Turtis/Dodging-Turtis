@@ -2,64 +2,56 @@
     "contHeight": 720,
     "obstacles": [
         {
-            "type": "Rock",
-            "x": -0.5,
-            "y": 0,
-            "texture": "rock_1"
-        },
-        {
-            "type": "Rock",
+            "type": "Log",
             "x": 0,
             "y": 0
-        },
-        {
-            "type": "Rock",
-            "x": 0.5,
-            "y": 0,
-            "texture": "rock_1"
         }
     ],
     "collectibles": [
         {
             "type": "StarFish",
-            "x": 0,
-            "y": 0.75
+            "x": -0.75,
+            "y": -0.75
         },
         {
             "type": "StarFish",
-            "x": 0.15,
-            "y": 0.325
+            "x": 0.75,
+            "y": -0.75
         },
         {
             "type": "StarFish",
-            "x": -0.15,
-            "y": 0.325
+            "x": -0.65,
+            "y": -0.5
         },
         {
             "type": "StarFish",
-            "x": 0.15,
-            "y": -0.325
+            "x": 0.65,
+            "y": -0.5
         },
         {
             "type": "StarFish",
-            "x": -0.15,
-            "y": -0.325
+            "x": -0.55,
+            "y": -0.25
         },
         {
             "type": "StarFish",
-            "x": 0.25,
+            "x": 0.55,
+            "y": -0.25
+        },
+        {
+            "type": "StarFish",
+            "x": -0.45,
             "y": 0
         },
         {
             "type": "StarFish",
-            "x": -0.25,
+            "x": 0.45,
             "y": 0
         }
     ],
     "powerUp": {
-        "type": "InvincibilityPowerUp",
         "x": 0,
-        "y": -0.75
+        "y": -1
     },
     "innerContainers": []
 }

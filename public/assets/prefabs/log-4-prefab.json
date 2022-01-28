@@ -1,0 +1,84 @@
+{
+    "contHeight": 480,
+    "obstacles": [
+        {
+            "type": "Log",
+            "x": 0,
+            "y": -1,
+            "texture": "log_2"
+        },
+        {
+            "type": "Log",
+            "x": -0.35,
+            "y": -0.5
+        },
+        {
+            "type": "Log",
+            "x": 0.35,
+            "y": -0.5
+        },
+        {
+            "type": "Log",
+            "x": -0.7,
+            "y": 0
+        },
+        {
+            "type": "Log",
+            "x": 0.7,
+            "y": 0
+        },
+        {
+            "type": "Log",
+            "x": -0.35,
+            "y": 0.5
+        },
+        {
+            "type": "Log",
+            "x": 0.35,
+            "y": 0.5
+        },
+        {
+            "type": "Log",
+            "x": 0,
+            "y": 1,
+            "texture": "log_2"
+        }
+    ],
+    "collectibles": [
+        {
+            "type": "StarFish",
+            "x": -0.1,
+            "y": -0.35
+        },
+        {
+            "type": "StarFish",
+            "x": 0.1,
+            "y": -0.35
+        },
+        {
+            "type": "StarFish",
+            "x": -0.1,
+            "y": 0.35
+        },
+        {
+            "type": "StarFish",
+            "x": 0.1,
+            "y": 0.35
+        },
+        {
+            "type": "StarFish",
+            "x": 0,
+            "y": -0.35
+        },
+        {
+            "type": "StarFish",
+            "x": 0,
+            "y": 0.35
+        }
+    ],
+    "powerUp": {
+        "x": 0,
+        "y": 0
+    },
+    "innerContainers": []
+}
