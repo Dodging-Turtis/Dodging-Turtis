@@ -19,7 +19,7 @@ const Card = ({ turtle }: { turtle: IMarketNftWithMetadata }) => {
         </div>
         <div className=' my-0'>
           {' '}
-          <div className='text-left text-xl py-0 my-0'>
+          <div className='text-left text-lg py-0 my-0'>
             {turtle.metadata.name}
           </div>
           <div className=' text-sm text-left -mt-1 py-0'>username</div>
@@ -41,7 +41,7 @@ const Card = ({ turtle }: { turtle: IMarketNftWithMetadata }) => {
       </div>
       <div className='text-xl w-full flex flex-row flex-wrap justify-center'>
         {turtle.metadata.attributes.map((attr) => (
-          <div className='px-2' key={attr.trait_type}>
+          <div className='px-2 py-1' key={attr.trait_type}>
             {attr.trait_type}: {attr.value}
           </div>
         ))}

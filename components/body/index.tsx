@@ -35,7 +35,7 @@ function Body() {
     <div className='w-full flex flex-col font-primary '>
       <div className='bg-website_bg bg-cover bg-center'>
         {/* section-1 */}
-        <div className='container w-2/4 text-center mx-auto lg:pt-80 pt-16'>
+        <div className='container w-2/4 text-center mx-auto lg:pt-80 pt-44'>
           <h1 className='font-bold lg:text-7xl text-2xl text-blue p-2'>
             Dodging Turtis
           </h1>
@@ -50,13 +50,15 @@ function Body() {
         </div>
 
         {/* section-2 */}
-        <div className='container w-2/4 text-center mx-auto lg:pt-96 pt-16 lg:pb-96 pb-44 lg:mb-20'>
+        <div className='container w-2/4 text-center mx-auto lg:pt-96 pt-44 lg:pb-96 pb-44 lg:mb-20'>
           <h1 className='font-bold text-3xl text-blue p-2'>About</h1>
-          <p className='p-2'>
-            Dodging Turtis is a turtle themed NFT based game. Players train
-            their turtles to gain a higher reponse speed. Gradullay, As the game
-            forwords Player require a better respnse speed turtle to score more.
-            Players can buy/sell their turtles anytime in the shell marketplace.
+          <p className='lg:p-2'>
+            Dodging Turtis is a turtle themed NFT based "Play to earn" game.
+            Every Player gets personalized turtles of a random breed using which
+            they can play the game. Players train their turtles to gain a higher
+            response speed. Gradually, As the game forwards Player requires a
+            better response speed turtle to score more. Players can BUY/SELL
+            their turtles anytime in the shell marketplace.
           </p>
         </div>
       </div>
@@ -65,10 +67,8 @@ function Body() {
       <div className='container w-full px-16 text-left pt-16 bg-greyish'>
         <h1 className='font-bold text-3xl text-blue p-2'>Market</h1>
         <p className='p-2'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu
-          scelerisque pretium ullamcorper in scelerisque id amet quam. Vivamus
-          imperdiet imperdiet urna gravida pellentesque duis. Felis fringilla
-          faucibus amet, et. Massa sit in iaculis ornare.
+          Shell Market is a place where players get the chance to BUY/SELL their
+          Turtle NFT collectables.
         </p>
         <div className='flex flex-col justify-center'>
           <div className='container flex flex-col lg:flex-row w-full lg:p-5 justify-center'>
@@ -92,12 +92,7 @@ function Body() {
         <div className='lg:w-2/3 w-full mx-auto'>
           <h1 className='font-bold text-3xl text-blue'>Gameplay</h1>
           <p className='py-2'>
-            Dodging Turtis is a turtle themed NFT based "Play to earn" game.
-            Every Player gets a personalized turtles of a random breed using
-            which they can play the game. Players train their turtles to gain a
-            higher reponse speed. Gradullay, As the game forwords Player require
-            a better respnse speed turtle to score more. Players can buy/sell
-            their turtles anytime in the shell marketplace.
+            Currently the gameplay video is in development.
           </p>
 
           <button className='w-full text-9xl text-center mx-auto py-10 text-lightblue'>

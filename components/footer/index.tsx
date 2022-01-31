@@ -43,10 +43,12 @@ const Footer = () => {
             </tr>
           </table>
         </div>
-        <div className='lg:w-1/2 w-full lg:inline-block mx-auto p-2 text-2xl text-center'>
+        <div className='lg:w-1/2 w-full lg:inline-block mx-auto p-2 px-4 text-2xl text-center'>
           <ul>
             <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
-              <FontAwesomeIcon icon={['fab', 'discord']} />
+              <a href='https://discord.gg/MTFPH8UU2Q'>
+                <FontAwesomeIcon icon={['fab', 'discord']} />
+              </a>
             </li>
             <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
               <FontAwesomeIcon icon={['fab', 'linkedin']} />
@@ -55,10 +57,9 @@ const Footer = () => {
               <FontAwesomeIcon icon={['fab', 'twitter']} />
             </li>
             <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
-              <FontAwesomeIcon icon={['fab', 'instagram']} />
-            </li>
-            <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
-              <FontAwesomeIcon icon={faEnvelopeSquare} />
+              <a href='mailto:dodgingturtis@gmail.com'>
+                <FontAwesomeIcon icon={faEnvelopeSquare} />
+              </a>
             </li>
           </ul>
         </div>
