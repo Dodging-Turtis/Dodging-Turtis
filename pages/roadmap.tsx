@@ -5,13 +5,10 @@ function roadmap() {
   return (
     <div className=' container w-screen h-screen font-primary'>
       <Navbar />
-      <div className='w-full h-full px-44 bg-pattern py-5 mx-auto'>
-        {' '}
-        Quaterly roadmap here
-        <h1>Some key points for timeline</h1>
-        <h1>Features addition</h1>
-        <h1>Turtle coin launch</h1>
-        <h1>Community events</h1>
+      <div className='w-full h-screen lg:px-96 bg-pattern py-5 mx-auto'>
+        <iframe
+          className=' w-full h-full mx-auto'
+          src='https://docs.google.com/document/d/e/2PACX-1vSmvcS2FHe5XWIVMln2OUQ1sl6-KcHThXqoljNDBlFeXusK4WHL9iAyibtd7X-lJf0MOO-zqC2cyccK/pub?embedded=true'></iframe>
       </div>
 
       <Footer />

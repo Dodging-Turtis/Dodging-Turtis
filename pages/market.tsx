@@ -34,9 +34,9 @@ const Market = () => {
   );
 
   return (
-    <div className='h-screen w-screen overflow-x-hidden font-primary'>
+    <div className='h-auto w-screen overflow-x-hidden font-primary'>
       <Navbar />
-      <div className='bg-pattern w-full h-full lg:px-44 '>
+      <div className='bg-pattern w-full h-full lg:px-44 mx-auto '>
         <input
           placeholder='Search'
           className='mt-10 p-2 w-full mx-auto border-2 rounded-md'></input>

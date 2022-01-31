@@ -45,19 +45,19 @@ const Footer = () => {
         </div>
         <div className='lg:w-1/2 w-full lg:inline-block mx-auto p-2 text-2xl text-center'>
           <ul>
-            <li className='inline-block px-2'>
+            <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
               <FontAwesomeIcon icon={['fab', 'discord']} />
             </li>
-            <li className='inline-block px-2'>
+            <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
               <FontAwesomeIcon icon={['fab', 'linkedin']} />
             </li>
-            <li className='inline-block px-2'>
+            <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
               <FontAwesomeIcon icon={['fab', 'twitter']} />
             </li>
-            <li className='inline-block px-2'>
+            <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
               <FontAwesomeIcon icon={['fab', 'instagram']} />
             </li>
-            <li className='inline-block px-2'>
+            <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
               <FontAwesomeIcon icon={faEnvelopeSquare} />
             </li>
           </ul>

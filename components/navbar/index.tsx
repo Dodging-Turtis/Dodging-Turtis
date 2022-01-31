@@ -43,7 +43,7 @@ const Navbar = () => {
               <li className='nav-item px-3'>
                 <a
                   href='#'
-                  className='rounded-full text-right text-blue font-bold bg-purple text-white p-2 '>
+                  className='rounded-full hover:brightness-105 text-right text-blue font-bold bg-purple text-white p-2 '>
                   Connect to wallet
                 </a>
               </li>
