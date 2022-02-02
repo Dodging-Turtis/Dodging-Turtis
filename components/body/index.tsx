@@ -53,12 +53,12 @@ function Body() {
         <div className='container w-2/4 text-center mx-auto lg:pt-96 pt-44 lg:pb-96 pb-44 lg:mb-20'>
           <h1 className='font-bold text-3xl text-blue p-2'>About</h1>
           <p className='lg:p-2'>
-            Dodging Turtis is a turtle themed NFT based "Play to earn" game.
-            Every Player gets personalized turtles of a random breed using which
-            they can play the game. Players train their turtles to gain a higher
-            response speed. Gradually, As the game forwards Player requires a
-            better response speed turtle to score more. Players can BUY/SELL
-            their turtles anytime in the shell marketplace.
+            Dodging Turtis is a turtle themed NFT based &quot;Play to earn&quot;
+            game. Every Player gets personalized turtles of a random breed using
+            which they can play the game. Players train their turtles to gain a
+            higher response speed. Gradually, As the game forwards Player
+            requires a better response speed turtle to score more. Players can
+            BUY/SELL their turtles anytime in the shell marketplace.
           </p>
         </div>
       </div>

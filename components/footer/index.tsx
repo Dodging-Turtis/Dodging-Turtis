@@ -14,13 +14,13 @@ const Footer = () => {
           <table className='text-left mx-auto table-auto'>
             <tr>
               <td className='p-4'>
-                <a href='/profile'>My Profile</a>
+                <Link href='/profile'>My Profile</Link>
               </td>
               <td className='p-4'>
                 <a href='#'>FAQs</a>
               </td>
               <td className='p-4'>
-                <a href='/aboutus'>About us</a>
+                <Link href='/aboutus'>About us</Link>
               </td>
             </tr>
             <tr>

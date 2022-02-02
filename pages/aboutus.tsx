@@ -39,8 +39,8 @@ function Aboutus() {
               developing for last few months. We assure you, we are working
               everday to launch this game for everyone on mainnet as soon as we
               can. If you would like to support us or you have something to say
-              to us feel free to slide in any one of our DM's. We would love to
-              hear from you!!
+              to us feel free to slide in any one of our DM&apos;s. We would
+              love to hear from you!!
             </h1>
           </div>
           <div className='py-5'>

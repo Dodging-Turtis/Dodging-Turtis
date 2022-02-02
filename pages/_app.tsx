@@ -4,7 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import '@fortawesome/fontawesome-svg-core/styles.css'; // import Font Awesome CSS
 import '../styles/global.css';
 
-function MyApp({ Component, pageProps, session }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
       <StoreProvider>

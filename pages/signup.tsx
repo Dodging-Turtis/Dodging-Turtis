@@ -16,7 +16,7 @@ function Signup() {
   const { data: session } = useSession();
   const [verified, notverified] = useState(0);
 
-  if (session) {
+  if (session && session.user) {
     return (
       <>
         Authorized with {session.user.email} <br />
@@ -30,8 +30,8 @@ function Signup() {
       <div className='bg-whiteish w-2/5 h-cover text-center mt-2 mb-16 border border-whiteish rounded-xl mx-auto'>
         <h1 className='text-4xl font-bold text-blue pt-10'>Create Account</h1>
         <h5 className='px-16 pt-2 text-grey font-semibold'>
-          Everyone needs metamask account to play this game. If you don't have
-          it, please make one using this{' '}
+          Everyone needs metamask account to play this game. If you don&apos;t
+          have it, please make one using this
           <a href='https://metamask.io/'>
             <u>link</u>
           </a>
@@ -82,7 +82,7 @@ function Signup() {
           <label className='px-5'>Add Avtar</label>
           <br />
 
-          <label for='file-upload'>
+          <label htmlFor='file-upload'>
             <Image
               className='inline px-5 object-cover w-1/12 h-16 mr-2 rounded-full cursor-pointer'
               src={avtar}
