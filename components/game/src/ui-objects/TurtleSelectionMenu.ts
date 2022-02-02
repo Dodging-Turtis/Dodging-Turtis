@@ -121,15 +121,16 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
     }
     // Middle turtle
     this.showTurtles[2].setupDisplayTurtle(mainTurtleIndex);
+    this.turtleDetails.updateTurtleDetails(this.turtlesData[this.currentTurtleIndex]);
     // Left turtle
     if (mainTurtleIndex - 1 >= 0) {
       this.showTurtles[1].setupDisplayTurtle(mainTurtleIndex - 1);
-      this.leftArrow.setEnabled(true);
+      this.rightArrow.setEnabled(true);
     }
     // Right turtle
     if (mainTurtleIndex + 1 <= turtlesData.length - 1) {
       this.showTurtles[3].setupDisplayTurtle(mainTurtleIndex + 1);
-      this.rightArrow.setEnabled(true);
+      this.leftArrow.setEnabled(true);
     }
   }
 
@@ -193,7 +194,12 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
       this.rightArrow.setEnabled(false);
       this.isDragEnabled = false;
       this.hideMenu();
-      this.emit(CUSTOM_EVENTS.START_GAME, this.turtlesData[this.currentTurtleIndex]);
+      const speedAttrib = this.turtlesData[this.currentTurtleIndex].metadata.attributes.find((attrib) => {
+        if (attrib.trait_type === 'speed') {
+          return true;
+        }
+      })
+      this.emit(CUSTOM_EVENTS.START_GAME, speedAttrib ? speedAttrib.value : 0, this.currentTurtleIndex);
     });
   }
 
@@ -216,6 +222,7 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
       this.leftArrow.setEnabled(false);
       this.showTurtles[4].setVisible(false);
     }
+    this.turtleDetails.updateTurtleDetails(this.turtlesData[this.currentTurtleIndex]);
     this.rightArrow.setEnabled(true);
     this.leftMoveTween();
   }
@@ -232,6 +239,7 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
       this.rightArrow.setEnabled(false);
       this.showTurtles[0].setVisible(false);
     }
+    this.turtleDetails.updateTurtleDetails(this.turtlesData[this.currentTurtleIndex]);
     this.leftArrow.setEnabled(true);
     this.rightMoveTween();
   }

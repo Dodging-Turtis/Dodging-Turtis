@@ -22,13 +22,21 @@ export class AssetsPreloader {
 
   // Requires use of this.scene.load.start in the case of calling anywhere outside a scene preload function.
   loadGameSceneAssets(userNftMetaData: Array<IUserNftWithMetadata>): void {
-    this.scene.load.path = ASSETS_PREFIX_URL;
 
-    console.warn(userNftMetaData);
+    this.scene.load.path = `${ASSETS_PREFIX_URL}turtle_parts/`;
     userNftMetaData.forEach((nftMetaData: IUserNftWithMetadata, index: number) => {
       this.scene.load.image(`turtle_display_${index}`, nftMetaData.metadata.image);
+      this.scene.load.image(`turtle_left_hand_${index}`, nftMetaData.metadata.componentIndices.hands);
+      this.scene.load.image(`turtle_left_foot_${index}`, nftMetaData.metadata.componentIndices.legs);
+      this.scene.load.image(`turtle_tail_${index}`, nftMetaData.metadata.componentIndices.tail);
+      this.scene.load.image(`turtle_head_${index}`, nftMetaData.metadata.componentIndices.head);
+      this.scene.load.image(`turtle_eyes_${index}`, nftMetaData.metadata.componentIndices.eyes);
+      this.scene.load.image(`turtle_inner_shell_${index}`, nftMetaData.metadata.componentIndices.shell);
+      this.scene.load.image(`turtle_outer_shell_${index}`, nftMetaData.metadata.componentIndices.shellOuter);
     });
 
+
+    this.scene.load.path = ASSETS_PREFIX_URL;
     // Turtle
     // this.scene.load.image('turtle', turtleUrl);
     this.scene.load.image('turtle', 'turtle.png');
@@ -116,14 +124,6 @@ export class AssetsPreloader {
     this.scene.load.image('left_arrow', 'left_arrow.png');
     this.scene.load.image('start_button', 'start_button.png');
 
-    this.scene.load.path = `${ASSETS_PREFIX_URL}turtle_parts/`;
-    this.scene.load.image('eyes_1', 'eyes_1.png');
-    this.scene.load.image('head_1', 'head_1.png');
-    this.scene.load.image('left_foot_1', 'left_foot_1.png');
-    this.scene.load.image('left_hand_1', 'left_hand_1.png');
-    this.scene.load.image('tail_1', 'tail_1.png');
-    this.scene.load.image('in_shell_1', 'in_shell_1.png');
-    this.scene.load.image('out_shell_1', 'out_shell_1.png');
     // this.scene.load.atlas('flares', 'flares.png', 'flares.json');
 
     // this.scene.load.spritesheet('win-particle', 'win/coin.png', {

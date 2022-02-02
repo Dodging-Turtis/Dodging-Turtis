@@ -20,9 +20,24 @@ interface IMarketNft {
 interface IMetadata {
   name: string;
   description: string;
-  componentIndices: object;
-  attributes: any[];
+  componentIndices: IComponentIndices;
+  attributes: IAttribute[];
   image: string;
+}
+
+interface IAttribute {
+  trait_type: string;
+  value: string | number;
+}
+
+interface IComponentIndices {
+  eyes: string;
+  hands: string;
+  head: string;
+  legs: string;
+  shell: string;
+  shellOuter: string;
+  tail: string;
 }
 
 interface IUserNftWithMetadata extends IUserNft {

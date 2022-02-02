@@ -92,22 +92,22 @@ export class Turtle extends Phaser.GameObjects.Container {
     }
   }
 
-  setupGameTurtle(data: IUserNftWithMetadata) {
+  setupGameTurtle(index: number) {
     this.addLimbs();
     this.addTail();
     this.addHead();
     this.addEyes();
     this.addInnerShell();
     this.addOuterShell();
-    this.limbs.leftHand.setTexture('left_hand_1');
-    this.limbs.leftFoot.setTexture('left_foot_1');
-    this.limbs.rightHand.setTexture('left_hand_1');
-    this.limbs.rightFoot.setTexture('left_foot_1');
-    this.tail.setTexture('tail_1');
-    this.head.setTexture('head_1');
-    this.eyes.setTexture('eyes_1');
-    this.innerShell.setTexture('in_shell_1');
-    this.outerShell.setTexture('out_shell_1');
+    this.limbs.leftHand.setTexture(`turtle_left_hand_${index}`);
+    this.limbs.leftFoot.setTexture(`turtle_left_foot_${index}`);
+    this.limbs.rightHand.setTexture(`turtle_left_hand_${index}`);
+    this.limbs.rightFoot.setTexture(`turtle_left_foot_${index}`);
+    this.tail.setTexture(`turtle_tail_${index}`);
+    this.head.setTexture(`turtle_head_${index}`);
+    this.eyes.setTexture(`turtle_eyes_${index}`);
+    this.innerShell.setTexture(`turtle_inner_shell_${index}`);
+    this.outerShell.setTexture(`turtle_outer_shell_${index}`);
   }
 
   pawnCollidedTween(): void {

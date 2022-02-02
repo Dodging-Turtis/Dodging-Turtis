@@ -35,26 +35,134 @@ export function sortNfts(globalNfts: IMarketNft[], sortOrder: Order) {
   }
 }
 
-export const dummyTurtle = {
+export const dummyTurtle1 = {
   tokenId: 1,
   tokenUri:
     'ipfs://bafyreicjwky6t2dcdqpj6r6lx2tl2rgdo5riazknoq4yzgyvkrhyuxyqfm/metadata.json',
   metadata: {
-    name: 'Floppy Turtle',
+    name: 'Floppy Turtle 1',
     description: 'A Turtle that is on a journey in the river',
     componentIndices: {
-      eyes: '8',
-      hands: '9',
-      head: '6',
-      legs: '10',
-      shell: '6',
-      shellOuter: 'NaN',
-      tail: 'NaN',
+      eyes: 'eyes_1.png',
+      hands: 'left_hand_1.png',
+      head: 'head_1.png',
+      legs: 'left_foot_1.png',
+      shell: 'in_shell_1.png',
+      shellOuter: 'out_shell_1.png',
+      tail: 'tail_1.png',
     },
     attributes: [
       {
         trait_type: 'speed',
-        value: 106,
+        value: 10,
+      },
+    ],
+    image:
+      'https://cloudflare-ipfs.com/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
+  },
+};
+
+export const dummyTurtle2 = {
+  tokenId: 2,
+  tokenUri:
+    'ipfs://bafyreicjwky6t2dcdqpj6r6lx2tl2rgdo5riazknoq4yzgyvkrhyuxyqfm/metadata.json',
+  metadata: {
+    name: 'Floppy Turtle 2',
+    description: 'A Turtle that is on a journey in the river',
+    componentIndices: {
+      eyes: 'eyes_1.png',
+      hands: 'left_hand_1.png',
+      head: 'head_1.png',
+      legs: 'left_foot_1.png',
+      shell: 'in_shell_1.png',
+      shellOuter: 'out_shell_1.png',
+      tail: 'tail_1.png',
+    },
+    attributes: [
+      {
+        trait_type: 'speed',
+        value: 15,
+      },
+    ],
+    image:
+      'https://cloudflare-ipfs.com/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
+  },
+};
+
+export const dummyTurtle3 = {
+  tokenId: 3,
+  tokenUri:
+    'ipfs://bafyreicjwky6t2dcdqpj6r6lx2tl2rgdo5riazknoq4yzgyvkrhyuxyqfm/metadata.json',
+  metadata: {
+    name: 'Floppy Turtle 3',
+    description: 'A Turtle that is on a journey in the river',
+    componentIndices: {
+      eyes: 'eyes_1.png',
+      hands: 'left_hand_1.png',
+      head: 'head_1.png',
+      legs: 'left_foot_1.png',
+      shell: 'in_shell_1.png',
+      shellOuter: 'out_shell_1.png',
+      tail: 'tail_1.png',
+    },
+    attributes: [
+      {
+        trait_type: 'speed',
+        value: 20,
+      },
+    ],
+    image:
+      'https://cloudflare-ipfs.com/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
+  },
+};
+
+export const dummyTurtle4 = {
+  tokenId: 4,
+  tokenUri:
+    'ipfs://bafyreicjwky6t2dcdqpj6r6lx2tl2rgdo5riazknoq4yzgyvkrhyuxyqfm/metadata.json',
+  metadata: {
+    name: 'Floppy Turtle 4',
+    description: 'A Turtle that is on a journey in the river',
+    componentIndices: {
+      eyes: 'eyes_1.png',
+      hands: 'left_hand_1.png',
+      head: 'head_1.png',
+      legs: 'left_foot_1.png',
+      shell: 'in_shell_1.png',
+      shellOuter: 'out_shell_1.png',
+      tail: 'tail_1.png',
+    },
+    attributes: [
+      {
+        trait_type: 'speed',
+        value: 25,
+      },
+    ],
+    image:
+      'https://cloudflare-ipfs.com/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
+  },
+};
+
+export const dummyTurtle5 = {
+  tokenId: 5,
+  tokenUri:
+    'ipfs://bafyreicjwky6t2dcdqpj6r6lx2tl2rgdo5riazknoq4yzgyvkrhyuxyqfm/metadata.json',
+  metadata: {
+    name: 'Floppy Turtle 5',
+    description: 'A Turtle that is on a journey in the river',
+    componentIndices: {
+      eyes: 'eyes_1.png',
+      hands: 'left_hand_1.png',
+      head: 'head_1.png',
+      legs: 'left_foot_1.png',
+      shell: 'in_shell_1.png',
+      shellOuter: 'out_shell_1.png',
+      tail: 'tail_1.png',
+    },
+    attributes: [
+      {
+        trait_type: 'speed',
+        value: 100,
       },
     ],
     image:

@@ -58,6 +58,11 @@ export class Pawn {
     this.turtle.playPawnDirectionChangeTween(angle);
   }
 
+  setupPawn(speed: number, index: number) {
+    this.turtle.setupGameTurtle(index);
+    this.speed = speed * 0.005;
+  }
+
   playPawnCollidedTween() {
     this.fadeOutRipplesAfterDeath();
     this.turtle.stopLimbTweens();

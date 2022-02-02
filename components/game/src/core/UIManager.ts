@@ -115,7 +115,8 @@ export class UIManager {
 
       this.sideBar.pauseResumeButton.handleOnClick(true);
     });
-    this.turtleSelectionMenu.on(CUSTOM_EVENTS.START_GAME, (turtleDetails: any) => {
+    this.turtleSelectionMenu.on(CUSTOM_EVENTS.START_GAME, (speed: number, index: number) => {
+      this.gameManager.gameComponents.pawn.setupPawn(speed, index);
       this.gameManager.gameComponents.pawn.showPawnInitially();
     });
     this.gameManager.gameComponents.pawn.turtle.on(CUSTOM_EVENTS.PAWN_SPAWNED, () => {
