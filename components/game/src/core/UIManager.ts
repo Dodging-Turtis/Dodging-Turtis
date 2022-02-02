@@ -94,6 +94,8 @@ export class UIManager {
     });
     this.gameManager.events.on('powerUp', (powerUpType: EPowerUpType, powerUpTex: string) => {
       if (powerUpType !== EPowerUpType.SCROLL_SLOW) {
+        this.displayPowerUp.showPowerUpWithTimer(powerUpTex);
+      } else {
         this.displayPowerUp.showPowerUp(powerUpTex);
       }
     });

@@ -16,7 +16,6 @@ const MAX_SPEED = 1;
 export class GameComponents {
   scene: AbstractScene;
 
-
   grd: CanvasRenderingContext2D | null;
   scrollSpeedTween: Phaser.Tweens.Tween | null = null;
   water: Water;
@@ -117,7 +116,7 @@ export class GameComponents {
   reduceScrollSpeed() {
     this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;
     this.stopScrollTween();
-    let reducedSpeed = this.scrollSpeed * 0.6;
+    let reducedSpeed = this.scrollSpeed * 0.75;
     if (reducedSpeed < INIT_SPEED) {
       reducedSpeed = INIT_SPEED;
     }

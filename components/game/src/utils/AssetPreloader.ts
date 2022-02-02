@@ -65,6 +65,7 @@ export class AssetsPreloader {
 
     this.scene.load.image('movement_power', 'movement_power.png');
     this.scene.load.image('slow_scroll_power', 'slow_scroll_power.png');
+    this.scene.load.image('invincibility_power', 'invincibility_power.png');
 
     // Particles
     this.scene.load.image('bubble', 'bubble.png');
