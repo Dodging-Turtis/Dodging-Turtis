@@ -4,9 +4,12 @@ import { AudioManager } from '../core/AudioManager';
 import { IInitGameData } from '../cfg/interfaces/IInitGameData';
 import { GameResizer } from '../utils/GameResizer';
 import { CAM_CENTER } from '../cfg/constants/design-constants';
+import { GAME_FONT } from '../cfg/constants/game-constants';
 
 export class BootScene extends AbstractScene {
   assetsPreloader: AssetsPreloader;
+
+  loadText!: Phaser.GameObjects.Text;
 
 
   constructor() {
@@ -17,13 +20,8 @@ export class BootScene extends AbstractScene {
 
   preload(): void {
     // Load all loading bar related assets here assets here
+    this.addLoadText();
     this.assetsPreloader.loadBootSceneAssets();
-  }
-
-  loadTurtle(turtleUrl: string) {
-    this.load.path = '';
-    this.load.image('pawn', turtleUrl);
-    this.load.start();
   }
 
   resizeAndRepositionElements(): void {
@@ -54,9 +52,20 @@ export class BootScene extends AbstractScene {
     const logo = this.add.image(CAM_CENTER.x, CAM_CENTER.y, 'logo').setScale(2);
   }
 
+  private addLoadText(): void {
+    const titleConfig = {
+      fontFamily: GAME_FONT,
+      fontSize: '36px',
+      resolution: 3,
+      color: '#FFFFFF',
+    }
+
+    this.loadText = this.add.text(CAM_CENTER.x - 100, CAM_CENTER.y + 240, 'Loading: ', titleConfig).setAlign('center').setOrigin(0, 0.5);
+  }
+
   private handleLoadingProgress(): void {
     this.load.on('progress', (percentage: number) => {
-      console.warn('percentage', percentage);
+      this.loadText.text = `Loading: ${Math.round(percentage * 100)}`;
       // this.updateLoadingBar(percentage);
     });
   }
