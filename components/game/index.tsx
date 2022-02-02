@@ -32,6 +32,7 @@ const GameScreen = () => {
         //   console.error(e);
         // }
       }
+      console.log(`game ended with score : ${score}`);
       setEnded(true);
     },
     [state]
@@ -45,7 +46,7 @@ const GameScreen = () => {
         grs,
         initGameData: {
           endGameCB,
-          initMetaData: state.dummyUserNftWithMetadata
+          initMetaData: state.dummyUserNftWithMetadata,
         },
       });
     }
@@ -54,7 +55,7 @@ const GameScreen = () => {
       router.push('/home');
     }
     // }
-  }, [game, state, ended, router]);
+  }, [game, state, ended, router, endGameCB, grs]);
 
   return (
     <>

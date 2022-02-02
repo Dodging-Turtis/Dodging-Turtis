@@ -12,35 +12,37 @@ const Footer = () => {
       <div className='w-full mx-auto'>
         <div className='lg:pl-20 lg:w-1/2 w-full inline-block mx-auto align-middle'>
           <table className='text-left mx-auto table-auto'>
-            <tr>
-              <td className='p-4'>
-                <Link href='/profile'>My Profile</Link>
-              </td>
-              <td className='p-4'>
-                <a href='#'>FAQs</a>
-              </td>
-              <td className='p-4'>
-                <Link href='/aboutus'>About us</Link>
-              </td>
-            </tr>
-            <tr>
-              <td className='p-4'>
-                <Link href='/market'>Market</Link>
-              </td>
-              <td className='p-4'>
-                <Link href='#'>Community</Link>
-              </td>
-              <td className='p-4'>
-                <Link href='/roadmap'>Roadmap</Link>
-              </td>
-            </tr>
-            <tr>
-              <td className='p-4' colSpan={3}>
-                <Link href='https://github.com/Dodging-Turtis'>
-                  For Developers
-                </Link>
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className='p-4'>
+                  <Link href='/profile'>My Profile</Link>
+                </td>
+                <td className='p-4'>
+                  <a href='#'>FAQs</a>
+                </td>
+                <td className='p-4'>
+                  <Link href='/aboutus'>About us</Link>
+                </td>
+              </tr>
+              <tr>
+                <td className='p-4'>
+                  <Link href='/market'>Market</Link>
+                </td>
+                <td className='p-4'>
+                  <Link href='#'>Community</Link>
+                </td>
+                <td className='p-4'>
+                  <Link href='/roadmap'>Roadmap</Link>
+                </td>
+              </tr>
+              <tr>
+                <td className='p-4' colSpan={3}>
+                  <Link href='https://github.com/Dodging-Turtis'>
+                    For Developers
+                  </Link>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <div className='lg:w-1/2 w-full lg:inline-block mx-auto p-2 px-4 text-2xl text-center'>
