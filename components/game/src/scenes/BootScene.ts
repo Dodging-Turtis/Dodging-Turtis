@@ -40,7 +40,8 @@ export class BootScene extends AbstractScene {
     this.handleLoadingProgress();
     this.handleSceneExit();
     // To load main game assets
-    this.assetsPreloader.loadGameSceneAssets(this.initGameData.turtleUrl);
+    console.warn('init data', this.initGameData);
+    this.assetsPreloader.loadGameSceneAssets(this.initGameData.initMetaData);
 
     // create the loading bar
   }

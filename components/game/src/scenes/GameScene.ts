@@ -1,11 +1,8 @@
-import { CUSTOM_EVENTS } from '../cfg/constants/game-constants';
-import { IInitGameData } from '../cfg/interfaces/IInitGameData';
 import { AudioManager } from '../core/AudioManager';
 import { GameManager } from '../core/GameManager';
 import { InputManager } from '../core/InputManager';
 import { UIManager } from '../core/UIManager';
 import { LandscapeOrientation } from '../ui-objects/LandscapeOrientation';
-import { GameResizer } from '../utils/GameResizer';
 import { AbstractScene } from './AbstractScene';
 
 export class GameScene extends AbstractScene {
@@ -31,7 +28,7 @@ export class GameScene extends AbstractScene {
     this.inputManager = new InputManager(this);
     this.gameManager = new GameManager(this);
     this.uiManager = new UIManager(this, this.gameManager);
-    this.uiManager.showTurtleSelection();
+    this.uiManager.showTurtleSelection(this.initGameData.initMetaData);
   }
 
   create(): void {

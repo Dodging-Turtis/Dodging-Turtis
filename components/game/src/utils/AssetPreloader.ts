@@ -21,8 +21,13 @@ export class AssetsPreloader {
   }
 
   // Requires use of this.scene.load.start in the case of calling anywhere outside a scene preload function.
-  loadGameSceneAssets(turtleUrl: string): void {
+  loadGameSceneAssets(userNftMetaData: Array<IUserNftWithMetadata>): void {
     this.scene.load.path = ASSETS_PREFIX_URL;
+
+    console.warn(userNftMetaData);
+    userNftMetaData.forEach((nftMetaData: IUserNftWithMetadata, index: number) => {
+      this.scene.load.image(`turtle_display_${index}`, nftMetaData.metadata.image);
+    });
 
     // Turtle
     // this.scene.load.image('turtle', turtleUrl);

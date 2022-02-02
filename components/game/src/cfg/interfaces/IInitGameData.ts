@@ -1,5 +1,4 @@
 export interface IInitGameData {
-    playerSpeed: string;
-    turtleUrl: string;
+    initMetaData: Array<IUserNftWithMetadata>;
     endGameCB: () => void;
 }

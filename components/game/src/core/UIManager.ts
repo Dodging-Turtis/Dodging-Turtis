@@ -40,8 +40,8 @@ export class UIManager {
     this.addEventHandlers();
   }
 
-  showTurtleSelection() {
-    this.turtleSelectionMenu.populateTurtles([1, 2, 3, 4, 5, 6], 4);
+  showTurtleSelection(initTurtlesData: Array<IUserNftWithMetadata>) {
+    this.turtleSelectionMenu.populateTurtles(initTurtlesData, 0);
     this.turtleSelectionMenu.showMenu();
   }
 

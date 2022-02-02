@@ -19,6 +19,8 @@ export class Turtle extends Phaser.GameObjects.Container {
   innerShell!: Phaser.GameObjects.Image;
   outerShell!: Phaser.GameObjects.Image;
 
+  displayImage!: Phaser.GameObjects.Image;
+
   turtleOrigScale = 0.175;
   isGhost = false;
   isInvincible = false;
@@ -28,12 +30,6 @@ export class Turtle extends Phaser.GameObjects.Container {
   constructor(scene: AbstractScene, x: number, y: number) {
     super(scene, x, y);
     this.scene = scene;
-    this.addLimbs();
-    this.addTail();
-    this.addHead();
-    this.addEyes();
-    this.addInnerShell();
-    this.addOuterShell();
     this.scene.add.existing(this);
   }
 
@@ -76,15 +72,33 @@ export class Turtle extends Phaser.GameObjects.Container {
     this.add(this.outerShell);
   }
 
+  private addDisplayImage(imageKey: string) {
+    this.displayImage = this.scene.add.image(0, 0, imageKey);
+    this.add(this.displayImage);
+  }
+
   private setLimbsToInitialAngle() {
     this.limbs.rightHand.angle = 10;
     this.limbs.leftHand.angle = -10;
     this.limbs.leftFoot.angle = -5;
     this.limbs.rightFoot.angle = 5;
-
   }
 
-  setupTurtle(data: any) {
+  setupDisplayTurtle(index: number) {
+    if (!this.displayImage) {
+      this.addDisplayImage(`turtle_display_${index}`);
+    } else {
+      this.displayImage.setTexture(`turtle_display_${index}`);
+    }
+  }
+
+  setupGameTurtle(data: IUserNftWithMetadata) {
+    this.addLimbs();
+    this.addTail();
+    this.addHead();
+    this.addEyes();
+    this.addInnerShell();
+    this.addOuterShell();
     this.limbs.leftHand.setTexture('left_hand_1');
     this.limbs.leftFoot.setTexture('left_foot_1');
     this.limbs.rightHand.setTexture('left_hand_1');
