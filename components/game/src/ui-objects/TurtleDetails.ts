@@ -81,7 +81,21 @@ export class TurtleDetails extends Phaser.GameObjects.Container {
       this.travelledText,
       this.dobText
     ]);
+  }
 
+  updateTurtleDetails(details: IUserNftWithMetadata) {
+    this.turtleName.text = details.metadata.name;
+    this.id.text = `${details.tokenId}`;
+
+    const speedAttrib = details.metadata.attributes.find((attrib) => {
+      if (attrib.trait_type === 'speed') {
+        return true;
+      }
+    })
+    this.speedText.text = `${speedAttrib ? speedAttrib.value : 0}`;
+    this.ageText.text = '35';
+    this.travelledText.text = '125m';
+    this.dobText.text = '09/09/9999';
   }
 
 

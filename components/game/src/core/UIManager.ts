@@ -40,8 +40,8 @@ export class UIManager {
     this.addEventHandlers();
   }
 
-  showTurtleSelection() {
-    this.turtleSelectionMenu.populateTurtles([1, 2, 3, 4, 5, 6], 4);
+  showTurtleSelection(initTurtlesData: Array<IUserNftWithMetadata>) {
+    this.turtleSelectionMenu.populateTurtles(initTurtlesData, 0);
     this.turtleSelectionMenu.showMenu();
   }
 
@@ -94,6 +94,8 @@ export class UIManager {
     });
     this.gameManager.events.on('powerUp', (powerUpType: EPowerUpType, powerUpTex: string) => {
       if (powerUpType !== EPowerUpType.SCROLL_SLOW) {
+        this.displayPowerUp.showPowerUpWithTimer(powerUpTex);
+      } else {
         this.displayPowerUp.showPowerUp(powerUpTex);
       }
     });
@@ -113,7 +115,8 @@ export class UIManager {
 
       this.sideBar.pauseResumeButton.handleOnClick(true);
     });
-    this.turtleSelectionMenu.on(CUSTOM_EVENTS.START_GAME, (turtleDetails: any) => {
+    this.turtleSelectionMenu.on(CUSTOM_EVENTS.START_GAME, (speed: number, index: number) => {
+      this.gameManager.gameComponents.pawn.setupPawn(speed, index);
       this.gameManager.gameComponents.pawn.showPawnInitially();
     });
     this.gameManager.gameComponents.pawn.turtle.on(CUSTOM_EVENTS.PAWN_SPAWNED, () => {

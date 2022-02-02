@@ -45,6 +45,7 @@ const GameScreen = () => {
         grs,
         initGameData: {
           endGameCB,
+          initMetaData: state.dummyUserNftWithMetadata
         },
       });
     }

@@ -19,6 +19,8 @@ export class Turtle extends Phaser.GameObjects.Container {
   innerShell!: Phaser.GameObjects.Image;
   outerShell!: Phaser.GameObjects.Image;
 
+  displayImage!: Phaser.GameObjects.Image;
+
   turtleOrigScale = 0.175;
   isGhost = false;
   isInvincible = false;
@@ -28,12 +30,6 @@ export class Turtle extends Phaser.GameObjects.Container {
   constructor(scene: AbstractScene, x: number, y: number) {
     super(scene, x, y);
     this.scene = scene;
-    this.addLimbs();
-    this.addTail();
-    this.addHead();
-    this.addEyes();
-    this.addInnerShell();
-    this.addOuterShell();
     this.scene.add.existing(this);
   }
 
@@ -76,24 +72,42 @@ export class Turtle extends Phaser.GameObjects.Container {
     this.add(this.outerShell);
   }
 
+  private addDisplayImage(imageKey: string) {
+    this.displayImage = this.scene.add.image(0, 0, imageKey);
+    this.add(this.displayImage);
+  }
+
   private setLimbsToInitialAngle() {
     this.limbs.rightHand.angle = 10;
     this.limbs.leftHand.angle = -10;
     this.limbs.leftFoot.angle = -5;
     this.limbs.rightFoot.angle = 5;
-
   }
 
-  setupTurtle(data: any) {
-    this.limbs.leftHand.setTexture('left_hand_1');
-    this.limbs.leftFoot.setTexture('left_foot_1');
-    this.limbs.rightHand.setTexture('left_hand_1');
-    this.limbs.rightFoot.setTexture('left_foot_1');
-    this.tail.setTexture('tail_1');
-    this.head.setTexture('head_1');
-    this.eyes.setTexture('eyes_1');
-    this.innerShell.setTexture('in_shell_1');
-    this.outerShell.setTexture('out_shell_1');
+  setupDisplayTurtle(index: number) {
+    if (!this.displayImage) {
+      this.addDisplayImage(`turtle_display_${index}`);
+    } else {
+      this.displayImage.setTexture(`turtle_display_${index}`);
+    }
+  }
+
+  setupGameTurtle(index: number) {
+    this.addLimbs();
+    this.addTail();
+    this.addHead();
+    this.addEyes();
+    this.addInnerShell();
+    this.addOuterShell();
+    this.limbs.leftHand.setTexture(`turtle_left_hand_${index}`);
+    this.limbs.leftFoot.setTexture(`turtle_left_foot_${index}`);
+    this.limbs.rightHand.setTexture(`turtle_left_hand_${index}`);
+    this.limbs.rightFoot.setTexture(`turtle_left_foot_${index}`);
+    this.tail.setTexture(`turtle_tail_${index}`);
+    this.head.setTexture(`turtle_head_${index}`);
+    this.eyes.setTexture(`turtle_eyes_${index}`);
+    this.innerShell.setTexture(`turtle_inner_shell_${index}`);
+    this.outerShell.setTexture(`turtle_outer_shell_${index}`);
   }
 
   pawnCollidedTween(): void {

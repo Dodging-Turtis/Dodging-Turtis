@@ -23,7 +23,7 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
   private showTurtles: Array<Turtle> = [];
   private showTurtlesPositionX: Array<number> = [];
   private currentTurtleIndex = 0;
-  private turtlesData: Array<number> = [];
+  private turtlesData: Array<IUserNftWithMetadata> = [];
 
   private initDragX = 0;
   private isDragEnabled = true;
@@ -109,7 +109,7 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
     this.add(this.turtleDetails);
   }
 
-   populateTurtles(turtlesData: Array<number>, mainTurtleIndex: number) {
+  populateTurtles(turtlesData: Array<IUserNftWithMetadata>, mainTurtleIndex: number) {
     this.currentTurtleIndex = mainTurtleIndex;
     this.turtlesData = turtlesData;
 
@@ -120,16 +120,17 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
       this.showTurtles[3].setVisible(false);
     }
     // Middle turtle
-    this.showTurtles[2].setupTurtle(turtlesData[mainTurtleIndex]);
+    this.showTurtles[2].setupDisplayTurtle(mainTurtleIndex);
+    this.turtleDetails.updateTurtleDetails(this.turtlesData[this.currentTurtleIndex]);
     // Left turtle
     if (mainTurtleIndex - 1 >= 0) {
-      this.showTurtles[1].setupTurtle(turtlesData[mainTurtleIndex - 1]);
-      this.leftArrow.setEnabled(true);
+      this.showTurtles[1].setupDisplayTurtle(mainTurtleIndex - 1);
+      this.rightArrow.setEnabled(true);
     }
     // Right turtle
     if (mainTurtleIndex + 1 <= turtlesData.length - 1) {
-      this.showTurtles[3].setupTurtle(turtlesData[mainTurtleIndex + 1]);
-      this.rightArrow.setEnabled(true);
+      this.showTurtles[3].setupDisplayTurtle(mainTurtleIndex + 1);
+      this.leftArrow.setEnabled(true);
     }
   }
 
@@ -193,7 +194,12 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
       this.rightArrow.setEnabled(false);
       this.isDragEnabled = false;
       this.hideMenu();
-      this.emit(CUSTOM_EVENTS.START_GAME, this.turtlesData[this.currentTurtleIndex]);
+      const speedAttrib = this.turtlesData[this.currentTurtleIndex].metadata.attributes.find((attrib) => {
+        if (attrib.trait_type === 'speed') {
+          return true;
+        }
+      })
+      this.emit(CUSTOM_EVENTS.START_GAME, speedAttrib ? speedAttrib.value : 0, this.currentTurtleIndex);
     });
   }
 
@@ -209,13 +215,14 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
     const nextIndex = this.currentTurtleIndex + 1;
     this.currentTurtleIndex = nextIndex;
     if (nextIndex + 1 <= this.turtlesData.length - 1) {
-      this.showTurtles[4].setupTurtle(this.turtlesData[nextIndex + 1]);
+      this.showTurtles[4].setupDisplayTurtle(nextIndex + 1);
       this.showTurtles[4].setVisible(true);
       this.leftArrow.setEnabled(true);
     } else {
       this.leftArrow.setEnabled(false);
       this.showTurtles[4].setVisible(false);
     }
+    this.turtleDetails.updateTurtleDetails(this.turtlesData[this.currentTurtleIndex]);
     this.rightArrow.setEnabled(true);
     this.leftMoveTween();
   }
@@ -223,17 +230,18 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
   private triggerRightMove() {
     this.disableDragFewMoments();
     const nextIndex = this.currentTurtleIndex - 1;
-      this.currentTurtleIndex = nextIndex;
-      if (nextIndex - 1 >= 0) {
-        this.showTurtles[0].setupTurtle(this.turtlesData[nextIndex - 1]);
-        this.showTurtles[0].setVisible(true);
-        this.rightArrow.setEnabled(true);
-      } else {
-        this.rightArrow.setEnabled(false);
-        this.showTurtles[0].setVisible(false);
-      }
-      this.leftArrow.setEnabled(true);
-      this.rightMoveTween();
+    this.currentTurtleIndex = nextIndex;
+    if (nextIndex - 1 >= 0) {
+      this.showTurtles[0].setupDisplayTurtle(nextIndex + 1);
+      this.showTurtles[0].setVisible(true);
+      this.rightArrow.setEnabled(true);
+    } else {
+      this.rightArrow.setEnabled(false);
+      this.showTurtles[0].setVisible(false);
+    }
+    this.turtleDetails.updateTurtleDetails(this.turtlesData[this.currentTurtleIndex]);
+    this.leftArrow.setEnabled(true);
+    this.rightMoveTween();
   }
 
   private leftMoveTween() {

@@ -55,7 +55,7 @@ export class DisplayPowerUp extends Phaser.GameObjects.Container {
     this.powerUpImage = this.scene.add.image(this.x, this.y - 3, '').setDepth(DEPTH.powerUpDisplay).setVisible(false);
   }
 
-  showPowerUp(powerUpTex: string) {
+  showPowerUpWithTimer(powerUpTex: string) {
     this.powerUpImage.setTexture(powerUpTex);
     this.scene.tweens.add({
       targets: this.powerUpImage,
@@ -68,6 +68,37 @@ export class DisplayPowerUp extends Phaser.GameObjects.Container {
       },
       onComplete: () => {
         this.startTimerArc();
+      }
+    });
+    this.scene.tweens.add({
+      targets: [this, this.innerBase],
+      scale: 1,
+      ease: TWEEN_EASING.QUAD_EASE_IN,
+      duration: 250,
+      onStart: () => {
+        this.setScale(0);
+        this.setVisible(true);
+        this.innerBase.setScale(0);
+        this.innerBase.setVisible(true);
+      }
+    });
+  }
+
+  showPowerUp(powerUpTex: string) {
+    this.powerUpImage.setTexture(powerUpTex);
+    this.scene.tweens.add({
+      targets: this.powerUpImage,
+      scale: 1,
+      ease: TWEEN_EASING.BACK_EASE_OUT,
+      duration: 350,
+      onStart: () => {
+        this.powerUpImage.setScale(0);
+        this.powerUpImage.setVisible(true);
+      },
+      onComplete: () => {
+        this.scene.time.delayedCall(1000, () => {
+          this.hidePowerUp();
+        });
       }
     });
     this.scene.tweens.add({

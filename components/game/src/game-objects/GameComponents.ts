@@ -9,13 +9,12 @@ import { BankManager } from './Banks/BankManager';
 import { DEPTH } from '../cfg/constants/game-constants';
 
 const SPEED_INCREASE_THRESHOLD = 10000;
-const SPEED_INCREASE = 0.025;
+const SPEED_INCREASE = 0.05;
 const INIT_SPEED = 0.15;
 const MAX_SPEED = 1;
 
 export class GameComponents {
   scene: AbstractScene;
-
 
   grd: CanvasRenderingContext2D | null;
   scrollSpeedTween: Phaser.Tweens.Tween | null = null;
@@ -117,7 +116,7 @@ export class GameComponents {
   reduceScrollSpeed() {
     this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;
     this.stopScrollTween();
-    let reducedSpeed = this.scrollSpeed * 0.6;
+    let reducedSpeed = this.scrollSpeed * 0.75;
     if (reducedSpeed < INIT_SPEED) {
       reducedSpeed = INIT_SPEED;
     }
