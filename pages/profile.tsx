@@ -11,7 +11,7 @@ function Profile() {
       <div className='bg-greyish h-full w-full px-16 py-16 flex flex-col'>
         <div>
           <div className='flex flex-col w-full h-full'>
-            <div className=' bg-purpleish h-36 w-full rounded-t-xl'></div>
+            <div className=' bg-lightblue h-36 w-full rounded-t-xl'></div>
             <div className='flex lg:flex-row flex-col w-full px-8'>
               <div className='-mt-8 text-center'>
                 <Image

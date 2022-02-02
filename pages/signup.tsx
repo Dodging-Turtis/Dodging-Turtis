@@ -40,12 +40,18 @@ function Signup() {
         <br />
         <div>
           <h1 className='p-2 m-2'>Connect to metamask*</h1>
-          <Image src={metamask} alt='metamask icon' height={100} width={100} />
+          <Image
+            className='hover:scale-110 hover:brightness-105 cursor-pointer'
+            src={metamask}
+            alt='metamask icon'
+            height={100}
+            width={100}
+          />
         </div>
         <br />
         <button
           onClick={() => notverified(1)}
-          className='px-8 py-4 m-2 text-xl bg-lightblue border-0 rounded-2xl '>
+          className='px-8 py-4 m-2 text-xl bg-lightblue border-0 rounded-2xl hover:scale-105 hover:brightness-105 cursor-pointer '>
           Verify
         </button>
         <br />
@@ -94,10 +100,15 @@ function Signup() {
           <br />
           <label className='p-2 m-2'>Your email address</label>
           <input placeholder='Your email address' className='p-2 m-2'></input>
+          <button
+            className='px-8 py-2 m-2 text-xl bg-lightblue border-0 rounded-2xl hover:scale-105 hover:brightness-105 cursor-pointer '
+            onClick={() => signIn()}>
+            Verify
+          </button>
         </form>
 
-        <div className='flex flex-col flex-wrap text-center py-2 text-3xl'>
-          {/* <ul>
+        {/* <div className='flex flex-col flex-wrap text-center py-2 text-3xl'> */}
+        {/* <ul>
             <li className='inline-block px-5'>
               <FontAwesomeIcon icon={['fab', 'discord']} />
             </li>
@@ -105,14 +116,10 @@ function Signup() {
               <FontAwesomeIcon icon={['fab', 'google']} />
             </li>
           </ul> */}
-          <button
-            className='px-8 py-4 m-2 text-xl bg-lightblue border-0 rounded-2xl '
-            onClick={() => signIn()}>
-            Authorize
-          </button>
-        </div>
+
+        {/* </div> */}
         <br />
-        <button className='px-8 py-4 m-2 text-xl bg-lightblue border-0 rounded-2xl '>
+        <button className='px-8 py-4 m-2 text-xl bg-lightblue border-0 rounded-2xl hover:scale-105 hover:brightness-105 cursor-pointer '>
           Finish
         </button>
 
