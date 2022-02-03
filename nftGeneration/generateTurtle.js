@@ -2,12 +2,12 @@ import images from 'images';
 
 let folder = './public/assets/img/turtle_components';
 let components = [
-  'feet',
-  'hands',
+  'frontFeet',
+  'hindFeet',
   'heads',
+  'tails',
   'innerShells',
   'outerShells',
-  'tails',
   'eyes',
 ];
 let file_extension = '.png';
