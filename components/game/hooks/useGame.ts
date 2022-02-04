@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { GameResizer } from '../src/utils/GameResizer';
 import { BootScene } from '../src/scenes/BootScene';
 import { GameScene } from '../src/scenes/GameScene';
-import { GPU } from 'gpu.js';
+import { GPU } from '../../../lib/gpu-browser';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.CANVAS,

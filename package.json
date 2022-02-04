@@ -21,7 +21,6 @@
     "bignumber.js": "^9.0.2",
     "chai": "^4.3.4",
     "fs": "^0.0.1-security",
-    "gpu.js": "^2.11.4",
     "images": "^3.2.3",
     "mobx": "^6.3.12",
     "mobx-react-lite": "^3.2.3",
