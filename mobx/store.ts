@@ -33,7 +33,13 @@ export class GlobalStore {
   page: number = 0;
   marketNftWithMetadata: IMarketNftWithMetadata[] = [];
   userNftWithMetadata: IUserNftWithMetadata[] = [];
-  dummyUserNftWithMetadata: IUserNftWithMetadata[] = [dummyTurtle1, dummyTurtle2, dummyTurtle3, dummyTurtle4, dummyTurtle5];
+  dummyUserNftWithMetadata: IUserNftWithMetadata[] = [
+    dummyTurtle1,
+    dummyTurtle2,
+    dummyTurtle3,
+    dummyTurtle4,
+    dummyTurtle5,
+  ];
 
   constructor() {
     makeAutoObservable(this);
@@ -94,15 +100,6 @@ export class GlobalStore {
     runInAction(() => {
       this.userNftWithMetadata = nftsWithMetadata;
     });
-  }
-
-  updateSortOrder(order: Order) {
-    console.log('sorting');
-
-    if (order !== this.sortOrder) {
-      this.sortOrder = order;
-      this.fetchGLobalNftByPage();
-    }
   }
 
   async connectToWallet() {
