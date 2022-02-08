@@ -25,7 +25,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 app
-  .route('/user')
+  .route('/user/{wallet_address}')
   .get(function (req, res) {
     auth.find(
       { wallet_address: req.body.wallet_address },

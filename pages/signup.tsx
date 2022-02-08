@@ -37,18 +37,18 @@ function Signup() {
 
   function NewUser() {
     //first we will check if the user already exists
-    // axios
-    //   .get('/user', {
-    //     params: {
-    //       wallet_address: walletAddress,
-    //     },
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    axios
+      .get('/user', {
+        params: {
+          wallet_address: walletAddress,
+        },
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     //Registering new user
     axios
