@@ -42,7 +42,7 @@ const MarketLayout = () => {
         <option value='2'>latest first</option>
         <option value='3'>oldest first</option>
       </select>
-      <div className='h-full p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 w-full'>
+      <div className='h-full p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12'>
         {isLoading ? dummyCards : cards}
       </div>
       <div className='flex justify-center items-center'>
