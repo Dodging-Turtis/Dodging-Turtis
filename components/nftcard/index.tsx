@@ -28,7 +28,7 @@ const Card = ({ turtle }: { turtle: IMarketNftWithMetadata }) => {
     : `${turtle.price} MATIC`;
 
   return (
-    <div className='container mx-auto w-64 lg:m-5 my-2 text-center p-3 border-0 rounded-lg bg-whiteish font-primary'>
+    <div className='container mx-auto w-64 text-center p-3 border-0 rounded-lg bg-whiteish font-primary'>
       <div className='px-2 flex flex-row w-full justify-start items-center'>
         <div className='h-full my-0 lg:px-2 '>
           {' '}
