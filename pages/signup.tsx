@@ -7,13 +7,17 @@ import { useState } from 'react';
 import Image from 'next/dist/client/image';
 import metamask from '../public/assets/website/metamask.svg';
 import avtar from '../public/assets/website/avtar.webp';
+import axios from 'axios';
+import ShortUniqueId from 'short-unique-id';
 
 library.add(fab);
+const uid = new ShortUniqueId({ length: 10 });
 
 function Signup() {
   const [verified, notverified] = useState(0);
   const [nickName, setNickName] = useState('');
   const [selectedImage, setSelectedImage] = useState<any>();
+  const [walletAddress, setWalletAddress] = useState(0);
   const [preview, setPreview] = useState(
     avtar || URL.createObjectURL(selectedImage)
   );
@@ -31,9 +35,40 @@ function Signup() {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedImage]);
 
+  function NewUser() {
+    //first we will check if the user already exists
+    // axios
+    //   .get('/user', {
+    //     params: {
+    //       wallet_address: walletAddress,
+    //     },
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    //Registering new user
+    axios
+      .post('/user', {
+        wallet_address: walletAddress,
+        img: selectedImage,
+        username: uid(),
+        nickname: nickName,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   const wallet = (
     <div className='h-full w-full flex flex-row'>
-      <div className='bg-whiteish w-2/5 h-cover text-center mt-2 mb-16 border border-whiteish rounded-xl mx-auto'>
+      <div className='bg-whiteish lg:w-2/5 w-11/12 h-cover text-center mt-2 mb-16 border border-whiteish rounded-xl mx-auto'>
         <h1 className='text-4xl font-bold text-blue pt-10'>Create Account</h1>
         <h5 className='px-16 pt-2 text-grey font-semibold'>
           Everyone needs metamask account to play this game. If you don&apos;t
@@ -71,7 +106,7 @@ function Signup() {
 
   const email = (
     <div className='h-full w-full flex flex-row'>
-      <div className='bg-whiteish w-2/5 h-cover text-center mt-2 mb-16 border border-whiteish rounded-xl mx-auto'>
+      <div className='bg-whiteish lg:w-2/5 w-11/12 h-cover text-center mt-2 mb-16 border border-whiteish rounded-xl mx-auto'>
         <h1 className='text-4xl font-bold text-blue pt-10'>Create Account</h1>
         <br />
         <form>
@@ -110,7 +145,9 @@ function Signup() {
           <br />
         </form>{' '}
         <br />
-        <button className='px-8 py-4 m-2 text-xl bg-lightblue border-0 rounded-2xl hover:scale-105 hover:brightness-105 cursor-pointer '>
+        <button
+          onClick={NewUser}
+          className='px-8 py-4 m-2 text-xl bg-lightblue border-0 rounded-2xl hover:scale-105 hover:brightness-105 cursor-pointer '>
           Finish
         </button>
         <h5 className='px-16 pt-2 text-grey font-semibold'>
@@ -125,7 +162,7 @@ function Signup() {
     <div className='container w-screen h-screen overflow-x-hidden font-primary'>
       <Navbar />
       <div className='bg-pattern h-full w-full flex flex-col'>
-        <div className='w-3/5 mx-auto text-center font-semibold text-red pt-2'>
+        <div className='lg:w-3/5 w-4/5 mx-auto text-center font-semibold text-red pt-2'>
           <h1>
             This game is in beta stage of development and currently running on
             testnet. By signing in you are going to be the first community
