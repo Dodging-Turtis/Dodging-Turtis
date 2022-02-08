@@ -1,8 +1,15 @@
 const mongoose = require('mongoose');
-import { isEmail } from 'validator';
 
 // schema for Registering/Validating the user
 const authSchema = new mongoose.Schema({
+  wallet_address: {
+    type: String,
+    required: true,
+  },
+  img: {
+    data: Buffer,
+    contentType: String,
+  },
   username: {
     type: String,
     immutable: true,
@@ -10,18 +17,6 @@ const authSchema = new mongoose.Schema({
     unique: true,
   },
   nickname: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    lowercase: true,
-    unique: true,
-    validate: [isEmail, 'Please fill a valid email address'],
-  },
-  wallet_address: {
     type: String,
     required: true,
   },

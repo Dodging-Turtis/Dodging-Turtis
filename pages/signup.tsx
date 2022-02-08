@@ -1,8 +1,6 @@
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { useState } from 'react';
@@ -13,17 +11,9 @@ import avtar from '../public/assets/website/avtar.webp';
 library.add(fab);
 
 function Signup() {
-  const { data: session } = useSession();
   const [verified, notverified] = useState(0);
-
-  if (session && session.user) {
-    return (
-      <>
-        Authorized with {session.user.email} <br />
-        <button onClick={() => signOut()}>Deauthorize</button>
-      </>
-    );
-  }
+  const [nickName, setNickName] = useState('');
+  const [Avtar, setAvtar] = useState();
 
   const wallet = (
     <div className='h-full w-full flex flex-row'>
@@ -67,18 +57,8 @@ function Signup() {
     <div className='h-full w-full flex flex-row'>
       <div className='bg-whiteish w-2/5 h-cover text-center mt-2 mb-16 border border-whiteish rounded-xl mx-auto'>
         <h1 className='text-4xl font-bold text-blue pt-10'>Create Account</h1>
-        <h5 className='px-16 pt-2 text-grey font-semibold'>
-          Your email address is only used to send you important updates. Your
-          nickname is how other players will identify you.
-        </h5>
         <br />
         <form>
-          <label>Nickname*</label>
-          <input
-            placeholder='eg: darth_vadar'
-            className='p-2 m-2'
-            required></input>
-          <br />
           <label className='px-5'>Add Avtar</label>
           <br />
 
@@ -92,37 +72,32 @@ function Signup() {
             />
           </label>
           <input
+            onChange={(e) => {
+              setAvtar(e.target.files);
+            }}
+            value={Avtar}
             id='file-upload'
             className='hidden'
             type='file'
             accept='image/*'
+            required
           />
           <br />
-          <label className='p-2 m-2'>Your email address</label>
-          <input placeholder='Your email address' className='p-2 m-2'></input>
-          <button
-            className='px-8 py-2 m-2 text-xl bg-lightblue border-0 rounded-2xl hover:scale-105 hover:brightness-105 cursor-pointer '
-            onClick={() => signIn()}>
-            Verify
-          </button>
-        </form>
-
-        {/* <div className='flex flex-col flex-wrap text-center py-2 text-3xl'> */}
-        {/* <ul>
-            <li className='inline-block px-5'>
-              <FontAwesomeIcon icon={['fab', 'discord']} />
-            </li>
-            <li className='inline-block px-5'>
-              <FontAwesomeIcon icon={['fab', 'google']} />
-            </li>
-          </ul> */}
-
-        {/* </div> */}
+          <label>Nickname*</label>
+          <input
+            onChange={(e) => {
+              setNickName(e.target.value);
+            }}
+            value={nickName}
+            placeholder='eg: darth_vadar'
+            className='p-2 m-2'
+            required></input>
+          <br />
+        </form>{' '}
         <br />
         <button className='px-8 py-4 m-2 text-xl bg-lightblue border-0 rounded-2xl hover:scale-105 hover:brightness-105 cursor-pointer '>
           Finish
         </button>
-
         <h5 className='px-16 pt-2 text-grey font-semibold'>
           By signing up, you agree to our <u>Terms of Service</u> and{' '}
           <u>Privacy Policy</u>
@@ -139,9 +114,9 @@ function Signup() {
           <h1>
             This game is in beta stage of development and currently running on
             testnet. By signing in you are going to be the first community
-            users, we request you to give feedback on the form you will be
-            getting on your mail in few days or by contacting us on any of our
-            social platforms.{' '}
+            users, we request you to support us by joining our community
+            platforms and sending us your mail id in the footer for getting
+            regular updates about the development and team.{' '}
           </h1>
           <h1>
             Kindly note turtles you earn are just for testing purposes and not

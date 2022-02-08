@@ -1,2 +1,2 @@
-import api from '../../../backend/graphql';
+import api from '../../../backend/mongoose';
 export default api;
