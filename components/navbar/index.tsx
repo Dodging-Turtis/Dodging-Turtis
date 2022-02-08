@@ -1,14 +1,16 @@
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import logo from '../../public/assets/logo.png';
 import Image from 'next/dist/client/image';
-import Router from 'next/router';
 import Link from 'next/link';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '../../mobx';
 const Navbar = () => {
   const router = useRouter();
   const [navbarOpen, setNavbarOpen] = useState(false);
+  const state = useStore();
 
   return (
     <>
@@ -22,7 +24,7 @@ const Navbar = () => {
               height={150}
               width={150}
               onClick={() => {
-                Router.push('/');
+                router.push('/');
               }}
             />
 
@@ -41,11 +43,11 @@ const Navbar = () => {
             id='example-navbar-danger'>
             <ul className='flex flex-col lg:flex-row list-none lg:ml-auto -pt-5 -mt-24'>
               <li className='nav-item px-3'>
-                <a
-                  href='#'
-                  className='rounded-full hover:brightness-105 text-right text-blue font-bold bg-purple text-white p-2 '>
-                  Connect to wallet
-                </a>
+                <button
+                  className='rounded-full hover:brightness-105 text-right text-blue font-bold bg-purple text-white p-2 '
+                  onClick={() => state.connectToWallet()}>
+                  {state.walletConnected ? 'Connected' : 'Connect to wallet'}
+                </button>
               </li>
               <li className='nav-item px-3'>
                 <Link href='/market'>Shell Market</Link>
@@ -70,4 +72,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default observer(Navbar);

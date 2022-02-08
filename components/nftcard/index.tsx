@@ -1,9 +1,32 @@
 import Image from 'next/image';
 import { observer } from 'mobx-react-lite';
-
+import { useStore } from '../../mobx';
 import avtar from '../../public/assets/website/avtar.webp';
+import { useCallback, useState } from 'react';
+
+function useHover() {
+  const [hovering, setHovering] = useState(false);
+  const onHoverProps = {
+    onMouseEnter: () => setHovering(true),
+    onMouseLeave: () => setHovering(false),
+  };
+  return [hovering, onHoverProps];
+}
 
 const Card = ({ turtle }: { turtle: IMarketNftWithMetadata }) => {
+  const state = useStore();
+  const [isHover, hoverProps] = useHover();
+
+  const purchaseHandler = useCallback(() => {
+    state.purchaseTurtle(turtle.itemId, turtle.price);
+  }, [state, turtle]);
+
+  const buttonText = isHover
+    ? turtle.owner === state.accountAddress
+      ? 'Owned'
+      : 'Purchase'
+    : `${turtle.price} MATIC`;
+
   return (
     <div className='container mx-auto w-64 lg:m-5 my-2 text-center p-3 border-0 rounded-lg bg-whiteish font-primary'>
       <div className='px-2 flex flex-row w-full justify-start items-center'>
@@ -35,8 +58,11 @@ const Card = ({ turtle }: { turtle: IMarketNftWithMetadata }) => {
           width={220}
           height={240}
         />
-        <button className='px-3 py-1 mb-2 mx-auto text-center bg-whiteish hover:scale-105 hover:brightness-105 rounded-full'>
-          {turtle.price} MATIC
+        <button
+          className='px-3 py-1 mb-2 mx-auto text-center bg-whiteish hover:scale-105 hover:brightness-105 rounded-full'
+          onClick={purchaseHandler}
+          {...hoverProps}>
+          {buttonText}
         </button>
       </div>
       <div className='text-xl w-full flex flex-row flex-wrap justify-center'>

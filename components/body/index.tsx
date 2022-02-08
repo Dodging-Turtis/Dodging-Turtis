@@ -14,7 +14,7 @@ function Body() {
   const store = useStore();
   const [isLoading, setLoading] = useState(true);
   const nfts: IMarketNftWithMetadata[] = store.marketNftWithMetadata;
-  nfts.length = 5;
+  nfts.length = Math.min(5, nfts.length);
   const [i, seti] = useState(1);
   useEffect(() => {
     setLoading(true);
@@ -112,4 +112,4 @@ function Body() {
   );
 }
 
-export default Body;
+export default observer(Body);

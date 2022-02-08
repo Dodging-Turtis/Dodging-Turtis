@@ -54,6 +54,20 @@ export class GlobalStore {
     );
   }
 
+  async purchaseTurtle(id: number, price: number) {
+    try {
+      if (!this.walletConnected) throw new Error('Not connected to wallet');
+      await this.marketContract.methods
+        .createMarketSale(TurtisContract.networks[NET_ID].address, id)
+        .send({
+          from: this.accountAddress,
+          value: this.web3.utils.toWei(price.toString(), 'ether'),
+        });
+    } catch (e) {
+      alert(e);
+    }
+  }
+
   async fetchGLobalNftByPage() {
     console.log('fetch global by page');
 

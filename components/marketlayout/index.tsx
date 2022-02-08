@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { Order, useStore } from '../../mobx';
+import { useStore } from '../../mobx';
 import { useEffect, useState, useCallback, ChangeEvent } from 'react';
 import Card from '../nftcard';
 import LoadingCard from './loadingcard';
