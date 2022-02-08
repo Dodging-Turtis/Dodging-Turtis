@@ -1,4 +1,4 @@
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useEffect } from 'react';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -13,7 +13,23 @@ library.add(fab);
 function Signup() {
   const [verified, notverified] = useState(0);
   const [nickName, setNickName] = useState('');
-  const [Avtar, setAvtar] = useState();
+  const [selectedImage, setSelectedImage] = useState<any>();
+  const [preview, setPreview] = useState(
+    avtar || URL.createObjectURL(selectedImage)
+  );
+
+  useEffect(() => {
+    if (!selectedImage) {
+      setPreview(avtar);
+      return;
+    }
+
+    const objectUrl: any = URL.createObjectURL(selectedImage);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedImage]);
 
   const wallet = (
     <div className='h-full w-full flex flex-row'>
@@ -65,7 +81,7 @@ function Signup() {
           <label htmlFor='file-upload'>
             <Image
               className='inline px-5 object-cover w-1/12 h-16 mr-2 rounded-full cursor-pointer'
-              src={avtar}
+              src={preview}
               alt='avtar'
               height={100}
               width={100}
@@ -73,9 +89,8 @@ function Signup() {
           </label>
           <input
             onChange={(e) => {
-              setAvtar(e.target.files);
+              setSelectedImage(e.target.files[0]);
             }}
-            value={Avtar}
             id='file-upload'
             className='hidden'
             type='file'
