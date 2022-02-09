@@ -12,12 +12,12 @@ export enum Order {
 }
 
 export async function fetchIpfs(url: string) {
-  url = url.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
+  url = url.replace('ipfs://', 'https://opensea.mypinata.cloud/ipfs/');
   const data = await fetch(url);
   const metadata: IMetadata = await data.json();
   metadata.image = metadata.image.replace(
     'ipfs://',
-    'https://cloudflare-ipfs.com/ipfs/'
+    'https://opensea.mypinata.cloud/ipfs/'
   );
   return metadata;
 }

@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['cloudflare-ipfs.com'],
+    domains: ['opensea.mypinata.cloud'],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
 };
