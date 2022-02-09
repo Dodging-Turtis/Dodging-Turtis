@@ -1,17 +1,10 @@
 const mongoose = require('mongoose');
 const multer = require('multer');
-
+const fs = require('fs');
+const path = require('path');
 import './db';
 const auth = require('./models/auth');
 const turtle = require('./models/turtle');
-const express = require('express');
-const cors = require('cors');
-
-const app = express();
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -24,9 +17,9 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-app
-  .route('/user/{wallet_address}')
-  .get(function (req, res) {
+export default async function handler(req, res) {
+  res.status(404).json({ dev: 'Dodging Turtis v2.0' });
+  if (req.method == 'GET') {
     auth.find(
       { wallet_address: req.body.wallet_address },
       function (err, found) {
@@ -37,16 +30,11 @@ app
         }
       }
     );
-  })
-  .post(upload.single('avatar'), function (req, res) {
+  } else if (req.method == 'POST') {
+    upload.single('avatar');
     const new_user = new auth({
       wallet_address: req.body.wallet_address,
-      img: {
-        data: fs.readFileSync(
-          path.join(__dirname + '/uploads/' + req.file.filename)
-        ),
-        contentType: 'image/png',
-      },
+      img: req.body.img,
       username: req.body.username,
       nickname: req.body.nickname,
     });
@@ -58,8 +46,7 @@ app
         res.send(err);
       }
     });
-  });
-
-export default async function handler(req, res) {
-  res.status(404).json({ dev: 'Dodging Turtis v2.0' });
+  } else {
+    res.status(200).json({ error: 'Wrong route fetching' });
+  }
 }

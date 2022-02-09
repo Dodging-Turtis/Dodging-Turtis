@@ -7,7 +7,6 @@ import { useState } from 'react';
 import Image from 'next/dist/client/image';
 import metamask from '../public/assets/website/metamask.svg';
 import avtar from '../public/assets/website/avtar.webp';
-import axios from 'axios';
 import ShortUniqueId from 'short-unique-id';
 
 library.add(fab);
@@ -35,36 +34,25 @@ function Signup() {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedImage]);
 
-  function NewUser() {
+  const NewUser = async () => {
     //first we will check if the user already exists
-    axios
-      .get('/user', {
-        params: {
-          wallet_address: walletAddress,
-        },
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
     //Registering new user
-    axios
-      .post('/user', {
+    const response = await fetch('/api/v1/mongoose', {
+      method: 'POST',
+      body: JSON.stringify({
         wallet_address: walletAddress,
-        img: selectedImage,
+        img: preview,
         username: uid(),
         nickname: nickName,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    console.log(data);
+  };
 
   const wallet = (
     <div className='h-full w-full flex flex-row'>
