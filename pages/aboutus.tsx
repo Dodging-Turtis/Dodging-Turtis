@@ -9,9 +9,9 @@ import Image from 'next/image';
 
 function Aboutus() {
   return (
-    <div className='w-screen h-auto font-primary text-lg'>
+    <div>
       <Navbar />
-      <div className='bg-pattern w-full h-full flex flex-row lg:px-16 px-4 '>
+      <div className='bg-pattern w-full h-full flex flex-row lg:px-16 px-4  font-primary text-xl'>
         <div className='w-full mx-auto text-center py-5'>
           <Image
             className=' mx-auto w-full'
@@ -24,7 +24,7 @@ function Aboutus() {
             <u>#About team and how we started this project</u>
             <br />
             <br />
-            <h1>
+            <h1 className='text-justify'>
               As they say all it takes is a extraordinary idea and a zeal to
               follow it. We are all passionate developers, we met in a
               ETHOdyssey hackathon 2020 organized by devfolio. we had lots of

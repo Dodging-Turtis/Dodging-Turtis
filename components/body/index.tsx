@@ -6,16 +6,19 @@ import Card from '../nftcard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import turtles from '../../public/assets/website/turtles.svg';
 import Image from 'next/image';
 
 function Body() {
+  const Router = useRouter();
   const store = useStore();
   const [isLoading, setLoading] = useState(true);
-  const nfts: IMarketNftWithMetadata[] = store.marketNftWithMetadata;
-  nfts.length = Math.min(5, nfts.length);
-  const [i, seti] = useState(1);
+  const nfts: IMarketNftWithMetadata[] = store.marketNftWithMetadata.slice(
+    0,
+    5
+  );
+
   useEffect(() => {
     setLoading(true);
     store.fetchGLobalNftByPage().then(() => setLoading(false));
@@ -36,7 +39,7 @@ function Body() {
       <div className='bg-website_bg bg-cover bg-center'>
         {/* section-1 */}
         <div className='container w-2/4 text-center mx-auto lg:pt-80 pt-44'>
-          <h1 className='font-bold lg:text-7xl text-2xl text-blue p-2'>
+          <h1 className='font-bold sm:text-7xl text-5xl text-blue p-2'>
             Dodging Turtis
           </h1>
           <p className='p-2 text-lg'>- May the Fastest Turtle Win -</p>
@@ -50,9 +53,11 @@ function Body() {
         </div>
 
         {/* section-2 */}
-        <div className='container w-2/4 text-center mx-auto lg:pt-96 pt-44 lg:pb-96 pb-44 lg:mb-20'>
-          <h1 className='font-bold text-3xl text-blue p-2'>About</h1>
-          <p className='lg:p-2'>
+        <div className='w-full px-5 sm:px-0 sm:w-3/4 md:w-2/4 text-justify mx-auto lg:pt-96 pt-44 lg:pb-96 pb-44 lg:mb-20'>
+          <h1 className='font-bold text-4xl sm:text-5xl text-center text-blue p-2'>
+            About
+          </h1>
+          <p className='lg:p-2 text-xl sm:text-2xl'>
             Dodging Turtis is a turtle themed NFT based &quot;Play to earn&quot;
             game. Every Player gets personalized turtles of a random breed using
             which they can play the game. Players train their turtles to gain a
@@ -64,9 +69,9 @@ function Body() {
       </div>
 
       {/* section-3 */}
-      <div className='container w-full px-16 text-left pt-16 bg-greyish'>
+      <div className=' w-full px-16 text-left pt-16 bg-greyish'>
         <h1 className='font-bold text-3xl text-blue p-2'>Market</h1>
-        <p className='p-2'>
+        <p className='p-2 text-xl'>
           Shell Market is a place where players get the chance to BUY/SELL their
           Turtle NFT collectables.
         </p>
@@ -88,7 +93,7 @@ function Body() {
       </div>
 
       {/* section-4 */}
-      <div className='container lg:text-left text-center flex flex-col-reverse lg:flex-row w-full px-16 pt-16  bg-pattern'>
+      <div className='lg:text-left text-center flex flex-col-reverse lg:flex-row w-full px-16 pt-16  bg-pattern'>
         <div className='lg:w-2/3 w-full mx-auto'>
           <h1 className='font-bold text-3xl text-blue'>Gameplay</h1>
           <p className='py-2'>

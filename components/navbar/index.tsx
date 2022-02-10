@@ -7,6 +7,7 @@ import Image from 'next/dist/client/image';
 import Link from 'next/link';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../mobx';
+
 const Navbar = () => {
   const router = useRouter();
   const [navbarOpen, setNavbarOpen] = useState(false);
