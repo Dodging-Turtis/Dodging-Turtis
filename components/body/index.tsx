@@ -9,6 +9,8 @@ import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
 import turtles from '../../public/assets/website/turtles.svg';
 import Image from 'next/image';
+import LoadingCard from '../marketlayout/loadingcard';
+import Link from 'next/link';
 
 function Body() {
   const Router = useRouter();
@@ -16,7 +18,7 @@ function Body() {
   const [isLoading, setLoading] = useState(true);
   const nfts: IMarketNftWithMetadata[] = store.marketNftWithMetadata.slice(
     0,
-    5
+    4
   );
 
   useEffect(() => {
@@ -24,15 +26,11 @@ function Body() {
     store.fetchGLobalNftByPage().then(() => setLoading(false));
   }, [store, store.accountAddress]);
 
-  const cards = !isLoading ? (
-    nfts.map((nft: IMarketNftWithMetadata) => (
-      <Card turtle={nft} key={nft.tokenId} />
-    ))
-  ) : (
-    <div className='container-fluid position-absolute top-50 start-50 translate-middle'>
-      loading
-    </div>
-  );
+  const cards = !isLoading
+    ? nfts.map((nft: IMarketNftWithMetadata) => (
+        <Card turtle={nft} key={nft.tokenId} />
+      ))
+    : [...Array(4)].map((_, index) => <LoadingCard key={index} />);
 
   return (
     <div className='w-full flex flex-col font-primary '>
@@ -75,19 +73,15 @@ function Body() {
           Shell Market is a place where players get the chance to BUY/SELL their
           Turtle NFT collectables.
         </p>
-        <div className='flex flex-col justify-center'>
-          <div className='container flex flex-col lg:flex-row w-full lg:p-5 justify-center'>
+        <div className='flex flex-col justify-center py-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-8'>
             {cards}
           </div>
-          <div className='w-full lg:text-right text-center mb-2'>
-            <button
-              className=' hover:scale-110 hover:brightness-105 cursor-pointer'
-              onClick={() => {
-                Router.push('/market');
-              }}>
-              More
+          <div className='w-full flex justify-end pt-4'>
+            <span className=' hover:scale-110 hover:brightness-105 cursor-pointer'>
+              <Link href='/market'>More</Link>
               <hr className='h-1 text-blue bg-blue mb-0.5' />
-            </button>
+            </span>
           </div>
         </div>
       </div>
