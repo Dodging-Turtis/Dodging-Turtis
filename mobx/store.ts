@@ -6,6 +6,7 @@ import {
   NET_ID,
   RPC_URL,
   Order,
+  notify,
   fetchIpfs,
   sortNfts,
   dummyTurtle1,
@@ -63,8 +64,9 @@ export class GlobalStore {
           from: this.accountAddress,
           value: this.web3.utils.toWei(price.toString(), 'ether'),
         });
+      notify('success', 'Purchase Successfull');
     } catch (e) {
-      alert(e);
+      notify('danger', (e as Error).message);
     }
   }
 
@@ -141,9 +143,9 @@ export class GlobalStore {
         }
       } catch (e) {
         console.error(e);
-        alert('connection error');
+        notify('danger', 'Connection error');
       }
-    } else alert('wallet not detected');
+    } else notify('danger', 'Wallet not detected');
   }
 
   async fetchGlobalNftsList() {

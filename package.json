@@ -39,6 +39,7 @@
     "prettier-plugin-solidity": "^1.0.0-beta.17",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-notifications-component": "^3.4.1",
     "react-router-dom": "^6.2.1",
     "short-unique-id": "^4.4.4",
     "solhint": "^3.3.6",
