@@ -8,6 +8,7 @@ import Image from 'next/dist/client/image';
 import metamask from '../public/assets/website/metamask.svg';
 import avtar from '../public/assets/website/avtar.webp';
 import ShortUniqueId from 'short-unique-id';
+import axios from 'axios';
 
 library.add(fab);
 const uid = new ShortUniqueId({ length: 10 });
@@ -16,7 +17,7 @@ function Signup() {
   const [verified, notverified] = useState(0);
   const [nickName, setNickName] = useState('');
   const [selectedImage, setSelectedImage] = useState<any>();
-  const [walletAddress, setWalletAddress] = useState(0);
+  const [walletAddress, setWalletAddress] = useState<any>('temp');
   const [preview, setPreview] = useState(
     avtar || URL.createObjectURL(selectedImage)
   );
@@ -37,21 +38,33 @@ function Signup() {
   const NewUser = async () => {
     //first we will check if the user already exists
     //Registering new user
-    const response = await fetch('/api/v1/mongoose', {
-      method: 'POST',
-      body: JSON.stringify({
-        wallet_address: walletAddress,
-        img: preview,
-        username: uid(),
-        nickname: nickName,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
 
-    const data = await response.json();
-    console.log(data);
+    var fd = new FormData();
+    fd.append('wallet_address', walletAddress);
+    fd.append('image', selectedImage);
+    fd.append('username', uid());
+    fd.append('nickname', nickName);
+
+    // fetch('http://localhost:9000/users', {
+    //   method: 'POST',
+    //   body: fd,
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => console.log(data));
+
+    axios
+      .post(`http://localhost:9000/users`, fd)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          console.log('Successfully regisetred a new user');
+        } else {
+          console.log('There was a problem');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const wallet = (

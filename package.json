@@ -18,7 +18,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@truffle/hdwallet-provider": "^2.0.0",
-    "axios": "^0.25.0",
+    "axios": "^0.26.0",
     "bignumber.js": "^9.0.2",
     "chai": "^4.3.4",
     "cors": "^2.8.5",

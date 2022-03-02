@@ -4,14 +4,17 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.static('public'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(fileUpload());
 
 const url = process.env.DB_URL;
 
@@ -29,19 +32,6 @@ mongoose
   .catch((err) => {
     console.error(`Error connecting to the database. \n${err}`);
   });
-
-var multer = require('multer');
-
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads');
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now());
-  },
-});
-
-var upload = multer({ storage: storage });
 
 const authSchema = new mongoose.Schema(
   {
@@ -69,8 +59,8 @@ const authSchema = new mongoose.Schema(
 
 const user = new mongoose.model('user', authSchema);
 
-app.get('/users/:wallet_address', function (req, res) {
-  console.log(req.params.wallet_address);
+app.get('/users/', function (req, res) {
+  console.log(req.body.wallet_address);
   user.findOne(
     { wallet_address: req.body.wallet_address },
     function (err, founduser) {
@@ -83,9 +73,9 @@ app.get('/users/:wallet_address', function (req, res) {
   );
 });
 
-app.route('/users/:wallet_address').post(function (req, res) {
+app.route('/users').post(function (req, res) {
   user.findOne(
-    { wallet_address: req.params.wallet_address },
+    { wallet_address: req.body.wallet_address },
     function (err, found) {
       if (err) {
         console.log(err);
@@ -96,9 +86,21 @@ app.route('/users/:wallet_address').post(function (req, res) {
             res.send(found);
           }
         } else {
-          console.log(req.body.wallet_address);
+          console.log(req.files);
+          if (!req.files || Object.keys(req.files).length === 0) {
+            return res.status(400).send('No files were uploaded');
+          }
+          var pp = req.files.image;
+          pp.mv('userImages/' + req.body.username, function (err) {
+            if (err) {
+              res.json({ error: 'File not saved' });
+            } else {
+            }
+          });
+          console.log(pp);
           const newuser = new user({
             wallet_address: req.body.wallet_address,
+            image: req.body.username,
             username: req.body.username,
             nickname: req.body.nickname,
           });
