@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // schema for Registering/Validating the user
 const authSchema = new mongoose.Schema(

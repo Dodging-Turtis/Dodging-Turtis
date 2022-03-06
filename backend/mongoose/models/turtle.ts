@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 //schema for for getting high score of a every turtle owned by particular user
 const turtleSchema = new mongoose.Schema({
