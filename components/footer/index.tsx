@@ -8,7 +8,7 @@ library.add(fab);
 
 const Footer = () => {
   return (
-    <div className='w-full flex flex-col h-64 pt-5 pb-5 font-primary'>
+    <div className='w-full flex flex-col h-64 pt-5 pb-5 font-primary text-md'>
       <div className='w-full mx-auto'>
         <div className='lg:pl-20 lg:w-1/2 w-full inline-block mx-auto align-middle'>
           <table className='text-left mx-auto table-auto'>

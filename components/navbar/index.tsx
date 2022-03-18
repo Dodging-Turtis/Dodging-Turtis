@@ -42,7 +42,7 @@ const Navbar = () => {
               (navbarOpen ? ' flex' : ' hidden')
             }
             id='example-navbar-danger'>
-            <ul className='flex flex-col lg:flex-row list-none lg:ml-auto -pt-8 -mt-24'>
+            <ul className='flex flex-col lg:flex-row list-none lg:ml-auto -pt-8 -mt-24 items-center'>
               <li className='nav-item px-3'>
                 <button
                   className='rounded-full hover:brightness-105 text-right text-blue font-bold bg-purple text-white p-2 '
