@@ -125,7 +125,7 @@ function Signup() {
           </label>
           <input
             onChange={(e) => {
-              setSelectedImage(e.target.files[0]);
+              setSelectedImage(e.target?.files[0]);
             }}
             id='file-upload'
             className='hidden'
@@ -137,7 +137,7 @@ function Signup() {
           <label>Nickname*</label>
           <input
             onChange={(e) => {
-              setNickName(e.target.value);
+              setNickName(e.target?.value);
             }}
             value={nickName}
             placeholder='eg: darth_vadar'
