@@ -43,7 +43,7 @@ function Body() {
           <p className='p-2 text-lg'>- May the Fastest Turtle Win -</p>
           <div className='container w-full mx-auto pt-2'>
             <button
-              onClick={() => Router.push('/game')}
+              onClick={() => Router.push('/profile')}
               className='bg-lightblue border hover:scale-110 hover:brightness-105 border-lightblue rounded-lg p-3 text-blue font-bold text-2xl text-center'>
               <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon> Play Now
             </button>

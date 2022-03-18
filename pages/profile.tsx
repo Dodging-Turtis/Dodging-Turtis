@@ -1,10 +1,47 @@
+import { useStore } from '../mobx';
+import { useState, useCallback, useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import Footer from '../components/footer';
 import Navbar from '../components/navbar';
-import ProfileCard from '../components/body/profilecard';
 import avtar from '../public/assets/website/avtar.webp';
 import Image from 'next/image';
+import Card from '../components/body/profilecard';
+import LoadingCard from '../components/marketlayout/loadingcard';
+import { useRouter } from 'next/router';
+import { notify } from '../mobx/helpers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
 function Profile() {
+  const store = useStore();
+  const [isLoading, setLoading] = useState(true);
+  const nfts: IUserNftWithMetadata[] = store.userNftWithMetadata;
+  const history = useRouter();
+
+  const fetchData = useCallback(() => {
+    setLoading(true);
+    store.fetchUserNfts().then(() => setLoading(false));
+  }, [store]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    if (!store.walletConnected) {
+      notify('danger', 'Wallet not connected');
+      history.replace('/');
+    }
+  }, [store.walletConnected, history]);
+
+  const cards = nfts.map((nft: IUserNftWithMetadata) => (
+    <Card turtle={nft} key={nft.tokenId} />
+  ));
+
+  const dummyCards = [...Array(6)].map((_, index) => (
+    <LoadingCard key={index} />
+  ));
+
   return (
     <div className='w-full h-full font-primary'>
       <Navbar />
@@ -24,32 +61,24 @@ function Profile() {
               </div>
               <div className='px-8 py-4'>
                 <h1 className=' font-bold text-3xl'>Nickname</h1>
-                <h1>Connected wallet address: 0x0000000000000000</h1>
+                <h1>Connected wallet address: {store.accountAddress}</h1>
+              </div>
+              <div className='py-4 px-8'>
+                <button
+                  onClick={() => history.push('/game')}
+                  className='bg-lightblue border hover:scale-110 hover:brightness-105 border-lightblue rounded-lg p-3 text-blue font-bold text-2xl text-center'>
+                  <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon> Play Now
+                </button>
               </div>
             </div>
           </div>
         </div>
-        <div className='py-8 w-full flex flex-row items-center justify-between'>
-          <hr />
-          <div>
-            <button className='px-4 py-2 m-2 text-xl bg-lightblue border-0 rounded-2xl '>
-              My turtis
-            </button>
-            <button className='px-4 py-2 m-2 text-xl bg-lightblue border-0 rounded-2xl '>
-              My NFT shop
-            </button>
-          </div>
-          <div>
-            <button>Sort By</button>
-          </div>
-          <hr />
-        </div>
-        <div>
-          <ProfileCard />
+        <div className='h-full p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12'>
+          {isLoading ? dummyCards : cards}
         </div>
       </div>
       <Footer />
     </div>
   );
 }
-export default Profile;
+export default observer(Profile);

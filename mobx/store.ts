@@ -95,7 +95,7 @@ export class GlobalStore {
     });
   }
 
-  async fetchUserlNfts() {
+  async fetchUserNfts() {
     console.log('fetch user nfts with metadata');
 
     await this.fetchUserNftsList();
@@ -105,7 +105,14 @@ export class GlobalStore {
       promises.push(fetchIpfs(this.userNftList[i].tokenUri));
       nftSlice.push(this.userNftList[i]);
     }
-    const metadata = await Promise.all(promises);
+    let metadata = await Promise.all(promises);
+    metadata = metadata.map((data) => {
+      data.image = data.image.replace(
+        'ipfs://',
+        'https://opensea.mypinata.cloud/ipfs/'
+      );
+      return data;
+    });
     const nftsWithMetadata: IUserNftWithMetadata[] = nftSlice.map(
       (nft, index): IUserNftWithMetadata => ({
         ...nft,
@@ -114,6 +121,8 @@ export class GlobalStore {
     );
 
     runInAction(() => {
+      console.log(nftsWithMetadata.length);
+      console.log(nftsWithMetadata);
       this.userNftWithMetadata = nftsWithMetadata;
     });
   }

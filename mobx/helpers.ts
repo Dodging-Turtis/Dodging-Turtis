@@ -24,7 +24,7 @@ export function notify(type: NOTIFICATION_TYPE, data: string) {
     insert: 'top',
     container: 'top-right',
     dismiss: {
-      duration: 800,
+      duration: 1000,
       pauseOnHover: true,
       onScreen: true,
       showIcon: true,

@@ -1,38 +1,34 @@
+import { observer } from 'mobx-react-lite';
 import Image from 'next/image';
-import Turtle from '../../public/assets/TurtlePlaceholder.png';
-import Speed from '../../public/assets/website/speed.svg';
 
-function ProfileCard() {
+function UserNftCard({ turtle }: { turtle: IUserNftWithMetadata }) {
   return (
     <div className='container w-72 text-center p-3 border-0 rounded-lg bg-whiteish font-primary'>
       <div className='text-xl px-2'>
-        <h5 className='text-left text-xl'>#Turtle name</h5>
+        <h5 className='text-left text-xl'>{turtle.metadata.name}</h5>
       </div>
       <div className='bg-blue w-cover border-0 rounded-lg p-2'>
         <Image
           className='pt-5'
-          src={Turtle}
+          src={turtle.metadata.image}
+          blurDataURL='/assets/TurtlePlaceholder.png'
           alt='placeholder'
           width={220}
           height={240}
         />
         <div className='px-1 py-1 w-2/4 h-10 mx-auto flex flex-row bg-whiteish hover:bg-white rounded-full items-center justify-center'>
-          <Image alt='speed logo' src={Speed} width={50} height={50} />
-          <h1 className=' inline-block pl-2'>Speed</h1>
+          <button className=' inline-block'>Put on sale</button>
         </div>
       </div>
       <div className='text-xl w-full flex flex-row flex-wrap justify-center py-1'>
-        <div className='px-2'>Attribute 1</div>
-        <div className=' px-2'>Attribute 2</div>
-      </div>
-      <div className=' flex flex-row items-center w-full justify-center'>
-        <div className='px-2'>Put on sale</div>
-        <div className='px-4 py-1 text-xl bg-lightblue border-0 rounded-2xl shadow-blue shadow-[0_5px_0px]'>
-          Play
-        </div>
+        {turtle.metadata.attributes.map((attr) => (
+          <div className='px-2' key={attr.trait_type}>
+            {attr.trait_type} : {attr.value}
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-export default ProfileCard;
+export default observer(UserNftCard);

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useGame } from './hooks';
 import { useStore } from '../../mobx';
+import { notify } from '../../mobx/helpers';
 
 const GameScreen = () => {
   const [ended, setEnded] = useState(false);
@@ -39,6 +40,13 @@ const GameScreen = () => {
   );
 
   useEffect(() => {
+    if (!state.walletConnected && process.env.NODE_ENV === 'production') {
+      notify('danger', 'Wallet not connected');
+      router.replace('/');
+    }
+  }, [state.walletConnected, router]);
+
+  useEffect(() => {
     // if (state.loaded) {
     if (game && !ended) {
       console.log('starting game');
@@ -46,7 +54,10 @@ const GameScreen = () => {
         grs,
         initGameData: {
           endGameCB,
-          initMetaData: state.dummyUserNftWithMetadata,
+          initMetaData:
+            process.env.NODE_ENV === 'development' && !state.walletConnected
+              ? state.dummyUserNftWithMetadata
+              : state.userNftWithMetadata,
         },
       });
     }
