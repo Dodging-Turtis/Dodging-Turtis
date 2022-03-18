@@ -210,15 +210,25 @@ export class GlobalStore {
     }
   }
 
-  async mintNFT() {
-    await this.turtisContract.methods
-      .generateTurtle(
-        300,
-        'ipfs://bafyreiewc2ctsxcmmjs6c3yprc7xho723ur6ogihbiz4gqiq45g2v4o6vm/metadata.json',
-        '0x1b',
-        '0xc1cd758d8987b9b0e7f3ca8ae96ddaa27631a8cd0fa4a24e84e9c31e8a3b3b55',
-        '0x63e648ecff13bf87d174b4294e083a50d0ae0e1c36a8b53be551fb6f09ad2c28'
-      )
-      .send({ from: this.accountAddress });
+  async mintNFT(score: number) {
+    try {
+      const { ipfsHash, signature } = await (
+        await fetch('/api/v1/signtransaction', {
+          method: 'POST',
+          body: JSON.stringify({
+            score,
+            walletAddress: this.accountAddress,
+          }),
+        })
+      ).json();
+
+      const { v, r, s } = JSON.parse(signature);
+      await this.turtisContract.methods
+        .generateTurtle(score, `ipfs://${ipfsHash}/metadata.json`, v, r, s)
+        .send({ from: this.accountAddress });
+    } catch (e) {
+      console.error(e);
+      notify('danger', 'Minting Error');
+    }
   }
 }

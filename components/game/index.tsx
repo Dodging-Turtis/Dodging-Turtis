@@ -13,6 +13,7 @@ const GameScreen = () => {
 
   const endGameCB = useCallback(
     (score: number) => {
+      alert('game over');
       const currHighScore = state.highScore;
       if (score > parseFloat(localStorage.getItem('highScore') ?? '0'))
         localStorage.setItem('highScore', '' + score);
