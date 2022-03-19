@@ -24802,14 +24802,64 @@
   },
   "networks": {
     "80001": {
-      "events": {},
+      "events": {
+        "0x045dfa01dcba2b36aba1d3dc4a874f4b0c5d2fbeb8d2c4b34a7d88c8d8f929d1": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "itemId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "seller",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "bool",
+              "name": "sold",
+              "type": "bool"
+            }
+          ],
+          "name": "MarketItemCreated",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0xC976f7b2E0e9598E253b931153a124b01Dd9E3e1",
-      "transactionHash": "0x9496e48ce719ebebaa3c21447555c020291904e8c657484949284cfe4ac14f26"
+      "address": "0x95767eA2CeE9e782fe44a980de8aa8e41E9cEB3F",
+      "transactionHash": "0xf3baac5676834da90b81fea029af09520c055bba814ff2e43b3b91d5275fd50f"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2022-01-11T08:02:07.353Z",
+  "updatedAt": "2022-03-19T08:11:22.823Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

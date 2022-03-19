@@ -7,6 +7,7 @@ import Image from 'next/dist/client/image';
 import Link from 'next/link';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../mobx';
+
 const Navbar = () => {
   const router = useRouter();
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -37,11 +38,11 @@ const Navbar = () => {
           </div>
           <div
             className={
-              'lg:flex flex-grow items-center' +
+              'lg:flex flex-grow items-center align-middle text-center' +
               (navbarOpen ? ' flex' : ' hidden')
             }
             id='example-navbar-danger'>
-            <ul className='flex flex-col lg:flex-row list-none lg:ml-auto -pt-5 -mt-24'>
+            <ul className='flex flex-col lg:flex-row list-none lg:ml-auto -pt-8 -mt-24 items-center'>
               <li className='nav-item px-3'>
                 <button
                   className='rounded-full hover:brightness-105 text-right text-blue font-bold bg-purple text-white p-2 '

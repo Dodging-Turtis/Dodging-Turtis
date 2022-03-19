@@ -10,7 +10,6 @@ const Market = () => {
         <input
           placeholder='Search'
           className='mt-10 p-2 w-full mx-auto border-2 rounded-md'></input>
-        <h5 className='text-right m-1'>Sort By</h5>
         <MarketLayout />
       </div>
       <Footer />

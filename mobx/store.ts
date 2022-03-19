@@ -6,6 +6,7 @@ import {
   NET_ID,
   RPC_URL,
   Order,
+  notify,
   fetchIpfs,
   sortNfts,
   dummyTurtle1,
@@ -63,8 +64,9 @@ export class GlobalStore {
           from: this.accountAddress,
           value: this.web3.utils.toWei(price.toString(), 'ether'),
         });
+      notify('success', 'Purchase Successfull');
     } catch (e) {
-      alert(e);
+      notify('danger', (e as Error).message);
     }
   }
 
@@ -93,7 +95,7 @@ export class GlobalStore {
     });
   }
 
-  async fetchUserlNfts() {
+  async fetchUserNfts() {
     console.log('fetch user nfts with metadata');
 
     await this.fetchUserNftsList();
@@ -103,7 +105,14 @@ export class GlobalStore {
       promises.push(fetchIpfs(this.userNftList[i].tokenUri));
       nftSlice.push(this.userNftList[i]);
     }
-    const metadata = await Promise.all(promises);
+    let metadata = await Promise.all(promises);
+    metadata = metadata.map((data) => {
+      data.image = data.image.replace(
+        'ipfs://',
+        'https://opensea.mypinata.cloud/ipfs/'
+      );
+      return data;
+    });
     const nftsWithMetadata: IUserNftWithMetadata[] = nftSlice.map(
       (nft, index): IUserNftWithMetadata => ({
         ...nft,
@@ -112,6 +121,8 @@ export class GlobalStore {
     );
 
     runInAction(() => {
+      console.log(nftsWithMetadata.length);
+      console.log(nftsWithMetadata);
       this.userNftWithMetadata = nftsWithMetadata;
     });
   }
@@ -141,9 +152,9 @@ export class GlobalStore {
         }
       } catch (e) {
         console.error(e);
-        alert('connection error');
+        notify('danger', 'Connection error');
       }
-    } else alert('wallet not detected');
+    } else notify('danger', 'Wallet not detected');
   }
 
   async fetchGlobalNftsList() {
@@ -199,15 +210,25 @@ export class GlobalStore {
     }
   }
 
-  async mintNFT() {
-    await this.turtisContract.methods
-      .generateTurtle(
-        300,
-        'ipfs://bafyreiewc2ctsxcmmjs6c3yprc7xho723ur6ogihbiz4gqiq45g2v4o6vm/metadata.json',
-        '0x1b',
-        '0xc1cd758d8987b9b0e7f3ca8ae96ddaa27631a8cd0fa4a24e84e9c31e8a3b3b55',
-        '0x63e648ecff13bf87d174b4294e083a50d0ae0e1c36a8b53be551fb6f09ad2c28'
-      )
-      .send({ from: this.accountAddress });
+  async mintNFT(score: number) {
+    try {
+      const { ipfsHash, signature } = await (
+        await fetch('/api/v1/signtransaction', {
+          method: 'POST',
+          body: JSON.stringify({
+            score,
+            walletAddress: this.accountAddress,
+          }),
+        })
+      ).json();
+
+      const { v, r, s } = JSON.parse(signature);
+      await this.turtisContract.methods
+        .generateTurtle(score, `ipfs://${ipfsHash}/metadata.json`, v, r, s)
+        .send({ from: this.accountAddress });
+    } catch (e) {
+      console.error(e);
+      notify('danger', 'Minting Error');
+    }
   }
 }
