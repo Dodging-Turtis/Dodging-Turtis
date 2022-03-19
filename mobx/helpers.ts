@@ -66,25 +66,28 @@ export const dummyTurtle1 = {
     name: 'Floppy Turtle 1',
     description: 'A Turtle that is on a journey in the river',
     componentIndices: {
-      eyes: 'eyes_1.png',
-      hands: 'left_hand_1.png',
-      head: 'head_1.png',
-      legs: 'left_foot_1.png',
-      shell: 'in_shell_1.png',
-      shellOuter: 'out_shell_1.png',
-      tail: 'tail_1.png',
+      eyes: '1',
+      hands: '1',
+      head: '1',
+      legs: '1',
+      shell: '1',
+      shellOuter: '1',
+      tail: '1',
     },
     attributes: [
       {
         trait_type: 'speed',
         value: 10,
       },
+      {
+        trait_type: 'breed',
+        value: 1,
+      },
     ],
     image:
       'https://cloudflare-ipfs.com/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
   },
 };
-
 export const dummyTurtle2 = {
   tokenId: 2,
   tokenUri:
@@ -93,99 +96,22 @@ export const dummyTurtle2 = {
     name: 'Floppy Turtle 2',
     description: 'A Turtle that is on a journey in the river',
     componentIndices: {
-      eyes: 'eyes_1.png',
-      hands: 'left_hand_1.png',
-      head: 'head_1.png',
-      legs: 'left_foot_1.png',
-      shell: 'in_shell_1.png',
-      shellOuter: 'out_shell_1.png',
-      tail: 'tail_1.png',
+      eyes: '2',
+      hands: '2',
+      head: '2',
+      legs: '3',
+      shell: '4',
+      shellOuter: '4',
+      tail: '5',
     },
     attributes: [
       {
         trait_type: 'speed',
-        value: 15,
+        value: 10,
       },
-    ],
-    image:
-      'https://cloudflare-ipfs.com/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
-  },
-};
-
-export const dummyTurtle3 = {
-  tokenId: 3,
-  tokenUri:
-    'ipfs://bafyreicjwky6t2dcdqpj6r6lx2tl2rgdo5riazknoq4yzgyvkrhyuxyqfm/metadata.json',
-  metadata: {
-    name: 'Floppy Turtle 3',
-    description: 'A Turtle that is on a journey in the river',
-    componentIndices: {
-      eyes: 'eyes_1.png',
-      hands: 'left_hand_1.png',
-      head: 'head_1.png',
-      legs: 'left_foot_1.png',
-      shell: 'in_shell_1.png',
-      shellOuter: 'out_shell_1.png',
-      tail: 'tail_1.png',
-    },
-    attributes: [
       {
-        trait_type: 'speed',
-        value: 20,
-      },
-    ],
-    image:
-      'https://cloudflare-ipfs.com/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
-  },
-};
-
-export const dummyTurtle4 = {
-  tokenId: 4,
-  tokenUri:
-    'ipfs://bafyreicjwky6t2dcdqpj6r6lx2tl2rgdo5riazknoq4yzgyvkrhyuxyqfm/metadata.json',
-  metadata: {
-    name: 'Floppy Turtle 4',
-    description: 'A Turtle that is on a journey in the river',
-    componentIndices: {
-      eyes: 'eyes_1.png',
-      hands: 'left_hand_1.png',
-      head: 'head_1.png',
-      legs: 'left_foot_1.png',
-      shell: 'in_shell_1.png',
-      shellOuter: 'out_shell_1.png',
-      tail: 'tail_1.png',
-    },
-    attributes: [
-      {
-        trait_type: 'speed',
-        value: 25,
-      },
-    ],
-    image:
-      'https://cloudflare-ipfs.com/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
-  },
-};
-
-export const dummyTurtle5 = {
-  tokenId: 5,
-  tokenUri:
-    'ipfs://bafyreicjwky6t2dcdqpj6r6lx2tl2rgdo5riazknoq4yzgyvkrhyuxyqfm/metadata.json',
-  metadata: {
-    name: 'Floppy Turtle 5',
-    description: 'A Turtle that is on a journey in the river',
-    componentIndices: {
-      eyes: 'eyes_1.png',
-      hands: 'left_hand_1.png',
-      head: 'head_1.png',
-      legs: 'left_foot_1.png',
-      shell: 'in_shell_1.png',
-      shellOuter: 'out_shell_1.png',
-      tail: 'tail_1.png',
-    },
-    attributes: [
-      {
-        trait_type: 'speed',
-        value: 100,
+        trait_type: 'breed',
+        value: 6,
       },
     ],
     image:

@@ -11,9 +11,6 @@ import {
   sortNfts,
   dummyTurtle1,
   dummyTurtle2,
-  dummyTurtle3,
-  dummyTurtle4,
-  dummyTurtle5,
 } from './helpers';
 import TurtisContract from '../truffle/abis/Turtis.json';
 import MarketContract from '../truffle/abis/TurtisMarket.json';
@@ -37,9 +34,6 @@ export class GlobalStore {
   dummyUserNftWithMetadata: IUserNftWithMetadata[] = [
     dummyTurtle1,
     dummyTurtle2,
-    dummyTurtle3,
-    dummyTurtle4,
-    dummyTurtle5,
   ];
 
   constructor() {
