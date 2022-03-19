@@ -125,8 +125,9 @@ function Signup() {
           </label>
           <input
             onChange={(e) => {
-              if(e.target?.files[0])
-                setSelectedImage(e.target?.files[0]);
+              if (e.target.files?.[0]) {
+                setSelectedImage(e.target.files[0]);
+              }
             }}
             id='file-upload'
             className='hidden'
