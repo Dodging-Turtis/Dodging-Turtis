@@ -22,19 +22,46 @@ export class AssetsPreloader {
 
   // Requires use of this.scene.load.start in the case of calling anywhere outside a scene preload function.
   loadGameSceneAssets(userNftMetaData: Array<IUserNftWithMetadata>): void {
-
-    this.scene.load.path = `${ASSETS_PREFIX_URL}turtle_parts/`;
-    userNftMetaData.forEach((nftMetaData: IUserNftWithMetadata, index: number) => {
-      this.scene.load.image(`turtle_display_${index}`, nftMetaData.metadata.image);
-      this.scene.load.image(`turtle_left_hand_${index}`, nftMetaData.metadata.componentIndices.hands);
-      this.scene.load.image(`turtle_left_foot_${index}`, nftMetaData.metadata.componentIndices.legs);
-      this.scene.load.image(`turtle_tail_${index}`, nftMetaData.metadata.componentIndices.tail);
-      this.scene.load.image(`turtle_head_${index}`, nftMetaData.metadata.componentIndices.head);
-      this.scene.load.image(`turtle_eyes_${index}`, nftMetaData.metadata.componentIndices.eyes);
-      this.scene.load.image(`turtle_inner_shell_${index}`, nftMetaData.metadata.componentIndices.shell);
-      this.scene.load.image(`turtle_outer_shell_${index}`, nftMetaData.metadata.componentIndices.shellOuter);
-    });
-
+    this.scene.load.path = `${ASSETS_PREFIX_URL}turtle_components/`;
+    userNftMetaData.forEach(
+      (nftMetaData: IUserNftWithMetadata, index: number) => {
+        const breed = nftMetaData.metadata.attributes.find(
+          (attr) => attr.trait_type == 'breed'
+        )?.value;
+        this.scene.load.image(
+          `turtle_display_${index}`,
+          nftMetaData.metadata.image
+        );
+        this.scene.load.image(
+          `turtle_left_hand_${index}`,
+          `breed_${breed}/frontFeet/${nftMetaData.metadata.componentIndices.hands}.png`
+        );
+        this.scene.load.image(
+          `turtle_left_foot_${index}`,
+          `breed_${breed}/hindFeet/${nftMetaData.metadata.componentIndices.legs}.png`
+        );
+        this.scene.load.image(
+          `turtle_tail_${index}`,
+          `breed_${breed}/tails/${nftMetaData.metadata.componentIndices.tail}.png`
+        );
+        this.scene.load.image(
+          `turtle_head_${index}`,
+          `breed_${breed}/heads/${nftMetaData.metadata.componentIndices.head}.png`
+        );
+        this.scene.load.image(
+          `turtle_eyes_${index}`,
+          `breed_${breed}/eyes/${nftMetaData.metadata.componentIndices.eyes}.png`
+        );
+        this.scene.load.image(
+          `turtle_inner_shell_${index}`,
+          `breed_${breed}/innerShells/${nftMetaData.metadata.componentIndices.shell}.png`
+        );
+        this.scene.load.image(
+          `turtle_outer_shell_${index}`,
+          `breed_${breed}/outerShells/${nftMetaData.metadata.componentIndices.shellOuter}.png`
+        );
+      }
+    );
 
     this.scene.load.path = ASSETS_PREFIX_URL;
     // Turtle
@@ -86,9 +113,8 @@ export class AssetsPreloader {
     this.scene.load.path = `assets/prefabs/`;
 
     for (let i = 0; i < PREFABS.length; ++i) {
-      this.scene.load.json(PREFABS[i], `${PREFABS[i]}.json`)
+      this.scene.load.json(PREFABS[i], `${PREFABS[i]}.json`);
     }
-
 
     this.scene.load.path = `${ASSETS_PREFIX_URL}ui/`;
 
@@ -141,7 +167,5 @@ export class AssetsPreloader {
     this.scene.load.start();
   }
 
-  createAnimations(): void {
-
-  }
+  createAnimations(): void {}
 }
