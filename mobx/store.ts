@@ -225,4 +225,25 @@ export class GlobalStore {
       notify('danger', 'Minting Error');
     }
   }
+
+  async setForSale(id: number) {
+    const priceInput = prompt('Enter Price:');
+    if (!priceInput) {
+      notify('danger', 'Invalid Number');
+      return;
+    }
+    const price = this.web3.utils.toWei(priceInput, 'ether');
+    try {
+      const listingPrice = await this.marketContract.methods
+        .getListingPrice()
+        .call();
+      await this.marketContract.methods
+        .createMarketItem(TurtisContract.networks[NET_ID].address, id, price)
+        .send({ from: this.accountAddress, value: listingPrice });
+      notify('success', 'Successfully set for sale');
+    } catch (e) {
+      console.error(e);
+      notify('danger', 'Error trying to sell Turtle');
+    }
+  }
 }
