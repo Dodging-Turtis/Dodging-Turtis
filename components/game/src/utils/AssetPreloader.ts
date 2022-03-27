@@ -34,11 +34,11 @@ export class AssetsPreloader {
         );
         this.scene.load.image(
           `turtle_left_hand_${index}`,
-          `breed_${breed}/frontFeet/${nftMetaData.metadata.componentIndices.hands}.png`
+          `breed_${breed}/leftFrontFoot/${nftMetaData.metadata.componentIndices.hands}.png`
         );
         this.scene.load.image(
           `turtle_left_foot_${index}`,
-          `breed_${breed}/hindFeet/${nftMetaData.metadata.componentIndices.legs}.png`
+          `breed_${breed}/leftHindFoot/${nftMetaData.metadata.componentIndices.legs}.png`
         );
         this.scene.load.image(
           `turtle_tail_${index}`,
