@@ -68,7 +68,7 @@ const GameScreen = () => {
       game.scene.start('boot', {
         grs,
         initGameData: {
-          highScore: 8888,
+          highScore: 250,
           endGameCB,
           mintTurtisCB,
           goHomeCB,

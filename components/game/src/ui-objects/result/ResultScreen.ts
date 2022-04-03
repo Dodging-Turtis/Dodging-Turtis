@@ -120,6 +120,8 @@ export class ResultScreen extends Phaser.GameObjects.Container {
       if (!this.isMintEnabled) {
         return;
       }
+      this.mintTurtleText.text = 'Congratulations! Blah Blah Blah!'
+      this.scene.initGameData.mintTurtisCB();
       this.isMintEnabled = false;
       this.events.emit(CUSTOM_EVENTS.MINT_TURTIS);
     });
@@ -140,9 +142,9 @@ export class ResultScreen extends Phaser.GameObjects.Container {
         color: '#FFFFFF'
       }
       this.mintTurtleImage.setAlpha(1);
-      this.mintTurtleText.text = 'Mint New Turtis';
+      this.mintTurtleText.text = 'Tap to Mint New Turtis!';
       this.mintTurtleText.setStyle(titleConfig);
-      this.mintTurtleText.y = 150;
+      this.mintTurtleText.y = 0;
       this.isMintEnabled = true;
       // touch enabled
     } else {
