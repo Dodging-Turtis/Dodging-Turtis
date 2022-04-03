@@ -45,11 +45,13 @@ export class GameManager {
     this.gameComponents.startGame();
     this.currentResizeState = EResizeState.GAME;
     this.isGamePaused = false;
+    this.isGameStopped = false;
   }
 
   endGame() {
     this.gameComponents.endGame();
-    this.isGamePaused = false;
+    this.isGamePaused = true;
+    this.isGameStopped = true;
   }
 
   handleDeath() {

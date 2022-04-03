@@ -1,4 +1,7 @@
 export interface IInitGameData {
     initMetaData: Array<IUserNftWithMetadata>;
-    endGameCB: () => void;
+    highScore: number;
+    endGameCB: (score: number, metersTravelled: number) => void;
+    mintTurtisCB: () => void;
+    goHomeCB: () => void;
 }

@@ -8,6 +8,7 @@ import { DistanceMeter } from '../ui-objects/DistanceMeter';
 import { Menu } from '../ui-objects/menu/Menu';
 import { OverlayText } from '../ui-objects/OverlayText';
 import { ResultScreen } from '../ui-objects/result/ResultScreen';
+import { Logo } from '../ui-objects/sidebar/Logo';
 import { SideBar } from '../ui-objects/sidebar/SideBar';
 import { TurtleSelectionMenu } from '../ui-objects/TurtleSelectionMenu';
 import { GameManager } from './GameManager';
@@ -25,6 +26,7 @@ export class UIManager {
   displayPowerUp!: DisplayPowerUp;
   menu!: Menu;
   resultScreen!: ResultScreen;
+  logo!: Logo;
   overlayText!: OverlayText;
 
   hungerThreshold = HUNGER_THRESHOLD;
@@ -40,6 +42,7 @@ export class UIManager {
     this.displayPowerUp = new DisplayPowerUp(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.menu = new Menu(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.resultScreen = new ResultScreen(this.scene).setDepth(DEPTH.ui).setVisible(false);
+    this.logo = new Logo(this.scene).setDepth(DEPTH.ui);
     this.addEventHandlers();
   }
 
@@ -52,6 +55,12 @@ export class UIManager {
     this.sideBar.setVisible(true);
     this.coreUI.setVisible(true);
     this.distanceMeter.setVisible(true);
+  }
+
+  hideGameUI() {
+    this.sideBar.setVisible(false);
+    this.coreUI.setVisible(false);
+    this.distanceMeter.setVisible(false);
   }
 
   private handlePauseResume() {
@@ -76,14 +85,13 @@ export class UIManager {
     this.gameManager.gameComponents.overlay.showOverlay();
     this.gameManager.gameComponents.resetCamera();
     this.gameManager.endGame();
-
-    // Send data to backend;
-    // Recieve data from backend to know if we can mint or not.
-    // 
-    this.resultScreen.updateResultDetails({ travelled: this.distanceMeter.text, score: this.coreUI.scoreText.text, isMintable: false, highScore: 99999 })
+    const highScore = this.scene.initGameData.highScore;
+    const score = this.coreUI.score;
+    this.scene.initGameData.endGameCB(score, this.distanceMeter.distanceCovered);
+    this.resultScreen.updateResultDetails({ travelled: this.distanceMeter.text, score: this.coreUI.scoreText.text, isMintable: score > highScore, highScore: this.scene.initGameData.highScore })
     this.resultScreen.showResultScreen();
-    // this.sideBar.showEndMenuButton();
-    this.sideBar.hideSideBar();
+    this.hideGameUI();
+    this.logo.showLogo();
   }
 
   private addEventHandlers() {
@@ -122,16 +130,19 @@ export class UIManager {
       this.menu.hideMenu();
     });
     this.menu.yesButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
-      // this.menu.hideMenu();
-      // Go to turtle selection
+      this.menu.hideMenu();
+      this.gameManager.gameComponents.resetCamera();
+      this.handlePauseResume();
+      this.gameManager.endGame();
+      this.hideGameUI();
+      this.showTurtleSelection(this.scene.initGameData.initMetaData);
     });
-    this.resultScreen.events.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
-      // this.menu.hideMenu();
-      // Go to turtle selection
+    this.resultScreen.events.on(CUSTOM_EVENTS.GO_TO_HOME_CLICKED, () => {
+      this.scene.initGameData.goHomeCB();
     });
     this.resultScreen.playAgainButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
-      // this.menu.hideMenu();
-      // Go to turtle selection
+      this.resultScreen.hideResultScreen();
+      this.turtleSelectionMenu.showMenu();
     });
     this.scene.inputManager.events.on(CUSTOM_EVENTS.ESCAPE, () => {
       this.handlePauseResume();
@@ -139,11 +150,12 @@ export class UIManager {
       this.sideBar.pauseResumeButton.handleOnClick(true);
     });
     this.turtleSelectionMenu.on(CUSTOM_EVENTS.START_GAME, (speed: number, index: number) => {
-      this.gameManager.gameComponents.pawn.setupPawn(speed, index);
+      this.gameManager.gameComponents.pawn.changePawn(speed, index);
       this.gameManager.gameComponents.pawn.showPawnInitially();
     });
     this.gameManager.gameComponents.pawn.turtle.on(CUSTOM_EVENTS.PAWN_SPAWNED, () => {
       this.showGameUI();
+      this.logo.hideLogo();
       this.gameManager.startGame();
     });
   }

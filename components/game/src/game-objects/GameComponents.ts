@@ -24,7 +24,7 @@ export class GameComponents {
   pawn: Pawn;
   overlay: Overlay;
 
-
+  origZoom: number;
   scrollSpeed = INIT_SPEED;
   speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;  // ms;
   scrollSpeedBeforeDeath = INIT_SPEED;
@@ -44,6 +44,7 @@ export class GameComponents {
     this.obstacleManager = new ObstacleManager(this.scene);
     this.pawn = new Pawn(this.scene);
     this.overlay = new Overlay(this.scene).setDepth(DEPTH.overlay);
+    this.origZoom = this.scene.cameras.main.zoom;
   }
 
   startGame() {
@@ -51,7 +52,8 @@ export class GameComponents {
   }
 
   endGame() {
-    this.obstacleManager.cullAllGroups();
+    this.obstacleManager.resetObstacleManager();
+    this.pawn.resetPawn();
   }
 
   handlePawnCollision() {
@@ -68,8 +70,7 @@ export class GameComponents {
   }
 
   deathCameraEffects() {
-    const currZoom = this.scene.cameras.main.zoom;
-    this.scene.cameras.main.zoomTo(currZoom + 0.05, 500, TWEEN_EASING.SINE_EASE_IN);
+    this.scene.cameras.main.zoomTo(this.origZoom + 0.05, 500, TWEEN_EASING.SINE_EASE_IN);
     this.scene.cameras.main.pan(CAM_CENTER.x - (CAM_CENTER.x - this.pawn.turtle.x) * 0.2, CAM_CENTER.y, 500, TWEEN_EASING.SINE_EASE_IN);
     this.scene.cameras.main.shake(500, 0.005);
     window.navigator.vibrate(500);
@@ -77,7 +78,7 @@ export class GameComponents {
 
   resetCamera() {
     const currZoom = this.scene.cameras.main.zoom;
-    this.scene.cameras.main.zoomTo(currZoom - 0.05, 500, TWEEN_EASING.SINE_EASE_OUT);
+    this.scene.cameras.main.zoomTo(this.origZoom, 500, TWEEN_EASING.SINE_EASE_OUT);
     this.scene.cameras.main.pan(CAM_CENTER.x, CAM_CENTER.y, 500, TWEEN_EASING.SINE_EASE_OUT);
   }
 

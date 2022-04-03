@@ -104,12 +104,35 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
     }
   }
 
+  resetLineUp() {
+    const startX = -this.scene.grs.designDim.width * 0.45;
+    for (let i = 0; i < 5; ++i) {
+      this.showTurtles[i].setPosition(startX + this.scene.grs.designDim.width * 0.15 * i, 0);
+      this.showTurtles[i].setScale(1);
+      this.showTurtles[i].setVisible(true);
+      if (i === 0 || i === 4) {
+        this.showTurtles[i].setScale(0);
+        if (i === 0) {
+          this.showTurtles[i].x += this.scene.grs.designDim.width * 0.05;
+        } else {
+          this.showTurtles[i].x -= this.scene.grs.designDim.width * 0.05;
+        }
+      } else if (i === 1 || i === 3) {
+        this.showTurtles[i].setScale(0.25);
+      } else {
+        this.showTurtles[i].setScale(0.5);
+      }
+      this.showTurtlesPositionX[i] = this.showTurtles[i].x;
+    }
+  }
+
   private addTurtleDetails() {
     this.turtleDetails = new TurtleDetails(this.scene, this.scene.grs.designDim.width * 0.275, 0);
     this.add(this.turtleDetails);
   }
 
   populateTurtles(turtlesData: Array<IUserNftWithMetadata>, mainTurtleIndex: number) {
+    this.resetLineUp();
     this.currentTurtleIndex = mainTurtleIndex;
     this.turtlesData = turtlesData;
 
@@ -149,6 +172,8 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
       duration: 400,
       ease: TWEEN_EASING.QUAD_EASE_OUT,
       onStart: () => {
+        this.isDragEnabled = true;
+        this.startButton.isEnabled = true;
         this.setVisible(true);
       }
     });

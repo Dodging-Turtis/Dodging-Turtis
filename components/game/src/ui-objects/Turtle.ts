@@ -92,13 +92,16 @@ export class Turtle extends Phaser.GameObjects.Container {
     }
   }
 
-  setupGameTurtle(index: number) {
+  setupGameTurtle() {
     this.addLimbs();
     this.addTail();
     this.addHead();
     this.addEyes();
     this.addInnerShell();
     this.addOuterShell();
+  }
+
+  changeGameTurtle(index: number) {
     this.limbs.leftHand.setTexture(`turtle_left_hand_${index}`);
     this.limbs.leftFoot.setTexture(`turtle_left_foot_${index}`);
     this.limbs.rightHand.setTexture(`turtle_left_hand_${index}`);

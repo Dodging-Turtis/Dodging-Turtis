@@ -87,10 +87,12 @@ export class ObstacleManager {
     return { collidableObstacles, collidableCollectibles, collidablePowerUps };
   }
 
-  cullAllGroups(): void {
+  resetObstacleManager(): void {
     this.obsGroups.forEach((obsGroup) => {
       this.obstacleGenerator.putObstacleContainer(obsGroup);
-    })
+    });
+    this.obsGroups = [];
+    this.powerUpGenThreshold = PowerUpGenThreshold.min + Math.floor(Math.random() * (PowerUpGenThreshold.max - PowerUpGenThreshold.min + 1));
   }
 
   update(dt: number, speed: number) {

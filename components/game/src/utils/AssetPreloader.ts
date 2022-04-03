@@ -66,6 +66,7 @@ export class AssetsPreloader {
     this.scene.load.path = ASSETS_PREFIX_URL;
     // Turtle
     // this.scene.load.image('turtle', turtleUrl);
+    this.scene.load.image('logo', 'logo.png');
     this.scene.load.image('turtle', 'turtle.png');
     this.scene.load.image('black_overlay', 'black_overlay.png');
 

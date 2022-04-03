@@ -150,7 +150,7 @@ export class ResultScreen extends Phaser.GameObjects.Container {
         fontFamily: GAME_FONT,
         fontSize: '24px',
         resolution: 3,
-        color: '#999999'
+        color: '#CCCCCC'
       }
       this.mintTurtleImage.setAlpha(0.6);
       this.mintTurtleText.text = 'Beat your highscore to mint!';

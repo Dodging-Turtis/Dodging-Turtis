@@ -46,6 +46,7 @@ export class Pawn {
     this.turtle.on(CUSTOM_EVENTS.PAWN_SPAWNED, () => {
       this.resetRipples();
     });
+    this.turtle.setupGameTurtle();
   }
 
   private playDirectionChangeTween() {
@@ -58,8 +59,15 @@ export class Pawn {
     this.turtle.playPawnDirectionChangeTween(angle);
   }
 
-  setupPawn(speed: number, index: number) {
-    this.turtle.setupGameTurtle(index);
+  resetPawn() {
+    this.turtle.setScale(0);
+    for (let i = 0; i < 10; ++i) {
+      this.ripples[i].setVisible(false);
+    }
+  }
+
+  changePawn(speed: number, index: number) {
+    this.turtle.changeGameTurtle(index);
     this.speed = speed * 0.005;
   }
 
