@@ -192,11 +192,17 @@ export class GlobalStore {
         const nftsData: any[] = await this.turtisContract.methods
           .getUserOwnedNFTs(this.accountAddress)
           .call();
+        const highScore = parseInt(
+          await this.turtisContract.methods
+            .userAddressToHighScore(this.accountAddress)
+            .call()
+        );
         runInAction(() => {
           this.userNftList = nftsData.map((item) => ({
             tokenId: parseInt(item.tokenId.toString()),
             tokenUri: item.tokenURI,
           }));
+          this.highScore = highScore;
         });
       }
     } else {
@@ -206,6 +212,7 @@ export class GlobalStore {
 
   async mintNFT(score: number) {
     try {
+      if (this.highScore > score) throw new Error('Not enough score');
       const { ipfsHash, signature } = await (
         await fetch('/api/v1/signtransaction', {
           method: 'POST',
