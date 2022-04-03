@@ -142,7 +142,9 @@ export class UIManager {
     });
     this.resultScreen.playAgainButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
       this.resultScreen.hideResultScreen();
-      this.turtleSelectionMenu.showMenu();
+      this.gameManager.gameComponents.overlay.hideOverlay();
+      this.overlayText.hide();
+      this.showTurtleSelection(this.scene.initGameData.initMetaData);
     });
     this.scene.inputManager.events.on(CUSTOM_EVENTS.ESCAPE, () => {
       this.handlePauseResume();
