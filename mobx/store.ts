@@ -113,6 +113,7 @@ export class GlobalStore {
         metadata: metadata[index],
       })
     );
+    nftsWithMetadata.push(dummyTurtle1);
 
     runInAction(() => {
       console.log(nftsWithMetadata.length);
