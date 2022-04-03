@@ -51,6 +51,8 @@ export const TAP_TO_PLAY_CONFIG = {
 
 export const CUSTOM_EVENTS = {
   BUTTON_CLICKED: 'button-clicked',
+  GO_TO_HOME_CLICKED: 'go-to-home-clicked',
+  MINT_TURTIS: 'mint-turtis',
   START_GAME: 'start-game',
   ESCAPE: 'escape',
   PAWN_SPAWNED: 'pawn-spawned',

@@ -7,6 +7,7 @@ import { DisplayPowerUp } from '../ui-objects/DisplayPowerUp';
 import { DistanceMeter } from '../ui-objects/DistanceMeter';
 import { Menu } from '../ui-objects/menu/Menu';
 import { OverlayText } from '../ui-objects/OverlayText';
+import { ResultScreen } from '../ui-objects/result/ResultScreen';
 import { SideBar } from '../ui-objects/sidebar/SideBar';
 import { TurtleSelectionMenu } from '../ui-objects/TurtleSelectionMenu';
 import { GameManager } from './GameManager';
@@ -23,6 +24,7 @@ export class UIManager {
   distanceMeter!: DistanceMeter;
   displayPowerUp!: DisplayPowerUp;
   menu!: Menu;
+  resultScreen!: ResultScreen;
   overlayText!: OverlayText;
 
   hungerThreshold = HUNGER_THRESHOLD;
@@ -37,6 +39,7 @@ export class UIManager {
     this.distanceMeter = new DistanceMeter(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.displayPowerUp = new DisplayPowerUp(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.menu = new Menu(this.scene).setDepth(DEPTH.ui).setVisible(false);
+    this.resultScreen = new ResultScreen(this.scene).setDepth(DEPTH.ui).setVisible(false);
     this.addEventHandlers();
   }
 
@@ -72,7 +75,15 @@ export class UIManager {
     this.overlayText.show();
     this.gameManager.gameComponents.overlay.showOverlay();
     this.gameManager.gameComponents.resetCamera();
-    this.sideBar.showEndMenuButton();
+    this.gameManager.endGame();
+
+    // Send data to backend;
+    // Recieve data from backend to know if we can mint or not.
+    // 
+    this.resultScreen.updateResultDetails({ travelled: this.distanceMeter.text, score: this.coreUI.scoreText.text, isMintable: false, highScore: 99999 })
+    this.resultScreen.showResultScreen();
+    // this.sideBar.showEndMenuButton();
+    this.sideBar.hideSideBar();
   }
 
   private addEventHandlers() {
@@ -109,6 +120,18 @@ export class UIManager {
     });
     this.menu.noButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
       this.menu.hideMenu();
+    });
+    this.menu.yesButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
+      // this.menu.hideMenu();
+      // Go to turtle selection
+    });
+    this.resultScreen.events.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
+      // this.menu.hideMenu();
+      // Go to turtle selection
+    });
+    this.resultScreen.playAgainButton.on(CUSTOM_EVENTS.BUTTON_CLICKED, () => {
+      // this.menu.hideMenu();
+      // Go to turtle selection
     });
     this.scene.inputManager.events.on(CUSTOM_EVENTS.ESCAPE, () => {
       this.handlePauseResume();

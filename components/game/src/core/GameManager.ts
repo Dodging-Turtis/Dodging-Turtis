@@ -47,6 +47,11 @@ export class GameManager {
     this.isGamePaused = false;
   }
 
+  endGame() {
+    this.gameComponents.endGame();
+    this.isGamePaused = false;
+  }
+
   handleDeath() {
     this.isGameStopped = true;
     this.scene.inputManager.setInputEnabled(false);

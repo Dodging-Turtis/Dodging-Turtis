@@ -87,6 +87,12 @@ export class ObstacleManager {
     return { collidableObstacles, collidableCollectibles, collidablePowerUps };
   }
 
+  cullAllGroups(): void {
+    this.obsGroups.forEach((obsGroup) => {
+      this.obstacleGenerator.putObstacleContainer(obsGroup);
+    })
+  }
+
   update(dt: number, speed: number) {
     this.powerUpGenThreshold -= dt;
     this.cullGroups();

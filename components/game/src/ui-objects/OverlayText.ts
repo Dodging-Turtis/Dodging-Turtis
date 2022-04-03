@@ -13,7 +13,7 @@ export class OverlayText extends Phaser.GameObjects.Text {
       resolution: 3,
       color: '#FFFFFF',
     }
-    super(scene, CAM_CENTER.x, CAM_CENTER.y - scene.grs.designDim.height * 0.25, 'TEXT', titleConfig);
+    super(scene, CAM_CENTER.x, CAM_CENTER.y - scene.grs.designDim.height * 0.35, 'TEXT', titleConfig);
     this.scene = scene;
     this.setOrigin(0.5);
     this.scene.add.existing(this);

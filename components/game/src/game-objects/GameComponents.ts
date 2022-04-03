@@ -50,6 +50,10 @@ export class GameComponents {
     this.obstacleManager.generateGroupsInitially();
   }
 
+  endGame() {
+    this.obstacleManager.cullAllGroups();
+  }
+
   handlePawnCollision() {
     this.overlay.showOverlay();
     this.stopScrollTween();

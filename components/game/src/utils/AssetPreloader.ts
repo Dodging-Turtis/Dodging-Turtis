@@ -146,6 +146,10 @@ export class AssetsPreloader {
     this.scene.load.image('hunger_bar_orange', 'hunger_bar_orange.png');
     this.scene.load.image('hunger_bar_red', 'hunger_bar_red.png');
 
+    // Result UI
+    this.scene.load.image('mint_turtle', 'mint_turtle.png');
+    this.scene.load.image('play_again', 'play_again.png');
+
     // Turtle Selection
     this.scene.load.image('left_arrow', 'left_arrow.png');
     this.scene.load.image('start_button', 'start_button.png');
@@ -167,5 +171,5 @@ export class AssetsPreloader {
     this.scene.load.start();
   }
 
-  createAnimations(): void {}
+  createAnimations(): void { }
 }
