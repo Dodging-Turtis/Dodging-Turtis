@@ -54,6 +54,9 @@ export class GameComponents {
   endGame() {
     this.obstacleManager.resetObstacleManager();
     this.pawn.resetPawn();
+    this.scrollSpeed = INIT_SPEED;
+    this.speedIncreaseThreshold = SPEED_INCREASE_THRESHOLD;  // ms;
+    this.scrollSpeedBeforeDeath = INIT_SPEED;
   }
 
   handlePawnCollision() {
@@ -141,7 +144,7 @@ export class GameComponents {
 
   update(delta: number) {
     const scrollSpeed = delta * this.scrollSpeed
-    this.pawn.update(delta, scrollSpeed);
+    this.pawn.update(delta);
     this.water.scroll(scrollSpeed);
     this.bankManager.scroll(scrollSpeed);
     this.obstacleManager.update(delta, scrollSpeed);

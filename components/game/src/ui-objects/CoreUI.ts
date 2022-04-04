@@ -4,6 +4,7 @@ import { TWEEN_EASING } from "../cfg/constants/static-constants";
 import { AbstractScene } from "../scenes/AbstractScene";
 import { HungerMeter } from "./HungerMeter";
 
+const MAX_LIVES = 3;
 export class CoreUI extends Phaser.GameObjects.Container {
   scene: AbstractScene;
 
@@ -14,7 +15,7 @@ export class CoreUI extends Phaser.GameObjects.Container {
   scoreText!: Phaser.GameObjects.Text;
   highScoreText!: Phaser.GameObjects.Text;
 
-  lives = 3;
+  lives = MAX_LIVES;
   score = 0;
 
   constructor(scene: AbstractScene) {
@@ -123,6 +124,14 @@ export class CoreUI extends Phaser.GameObjects.Container {
         this.livesText.text = `${this.lives}`;
       }
     })
+  }
+
+  reset() {
+    this.lives = MAX_LIVES;
+    this.score = 0;
+    this.scoreText.text = this.scoreFormatter();
+    this.livesText.text = `${this.lives}`;
+    this.hungerMeter.reset();
   }
 
   resizeAndRepositionElements() {

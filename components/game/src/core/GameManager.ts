@@ -43,12 +43,14 @@ export class GameManager {
 
   startGame() {
     this.gameComponents.startGame();
+    this.scene.inputManager.setInputEnabled(true);
     this.currentResizeState = EResizeState.GAME;
     this.isGamePaused = false;
     this.isGameStopped = false;
   }
 
   endGame() {
+    this.scene.inputManager.setInputEnabled(false);
     this.gameComponents.endGame();
     this.isGamePaused = true;
     this.isGameStopped = true;

@@ -56,7 +56,6 @@ export class BootScene extends AbstractScene {
     const titleConfig = {
       fontFamily: GAME_FONT,
       fontSize: '36px',
-      resolution: 3,
       color: '#FFFFFF',
     }
 

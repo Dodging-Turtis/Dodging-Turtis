@@ -135,6 +135,8 @@ export class UIManager {
       this.handlePauseResume();
       this.gameManager.endGame();
       this.hideGameUI();
+      this.coreUI.reset();
+      this.distanceMeter.reset();
       this.showTurtleSelection(this.scene.initGameData.initMetaData);
     });
     this.resultScreen.events.on(CUSTOM_EVENTS.GO_TO_HOME_CLICKED, () => {
@@ -144,6 +146,8 @@ export class UIManager {
       this.resultScreen.hideResultScreen();
       this.gameManager.gameComponents.overlay.hideOverlay();
       this.overlayText.hide();
+      this.coreUI.reset();
+      this.distanceMeter.reset();
       this.showTurtleSelection(this.scene.initGameData.initMetaData);
     });
     this.scene.inputManager.events.on(CUSTOM_EVENTS.ESCAPE, () => {

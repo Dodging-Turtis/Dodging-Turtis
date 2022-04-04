@@ -102,6 +102,10 @@ export class HungerMeter extends Phaser.GameObjects.Image {
     }
   }
 
+  reset(): void {
+    this.fillUpBar();
+  }
+
   fillUpBar() {
     this.scene.tweens.add({
       targets: this.hungerBar,

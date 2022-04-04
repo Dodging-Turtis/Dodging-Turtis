@@ -4,7 +4,7 @@ import { AbstractScene } from "../scenes/AbstractScene";
 
 export class InputManager {
 
-  private isInputEnabled = true;
+  private isInputEnabled = false;
   private inputDirection: EInputDirection = EInputDirection.NONE;
   private isDesktop = false;
   private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;

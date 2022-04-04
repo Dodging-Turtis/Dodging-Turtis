@@ -132,7 +132,7 @@ export class Pawn {
     }
   }
 
-  update(delta: number, scrollSpeed: number) {
+  update(delta: number) {
     if (this.scene.inputManager.getIsInputEnabled()) {
       const direction = this.scene.inputManager.getInputDirection();
       if (direction !== EInputDirection.NONE) {

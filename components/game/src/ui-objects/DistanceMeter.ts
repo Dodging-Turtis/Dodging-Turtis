@@ -38,6 +38,11 @@ export class DistanceMeter extends Phaser.GameObjects.Text {
     this.text = this.distanceFormatter();
   }
 
+  reset(): void {
+    this.distanceCovered = 0;
+    this.text = this.distanceFormatter();
+  }
+
   resizeAndRepositionElements(): void {
     this.setPosition(CAM_CENTER.x - this.scene.grs.designDim.width * 0.5 + 250, CAM_CENTER.y - this.scene.grs.resizeDim.height * 0.5 + 100)
   }
