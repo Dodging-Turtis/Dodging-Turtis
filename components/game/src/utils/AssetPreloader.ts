@@ -1,4 +1,4 @@
-import { PREFABS } from '../cfg/constants/game-constants';
+import { GAME_SOUNDS, PREFABS } from '../cfg/constants/game-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
 
 const ASSETS_PREFIX_URL = 'assets/img/';
@@ -62,6 +62,14 @@ export class AssetsPreloader {
         );
       }
     );
+
+    this.scene.load.path = `assets/audio/`;
+
+    for (let i = 0, len = GAME_SOUNDS.length; i < len; ++i) {
+      this.scene.load.audio(GAME_SOUNDS[i].key, [
+        `${GAME_SOUNDS[i].path}.wav`,
+      ]);
+    }
 
     this.scene.load.path = ASSETS_PREFIX_URL;
     // Turtle

@@ -115,6 +115,7 @@ export class ResultScreen extends Phaser.GameObjects.Container {
       easeParams: [2.7],
       onYoyo: () => {
         this.mintTurtleImage.setAlpha(0.6);
+        this.scene.audioManager.play('turtleMint');
         this.mintTurtleText.text = 'Congratulations!\nA new Turtis awaits you\nin the marketplace.'
       }
     })

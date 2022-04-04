@@ -270,6 +270,7 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
   }
 
   private leftMoveTween() {
+    this.scene.audioManager.play('turtleSwap');
     this.showTurtles[4].x = this.showTurtlesPositionX[4];
     for (let i = 1; i < 5; ++i) {
       if (this.showTurtles[i].visible) {
@@ -318,6 +319,7 @@ export class TurtleSelectionMenu extends Phaser.GameObjects.Container {
   }
 
   private rightMoveTween() {
+    this.scene.audioManager.play('turtleSwap');
     this.showTurtles[0].x = this.showTurtlesPositionX[0];
     for (let i = 0; i < 4; ++i) {
       if (this.showTurtles[i].visible) {

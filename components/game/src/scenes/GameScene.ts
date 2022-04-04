@@ -25,6 +25,7 @@ export class GameScene extends AbstractScene {
     this.elementsCreated = true;
     this.audioManager = new AudioManager(this);
     this.audioManager.initGameAudio();
+    this.audioManager.play('bgm');
     this.inputManager = new InputManager(this);
     this.gameManager = new GameManager(this);
     this.uiManager = new UIManager(this, this.gameManager);

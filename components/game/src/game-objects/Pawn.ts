@@ -52,8 +52,10 @@ export class Pawn {
   private playDirectionChangeTween() {
     let angle = 0;
     if (this.scene.inputManager.getInputDirection() === EInputDirection.LEFT) {
+      this.scene.audioManager.play('splash');
       angle = -30;
     } else if (this.scene.inputManager.getInputDirection() === EInputDirection.RIGHT) {
+      this.scene.audioManager.play('splash');
       angle = 30;
     }
     this.turtle.playPawnDirectionChangeTween(angle);

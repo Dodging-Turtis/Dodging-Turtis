@@ -1,3 +1,4 @@
+import { GAME_SOUNDS } from '../cfg/constants/game-constants';
 import type { AbstractScene } from '../scenes/AbstractScene';
 
 export class AudioManager {
@@ -14,12 +15,12 @@ export class AudioManager {
   }
 
   initGameAudio(): void {
-    // for (let i = 0, len = GAME_SOUNDS.length; i < len; ++i) {
-    //   this.sounds.set(
-    //     GAME_SOUNDS[i].key,
-    //     this.scene.sound.add(GAME_SOUNDS[i].key, { volume: 1 })
-    //   );
-    // }
+    for (let i = 0, len = GAME_SOUNDS.length; i < len; ++i) {
+      this.sounds.set(
+        GAME_SOUNDS[i].key,
+        this.scene.sound.add(GAME_SOUNDS[i].key, { volume: 1, loop: GAME_SOUNDS[i].loop })
+      );
+    }
   }
 
   play(key: string, shouldStopPrevious = true): void {
@@ -65,5 +66,13 @@ export class AudioManager {
     } else {
       console.warn(`Cannot find sound with key: ${key}`);
     }
+  }
+
+  turnOff(): void {
+    this.scene.sound.volume = 0;
+  }
+
+  turnOn(): void {
+    this.scene.sound.volume = 1;
   }
 }

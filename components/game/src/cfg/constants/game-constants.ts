@@ -95,3 +95,15 @@ export const COLLECTIBLE_CONSTRUCTORS = {
 }
 
 export type COLLECTIBLE_TYPES = keyof typeof COLLECTIBLE_CONSTRUCTORS;
+
+export const GAME_SOUNDS = [
+  { key: 'bgm', path: 'bgm', loop: true },
+  { key: 'click', path: 'click', loop: false },
+  { key: 'collision', path: 'collision', loop: false },
+  { key: 'newHighScore', path: 'newHighScore', loop: false },
+  { key: 'turtleMint', path: 'turtleMint', loop: false },
+  { key: 'turtleSwap', path: 'turtleSwap', loop: false },
+  { key: 'starFish', path: 'starFish', loop: false },
+  { key: 'powerup', path: 'powerup', loop: false },
+  { key: 'splash', path: 'splash', loop: false },
+]

@@ -1,5 +1,5 @@
 import { faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
-import { CUSTOM_EVENTS } from '../cfg/constants/game-constants';
+import { CUSTOM_EVENTS, GAME_SOUNDS } from '../cfg/constants/game-constants';
 import { EInputDirection } from '../cfg/enums/EInputDirection';
 import { EPowerUpType } from '../cfg/enums/EPowerUpType';
 import { EResizeState } from '../cfg/enums/EResizeState';
@@ -58,6 +58,7 @@ export class GameManager {
 
   handleDeath() {
     this.isGameStopped = true;
+    this.scene.audioManager.play('collision');
     this.scene.inputManager.setInputEnabled(false);
     this.scene.inputManager.setInputDirection(EInputDirection.NONE);
     this.gameComponents.handlePawnCollision();
@@ -91,6 +92,7 @@ export class GameManager {
         this.gameComponents.reduceScrollSpeed();
         break;
     }
+    this.scene.audioManager.play('powerup');
   }
 
   resizeAndRepositionElements(): void {
@@ -146,6 +148,7 @@ export class GameManager {
         // collision detected!
         collectibles[i].playConsumeTween(pawn.turtle.x, pawn.turtle.y);
         pawn.playConsumeTween();
+        this.scene.audioManager.play('starFish');
         ++collectedCount;
       }
     }

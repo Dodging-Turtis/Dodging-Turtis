@@ -10,8 +10,10 @@ export class SoundToggleButton extends AbstractButton {
     this.onClickComplete = () => {
       if (this.wasSoundOn) {
         this.setTexture('sound_off');
+        this.scene.audioManager.turnOff();
       } else {
         this.setTexture('sound_on');
+        this.scene.audioManager.turnOn();
       }
       this.wasSoundOn = !this.wasSoundOn;
     }
