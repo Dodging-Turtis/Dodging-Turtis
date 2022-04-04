@@ -105,6 +105,21 @@ export class ResultScreen extends Phaser.GameObjects.Container {
     ]);
   }
 
+  private playTurtisTween() {
+    this.scene.tweens.add({
+      targets: [this.mintTurtleImage, this.mintTurtleText],
+      duration: 125,
+      scale: 1.15,
+      easing: TWEEN_EASING.BACK_EASE_OUT,
+      yoyo: true,
+      easeParams: [2.7],
+      onYoyo: () => {
+        this.mintTurtleImage.setAlpha(0.6);
+        this.mintTurtleText.text = 'Congratulations!\nA new Turtis awaits you\nin the marketplace.'
+      }
+    })
+  }
+
   private addMintTurtle() {
     const titleConfig = {
       fontFamily: GAME_FONT,
@@ -120,8 +135,8 @@ export class ResultScreen extends Phaser.GameObjects.Container {
       if (!this.isMintEnabled) {
         return;
       }
-      this.mintTurtleText.text = 'Congratulations! Blah Blah Blah!'
       this.scene.initGameData.mintTurtisCB();
+      this.playTurtisTween();
       this.isMintEnabled = false;
       this.events.emit(CUSTOM_EVENTS.MINT_TURTIS);
     });
