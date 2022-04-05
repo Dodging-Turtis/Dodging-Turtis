@@ -49,7 +49,10 @@ const GameScreen = () => {
       game.scene.start('boot', {
         grs,
         initGameData: {
-          highScore: 250,
+          highScore:
+            process.env.NODE_ENV === 'development' && !state.walletConnected
+              ? 250
+              : state.highScore,
           endGameCB,
           mintTurtisCB,
           goHomeCB,
