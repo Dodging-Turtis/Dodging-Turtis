@@ -174,6 +174,8 @@ yarn start
 - **Hritika M Kucheriya** [(@hritikamk)](https://github.com/hritikamk)
 - **Suryashankar Das** [(@iamsdas)](https://github.com/iamsdas)
 
+## Contributors
+
 ## License
 
 Licensed under MIT License : https://opensource.org/licenses/MIT
