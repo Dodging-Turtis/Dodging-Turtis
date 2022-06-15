@@ -4,10 +4,73 @@ import logo from '../public/assets/logo.png';
 import devfolio from '../public/assets/website/thanks/devfolio_light.png';
 import filecoin from '../public/assets/website/thanks/filecoin_light.png';
 import polygon from '../public/assets/website/thanks/polygon_light.png';
-import TeamCard from '../components/TeamCard';
 import Image from 'next/image';
 
+import { useRouter } from 'next/router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelopeSquare } from '@fortawesome/free-solid-svg-icons';
+
+import { url } from 'inspector';
+library.add(fab);
+
+//Images
+
+import Hardik from '../public/assets/Team/Hardik.png';
+import Suryashankar from '../public/assets/Team/Suryashankar.jpg';
+import Dinesh from '../public/assets/Team/Dinesh.jpg';
+
 function Aboutus() {
+  const router = useRouter();
+
+  const TeamMembers = [
+    {
+      Name: 'Hardik Agarwal',
+      img: { Hardik },
+      links: {
+        github: 'https://github.com/hardikag17/',
+        linkedIn: 'https://www.linkedin.com/in/hardik-agarwal17/',
+        mail: 'mailto:hardikag17@gmail.com',
+      },
+    },
+    {
+      Name: 'Suryashankar Das',
+      img: { Suryashankar },
+      links: {
+        github: 'https://github.com/iamsdas',
+        linkedIn: 'https://linkedin.com/in/iamsdas',
+        mail: 'mailto:suryashankardas.2002@gmail.com',
+      },
+    },
+    {
+      Name: 'Dinesh BS',
+      img: { Dinesh },
+      links: {
+        github: 'https://github.com/hardikag17/',
+        linkedIn: 'https://www.linkedin.com/in/hardik-agarwal17/',
+        mail: 'mailto:hardikag17@gmail.com',
+      },
+    },
+  ];
+
+  const Contributors = [
+    {
+      Name: 'Quitalizner',
+      links: {
+        github: 'https://github.com/Quitalizner',
+        mail: 'mailto:quitalizner@gmail.com',
+      },
+    },
+    {
+      Name: 'Rohit Baniya',
+      links: {
+        mail: 'mailto:suryashankardas.2002@gmail.com',
+        LinkedIn: 'https://www.linkedin.com/in/krohitk/',
+      },
+    },
+  ];
+
   return (
     <div>
       <Navbar />
@@ -47,7 +110,45 @@ function Aboutus() {
             <u>Team</u>
             <br /> <br />
             <div className='flex flex-row justify-around text-center'>
-              <TeamCard />
+              {TeamMembers.map((i) => {
+                return (
+                  <div
+                    key={i}
+                    className=' bg-greyish p-5 border-0 rounded-xl shadow-md shadow-dark w-fit'>
+                    <Image
+                      className='inline px-5 object-cover w-1/12 h-16 mr-2 rounded-full cursor-pointer'
+                      onClick={() => {
+                        router.push('/');
+                      }}
+                      src={i.img}
+                      height={125}
+                      width={125}
+                      alt='avtar'
+                    />
+                    <h1>{i.Name}</h1>
+                    <div className='w-full lg:inline-block mx-auto p-2 px-4 text-2xl text-center'>
+                      <ul>
+                        <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
+                          <a href={i.links.github}>
+                            <FontAwesomeIcon icon={['fab', 'github']} />
+                          </a>
+                        </li>
+                        <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
+                          <a href={i.links.linkedIn}>
+                            {' '}
+                            <FontAwesomeIcon icon={['fab', 'linkedin']} />
+                          </a>
+                        </li>
+                        <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
+                          <a href={i.links.mail}>
+                            <FontAwesomeIcon icon={faEnvelopeSquare} />
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className='py-5'>

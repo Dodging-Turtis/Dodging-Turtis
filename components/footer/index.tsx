@@ -17,25 +17,23 @@ const Footer = () => {
                 <td className='p-4'>
                   <Link href='/profile'>My Profile</Link>
                 </td>
-                <td className='p-4'>
+                {/* <td className='p-4'>
                   <a href='#'>FAQs</a>
-                </td>
+                </td> */}
                 <td className='p-4'>
                   <Link href='/aboutus'>About us</Link>
+                </td>
+                <td className='p-4'>
+                  <Link href='/market'>Market</Link>
                 </td>
               </tr>
               <tr>
                 <td className='p-4'>
-                  <Link href='/market'>Market</Link>
-                </td>
-                <td className='p-4'>
-                  <Link href='#'>Community</Link>
+                  <Link href='https://discord.gg/MTFPH8UU2Q'>Community</Link>
                 </td>
                 <td className='p-4'>
                   <Link href='/roadmap'>Roadmap</Link>
                 </td>
-              </tr>
-              <tr>
                 <td className='p-4' colSpan={3}>
                   <Link href='https://github.com/Dodging-Turtis'>
                     For Developers
@@ -54,13 +52,7 @@ const Footer = () => {
                 </a>
               </li>
               <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
-                <FontAwesomeIcon icon={['fab', 'linkedin']} />
-              </li>
-              <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
-                <FontAwesomeIcon icon={['fab', 'twitter']} />
-              </li>
-              <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
-                <a href='mailto:dodgingturtis@gmail.com'>
+                <a href='mailto:hardikag17@gmail.com'>
                   <FontAwesomeIcon icon={faEnvelopeSquare} />
                 </a>
               </li>
@@ -85,11 +77,15 @@ const Footer = () => {
       </div>
       <div className='mx-auto mb-auto text-center'>
         <h1 className='inline-block p-2'>
-          <a href='#'>Terms of use</a>
+          <a href='#' aria-disabled>
+            Terms of use
+          </a>
         </h1>
         <h1 className='inline-block p-2'>
           {' '}
-          <a href='#'>Privacy Policy</a>
+          <a href='#' aria-disabled>
+            Privacy Policy
+          </a>
         </h1>
       </div>
     </div>

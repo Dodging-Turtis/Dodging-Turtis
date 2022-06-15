@@ -95,7 +95,11 @@ function Body() {
           </p>
 
           <button className='w-full text-9xl text-center mx-auto py-10 text-lightblue'>
-            <FontAwesomeIcon icon={faPlayCircle}></FontAwesomeIcon>
+            <a href='https://www.youtube.com/watch?v=NZdafECjXwo&t=1s'>
+              <FontAwesomeIcon
+                className=' hover:scale-110'
+                icon={faPlayCircle}></FontAwesomeIcon>
+            </a>
           </button>
         </div>
         <div className='mx-auto lg:w-1/3 w-full'>
