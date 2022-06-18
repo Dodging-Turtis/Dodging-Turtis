@@ -84,7 +84,7 @@ function Aboutus() {
             width={150}
           />
           <div className='py-0'>
-            <u>#About team and how we started this project</u>
+            <u>#how we started</u>
             <br />
             <br />
             <h1 className='text-justify'>
@@ -106,8 +106,8 @@ function Aboutus() {
               love to hear from you!!
             </h1>
           </div>
-          <div className='py-5'>
-            <u>Team</u>
+          <div className='py-10'>
+            <u>#Team</u>
             <br /> <br />
             <div className='flex flex-row justify-around text-center'>
               {TeamMembers.map((i) => {
@@ -115,7 +115,7 @@ function Aboutus() {
                   <div
                     key={i}
                     className=' bg-greyish p-5 border-0 rounded-xl shadow-md shadow-dark w-fit'>
-                    <Image
+                    {/* <Image
                       className='inline px-5 object-cover w-1/12 h-16 mr-2 rounded-full cursor-pointer'
                       onClick={() => {
                         router.push('/');
@@ -124,7 +124,7 @@ function Aboutus() {
                       height={125}
                       width={125}
                       alt='avtar'
-                    />
+                    /> */}
                     <h1>{i.Name}</h1>
                     <div className='w-full lg:inline-block mx-auto p-2 px-4 text-2xl text-center'>
                       <ul>
@@ -151,32 +151,74 @@ function Aboutus() {
               })}
             </div>
           </div>
-          <div className='py-5'>
-            <u>Contributors</u>
+          <div className='py-10'>
+            <u>#Contributors</u>
+            <div className='flex flex-row justify-around text-center'>
+              {Contributors.map((i) => {
+                return (
+                  <div
+                    key={i}
+                    className=' bg-greyish p-5 border-0 rounded-xl shadow-md shadow-dark w-fit'>
+                    {/* <Image
+                      className='inline px-5 object-cover w-1/12 h-16 mr-2 rounded-full cursor-pointer'
+                      onClick={() => {
+                        router.push('/');
+                      }}
+                      src={i.img}
+                      height={125}
+                      width={125}
+                      alt='avtar'
+                    /> */}
+                    <h1>{i.Name}</h1>
+                    <div className='w-full lg:inline-block mx-auto p-2 px-4 text-2xl text-center'>
+                      <ul>
+                        <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
+                          <a href={i.links.github}>
+                            <FontAwesomeIcon icon={['fab', 'github']} />
+                          </a>
+                        </li>
+                        <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
+                          <a href={i.links.linkedIn}>
+                            {' '}
+                            <FontAwesomeIcon icon={['fab', 'linkedin']} />
+                          </a>
+                        </li>
+                        <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
+                          <a href={i.links.mail}>
+                            <FontAwesomeIcon icon={faEnvelopeSquare} />
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className='py-5'>
-            A Special thanks to these Organizations for supporting us!!
+          <div className='py-10'>
+            A Special thanks to following Organizations for supporting us!!
+            <br />
             <br />
             <div className='flex lg:flex-row flex-col w-full lg:px-64 px-8 text-center justify-between'>
               <Image
                 className=' m-3'
                 src={devfolio}
                 alt='Devfolio'
-                width={150}
+                width={160}
                 height={75}
               />
               <Image
                 className=' m-3'
                 src={polygon}
                 alt='Polygon'
-                width={150}
+                width={160}
                 height={75}
               />
               <Image
                 className=' m-3'
                 src={filecoin}
                 alt='Filecoin'
-                width={150}
+                width={160}
                 height={75}
               />
             </div>
