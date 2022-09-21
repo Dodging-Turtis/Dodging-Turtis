@@ -12,7 +12,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelopeSquare } from '@fortawesome/free-solid-svg-icons';
 
-import { url } from 'inspector';
 library.add(fab);
 
 //Images
@@ -113,7 +112,7 @@ function Aboutus() {
               {TeamMembers.map((i) => {
                 return (
                   <div
-                    key={i}
+                    key={i.Name}
                     className=' bg-greyish p-5 border-0 rounded-xl shadow-md shadow-dark w-fit'>
                     {/* <Image
                       className='inline px-5 object-cover w-1/12 h-16 mr-2 rounded-full cursor-pointer'
@@ -157,7 +156,7 @@ function Aboutus() {
               {Contributors.map((i) => {
                 return (
                   <div
-                    key={i}
+                    key={i.Name}
                     className=' bg-greyish p-5 border-0 rounded-xl shadow-md shadow-dark w-fit'>
                     {/* <Image
                       className='inline px-5 object-cover w-1/12 h-16 mr-2 rounded-full cursor-pointer'
@@ -178,7 +177,7 @@ function Aboutus() {
                           </a>
                         </li>
                         <li className='inline-block px-2 hover:scale-110 hover:brightness-105 cursor-pointer'>
-                          <a href={i.links.linkedIn}>
+                          <a href={i.links.LinkedIn}>
                             {' '}
                             <FontAwesomeIcon icon={['fab', 'linkedin']} />
                           </a>
