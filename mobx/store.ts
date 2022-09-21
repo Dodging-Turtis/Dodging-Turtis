@@ -103,7 +103,7 @@ export class GlobalStore {
     metadata = metadata.map((data) => {
       data.image = data.image.replace(
         'ipfs://',
-        'https://opensea.mypinata.cloud/ipfs/'
+        'https://cloudflare-ipfs.com/ipfs/'
       );
       return data;
     });

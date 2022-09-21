@@ -35,12 +35,12 @@ export function notify(type: NOTIFICATION_TYPE, data: string) {
 }
 
 export async function fetchIpfs(url: string) {
-  url = url.replace('ipfs://', 'https://opensea.mypinata.cloud/ipfs/');
+  url = url.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/');
   const data = await fetch(url);
   const metadata: IMetadata = await data.json();
   metadata.image = metadata.image.replace(
     'ipfs://',
-    'https://opensea.mypinata.cloud/ipfs/'
+    'https://cloudflare-ipfs.com/ipfs/'
   );
   return metadata;
 }
@@ -85,7 +85,7 @@ export const dummyTurtle1 = {
       },
     ],
     image:
-      'https://opensea.mypinata.cloud/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
+      'https://cloudflare-ipfs.com/ipfs/bafybeihjzfdlnzw7xfpc33o3cf7tunqcyj6ithepao3apdzykj4gvvug5y/randomTurtle.png',
   },
 };
 export const dummyTurtle2 = {
